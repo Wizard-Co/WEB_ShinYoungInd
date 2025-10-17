@@ -1,0 +1,222 @@
+<!--
+  *packageName      : templates.pages.product
+  *fileName         : process-code.html
+  *author           : sooJeong
+  *date             : 2024-10-18
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2024-10-18      sooJeong            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+<head>
+    <style>
+        .divide {
+            border-right: 1px solid #dee2e6;
+            margin-right: 1rem;
+            gap: 5px;
+        }
+        .tbWidth{
+            width: 37.5%;
+        }
+        #addForm {
+            width: 25%;
+        }
+        .edit {
+            background-color: antiquewhite;
+        }
+
+    </style>
+</head>
+<!--content-->
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 공정 코드 등록
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-print m-r-05 invisible">닫기</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnAdd">등록</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnUpdate">수정</button>
+                    <button type="button" class="btn btn-success" id="btnDelete">삭제</button>
+                </div>
+                <div class="flx mt-05">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="submit" id="btnSave" form="addForm" class="btn btn-print m-r-05">저장</button>
+                    <button type="button" id="btnCancel" class="btn btn-print m-r-05">취소</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper" class="panel">
+            <div class="panel-body">
+                <div class="flx">
+                    <div class="flx divide">
+                        <input type="radio" class="btn-check" name="category" id="btnBig" autocomplete="off" checked>
+                        <label class="btn" for="btnBig">대분류</label>
+                        <input type="radio" class="btn-check" name="category" id="btnSmall" autocomplete="off">
+                        <label class="btn me-3" for="btnSmall">소분류</label>
+                    </div>
+                    <div class="search-condition">
+                        <label for="inputProcessSrh" class="lbl-srh">공정명</label>
+                        <input type="text" id="inputProcessSrh" class="form-control" placeholder="공정명 검색">
+                    </div>
+                    <div class="search-condition">
+                        <label for="cboArticleTypeSrh" class="lbl-srh">제품그룹</label>
+                        <select id="cboArticleTypeSrh" class="form-select w150px">
+                            <option value="">전체</option>
+                            <option th:each="option : ${cboArticleType}"
+                                    th:value="${option.codeID}" th:text="${option.codeName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="search-condition">
+                        <label class="form-check-label" for="chkIncludeUseYN">
+                            사용안함 포함
+                        </label>
+                        <input class="form-check-input lbl-srh" type="checkbox" value="Y" id="chkIncludeUseYN">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="flx gap-3">
+            <div id="divMain" class="tbWidth border">
+                <table id="tbMain" class="cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>공정코드</th>
+                        <th>공정명</th>
+                        <th>영문공정명</th>
+                        <th>중문공정명</th>
+                        <th>제품그룹</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div id="divSub" class="tbWidth border">
+                <table id="tbSub" class="cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>공정코드</th>
+                        <th>공정명</th>
+                        <th>영문공정명</th>
+                        <th>중문공정명</th>
+                        <th>제품그룹</th>
+                        <th>공정그룹</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <form id="addForm" th:object="${process}" class="section needs-validation border" novalidate>
+                <table class="table table-bordered">
+                    <tr id="trProcessType">
+                        <td class="">
+                            <label>공정그룹</label>
+                        </td>
+                        <td class="left">
+                            <select class="form-control input-necessary display-inline-block"
+                                    th:field="*{parentProcessID}">
+                                <option th:each="option : ${cboProcess}"
+                                        th:value="${option.processID}" th:text="${option.process}">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>제품그룹</label>
+                        </td>
+                        <td class="left">
+                            <select class="form-control input-necessary display-inline-block"
+                                    th:field="*{articleTypeID}" required>
+                                <option th:each="option : ${cboArticleType}"
+                                        th:value="${option.codeID}" th:text="${option.codeName}">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>공정코드</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control input-necessary"
+                                   th:field="*{processID}" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>공정명</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control input-necessary"
+                                   th:field="*{process}" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>정렬순서</label>
+                        </td>
+                        <td class="left">
+                            <input type="number" class="form-control" defaultValue=1
+                                   th:field="*{sortSeq}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>중문 공정명</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                                   th:field="*{fProcess}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>영문 공정명</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                                   th:field="*{eProcess}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>하위품 출고</label>
+                        </td>
+                        <td class="left">
+                            <select class="form-control display-inline-block" th:field="*{childCheckYN}">
+                                <option value="Y">Y</option>
+                                <option value="N">N</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="">
+                            <label>사용여부</label>
+                        </td>
+                        <td class="left">
+                            <input type="checkbox" th:field="*{useYN}" th:value="Y" defaultValue="true">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </section>
+    </main>
+    </body>
+</section>
+</html>
+

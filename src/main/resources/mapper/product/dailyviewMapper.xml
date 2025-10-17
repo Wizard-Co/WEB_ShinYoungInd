@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.product.overview.dailyView.DailyMapper">
+
+    <!--    일생산현황-->
+    <select id="getDailyResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_dailyResult_S(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkJobType, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{JobTypeID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkDefect, javaType=int, jdbcType=SMALLINT, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getDefect" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="string"> {
+        call xp_prd_sWKResultDaily_Defect(#{jobID, javaType=BigDecimal, jdbcType=DECIMAL, mode=IN})}
+    </select>
+
+</mapper>

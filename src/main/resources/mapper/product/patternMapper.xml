@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.product.pattern.PatternMapper">
+
+    <select id="getProcessPattern" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.pattern.Pattern"
+            parameterType="map"> {call xp_prd_sPattern()}
+    </select>
+
+    <select id="getPatternDetail" statementType="CALLABLE" parameterType="string"
+            resultType="wizard.ShinYoungInd.product.pattern.Pattern"> {
+        call xp_Pattern_sPatternSub(#{processID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+    <select id="savePattern" statementType="CALLABLE"
+            parameterType="wizard.ShinYoungInd.product.pattern.Pattern"
+            resultType="wizard.ShinYoungInd.product.pattern.Pattern"> {
+        call xp_Pattern_iPattern(
+                #{patternID		 , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{pattern		 , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workID		    , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{articleTypeID	, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{createUserID	, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="savePatternSub" statementType="CALLABLE"
+            parameterType="wizard.ShinYoungInd.product.pattern.Pattern"> {
+        call xp_Pattern_iPatternSub(
+                #{patternID		 , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{patternSeq		 , javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID	, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{createUserID	, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="updatePattern" statementType="CALLABLE"
+            parameterType="wizard.ShinYoungInd.product.pattern.Pattern"> {
+        call xp_Pattern_uPattern(
+                #{patternID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{pattern			    , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workID		    , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{articleTypeID		    , javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{lastUpdateUserID	    , javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="deletePattern" statementType="CALLABLE" parameterType="string"> {
+        call xp_Pattern_dPattern(#{patternID, javaType=String, jdbcType=VARCHAR, mode=IN})
+        }
+    </select>
+
+
+</mapper>

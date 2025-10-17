@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.mc.code.MCMapper">
+
+    <select id="getMCList" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.code.DTO.MC"
+            parameterType="map">
+        { call getMachineList(#{mcType, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{mcName, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{mcNo, javaType=String,jdbcType=VARCHAR, mode=IN}
+               )}
+    </select>
+
+    <select id="saveMC" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.code.DTO.MC"
+            parameterType="wizard.ShinYoungInd.mc.code.DTO.MC">
+        { call saveMachineDetail(#{mcID, javaType=String, jdbcType=CHAR, mode=OUT},
+                                 #{mcNo, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{mcName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{mcTypeID, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{installDate, javaType=String, jdbcType=CHAR, mode=IN},
+                                 #{vendorName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{manufactureName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{contacts, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{elecCapacity, javaType=float, jdbcType=FLOAT, mode=IN},
+                                 #{elecCapacityUnitClss, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{steamCapacity, javaType=float, jdbcType=FLOAT, mode=IN},
+                                 #{steamCapacityUnitClss, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{installCustomID, javaType=String, jdbcType=CHAR, mode=IN},
+                                 #{createUserID, javaType=String, jdbcType=VARCHAR, mode=IN}
+               )}
+    </select>
+
+    <select id="updateMC" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.code.DTO.MC"
+            parameterType="wizard.ShinYoungInd.mc.code.DTO.MC">
+        { call updateMachineDetail(#{mcID, javaType=String, jdbcType=CHAR, mode=IN},
+                                 #{mcNo, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{mcName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{mcTypeID, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{installDate, javaType=String, jdbcType=CHAR, mode=IN},
+                                 #{vendorName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{manufactureName, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{contacts, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{elecCapacity, javaType=float, jdbcType=FLOAT, mode=IN},
+                                 #{elecCapacityUnitClss, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{steamCapacity, javaType=float, jdbcType=FLOAT, mode=IN},
+                                 #{steamCapacityUnitClss, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                 #{installCustomID, javaType=String, jdbcType=CHAR, mode=IN},
+                                 #{lastUpdateUserID, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+               )}
+    </select>
+
+    <select id="deleteMC" statementType="CALLABLE" parameterType="String">
+        { call deleteMachine(#{mcID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+</mapper>

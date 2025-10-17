@@ -1,0 +1,222 @@
+<!--
+  *packageName      : templates.pages.basicMgmt
+  *fileName         : machine
+  *author           : sooJeong
+  *date             : 2024-08-28
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2024-08-28         sooJeong             최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/mc/code/mc.js}"></script>
+</th:block>
+
+<head>
+    <style>
+        .divide {
+            border-right: 1px solid #dee2e6;
+            margin-right: 1rem;
+            gap: 5px;
+        }
+        .edit {
+            background-color: antiquewhite;
+        }
+
+    </style>
+</head>
+
+<!--content-->
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="invisible"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 설비 현황 등록
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-print m-r-05 invisible">닫기</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnAdd">등록</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnUpdate">수정</button>
+                    <button type="button" class="btn btn-success" id="btnDelete">삭제</button>
+                </div>
+                <div class="flx mt-05">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="submit" id="btnSave" form="addForm" class="btn btn-print m-r-05">저장</button>
+                    <button type="button" id="btnCancel" class="btn btn-print m-r-05">취소</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <condition class="panel">
+            <div class="panel-body">
+                <div class="flx">
+                    <div class="search-condition">
+                        <label for="cboMcTypeSrh" class="lbl-srh">설비유형</label>
+                        <select id="cboMcTypeSrh" class="form-control w150px">
+                            <option value="">전체</option>
+                            <option th:each="option : ${cboMcType}"
+                                    th:value="${option.codeID}" th:text="${option.codeName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="search-condition">
+                        <label for="inputMcNameSrh" class="lbl-srh">설비명</label>
+                        <input type="text" id="inputMcNameSrh" class="form-control" placeholder="설비명 검색"
+                               onkeyup="if(window.event.keyCode==13){PlusFinder(event,12,'')}">
+                    </div>
+                    <div class="search-condition">
+                        <label for="inputMcNOSrh" class="lbl-srh">관리번호</label>
+                        <input type="text" id="inputMcNOSrh" class="form-control" placeholder="관리번호 검색"
+                               onkeyup="if(window.event.keyCode==13){PlusFinder(event,12,'')}">
+                    </div>
+                </div>
+            </div>
+        </condition>
+        <section class="flx gap-3">
+            <div id="divTable" class="border w100">
+                <table id="MCtable" class="striped cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>설비유형</th>
+                        <th>설비명(모델명)</th>
+                        <th>관리번호</th>
+                        <th>설치일</th>
+                        <th>전기용량</th>
+                        <th>스팀용량</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <form id="addForm" th:object="${mc}" class="needs-validation border w100" novalidate>
+                <table id="formTable" class="table table-bordered text-center">
+                    <tbody>
+                    <input type="hidden" th:field="*{mcID}">
+                    <tr>
+                        <td class="col-md-2">
+                            <label><span class="form-notice">*</span>설비명</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control input-necessary"
+                                   th:field="*{mcName}"
+                                   placeholder="설비명을 입력하세요" required>
+                            <div class="invalid-feedback">
+                                설비명을 입력해주세요.
+                            </div>
+                        </td>
+                        <td class="col-md-2">
+                            <label>등록자</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control" th:field="*{userName}"
+                                   readonly="readonly">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>설비유형</label>
+                        </td>
+                        <td class="left">
+                            <select class="form-control w100px display-inline-block" th:field="*{mcTypeID}">
+
+                                </option>
+                            </select>
+                        </td>
+                        <td class="col-md-2">
+                            <label>설치일자</label>
+                        </td>
+                        <td class="left">
+                            <input type="date" class="form-control" th:field="*{installDate}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>공급처</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control" th:field="*{vendorName}">
+                        </td>
+                        <td class="col-md-2">
+                            <label>제작사</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control" th:field="*{manufactureName}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>연락처</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control" th:field="*{contacts}">
+                        </td>
+                        <td class="col-md-2">
+                            <label><span class="form-notice">*</span>설비관리번호</label></td>
+                        <td class="left">
+                            <input type="text" class="form-control input-necessary" th:field="*{mcNo}" required>
+                            <div class="invalid-feedback">
+                                설비관리번호를 입력해주세요.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>설비용량(전기)</label>
+                        </td>
+                        <td colspan="3" class="left">
+                            <label>용량 :</label>
+                            <input type="number" class="form-control w250px display-inline-block m-r-1"
+                                   th:field="*{elecCapacity}"
+                                   placeholder="설비용량(전기)를 입력하세요">
+                            <label>단위 :</label>
+                            <select class="form-control w100px display-inline-block" th:field="*{elecCapacityUnitClss}">
+                                <option th:each="option : ${cboUnit}"
+                                        th:value="${option.codeID}" th:text="${option.codeName}">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>설비용량(스팀)</label></td>
+                        <td colspan="3" class="left">
+                            <label>용량 :</label>
+                            <input type="number" class="form-control w250px display-inline-block m-r-1"
+                                   th:field="*{steamCapacity}"
+                                   placeholder="설비용량(스팀)를 입력하세요">
+                            <label>단위 :</label>
+                            <select class="form-control w100px display-inline-block" th:field="*{steamCapacityUnitClss}">
+                                <option th:each="option : ${cboUnit}"
+                                        th:value="${option.codeID}" th:text="${option.codeName}">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-2">
+                            <label>설치업체</label>
+                        </td>
+                        <td class="left">
+                            <input type="hidden" id="inputInstallCustomID" class="form-control display-inline-block m-r-1 inputPf"
+                                   th:field="*{installCustomID}" readonly>
+                            <input type="text" id="inputInstallCustom" class="form-control display-inline-block m-r-1 inputPf"
+                                   th:field="*{installCustom}"
+                                   placeholder="더블클릭을 해주세요"
+                                   readonly>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </section>
+    </main>
+    </body>
+
+</section>
+</html>
+

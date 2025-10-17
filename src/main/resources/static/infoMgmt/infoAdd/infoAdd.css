@@ -1,0 +1,70 @@
+/*
+설명: 공지사항 추가 css
+작성일: 2024.10.08
+개발자: KDH
+********************************************************
+수정일자       수정자          요청자     요청내용
+********************************************************
+
+*/
+
+/*
+. class : 중복으로 같이 사용 가능, 하이픈 사용 ex) page-header
+# id : 중복으로 사용 불가능(id값 다르게 계속 생성), 카멜케이스 ex) chkDate
+*/
+
+/*div 스크롤바 생성*/
+.div-scroll{
+    overflow: auto;
+    height: 700px;
+}
+
+/*전월, 전일, 금일, 당월 버튼 css*/
+.btn-date{
+    display:flex;
+    justify-content: left;
+    color: #fff;
+    background: #59c4e4;
+    border-color: #59c4e4;
+    border-radius: 30px;
+    margin : 4px 1.5px;
+}
+
+/*마우스 올릴 경우 움직임*/
+.btn-date:hover {
+    animation: jelly 0.5s;
+}
+
+
+/*date css*/
+.input-date{
+    margin : 0px 4px;
+}
+
+/*세로 가운데 정렬 css*/
+.text-align{
+    vertical-align: middle; /* 셀의 세로 중앙에 배치 */
+}
+
+/*헤더 세로 가운데 정렬*/
+.label-align{
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+/*컬럼 숨기기*/
+.th-hidden{
+    display: none;
+}
+
+/*animation*/
+@keyframes jelly {
+    25% {
+        transform: scale(0.9, 1.1);
+    }
+    50% {
+        transform: scale(1.1, 0.9);
+    }
+    75% {
+        transform: scale(0.95, 1.05);
+    }
+}

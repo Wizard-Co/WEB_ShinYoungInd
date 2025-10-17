@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.baseMgmt.person.PersonMapper">
+
+    <select id="getPersonList" statementType="CALLABLE" resultType="wizard.ShinYoungInd.baseMgmt.person.DTO.Person"
+            parameterType="map">
+        { call xp_Person_sPerson(
+                #{chkDepart, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{depart, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkName, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{name, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkIncludeAdmin, javaType=int,jdbcType=SMALLINT, mode=IN}
+            , #{chkIncludeEnd, javaType=int,jdbcType=SMALLINT, mode=IN}
+               )}
+    </select>
+
+    <select id="getPersonDetail" statementType="CALLABLE" resultType="wizard.ShinYoungInd.baseMgmt.person.DTO.Person"
+            parameterType="string">
+        { call xp_Person_sPersonDetail(#{personID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+    <select id="getMenuList" statementType="CALLABLE" resultType="wizard.ShinYoungInd.common.dto.Menu">
+        { call xp_Code_sMenu(#{sPgGubun, javaType=string,jdbcType=CHAR, mode=IN})}
+    </select>
+
+    <select id="getPersonMenu" statementType="CALLABLE" resultType="wizard.ShinYoungInd.common.dto.Menu" parameterType="String">
+        { call xp_Web_Menu_sUserMenu(#{personID, javaType=string,jdbcType=VARCHAR, mode=IN},
+                                #{pgGubun, javaType=string,jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+</mapper>

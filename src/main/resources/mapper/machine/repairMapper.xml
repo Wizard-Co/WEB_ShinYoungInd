@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.mc.repair.RepairMapper">
+
+    <select id="getRepair" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.repair.DTO.Repair"
+            parameterType="map"> {
+        call xp_mcRepairQ_sRepair(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkMCName, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{mcName, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMCPart, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{mcPartID, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+</mapper>

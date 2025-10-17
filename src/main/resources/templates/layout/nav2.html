@@ -1,0 +1,162 @@
+<th:block th:fragment="navigation">
+    <head>
+        <style>
+            #nav {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                height: 50px;
+            }
+
+            .navList {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+            }
+
+            .navList li {
+                position: relative;
+            }
+
+            .navMenu {
+                display: block;
+                position: relative;
+                cursor: pointer;
+                height: 100%;
+            }
+
+            .menu-title {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 200px;
+                height: 100%;
+                color: #555555; /* 상위 메뉴 텍스트 색상 */
+                font-weight: bold;
+                font-size: 16px;
+                margin: 0;
+                text-decoration: none;
+                transition: background 0.3s ease;
+            }
+
+            .navMenu:hover .menu-title,
+            .navMenu:hover .menu-dropdown:hover ~ .menu-title {
+                background: #d9edf7;
+            }
+
+            .menu-dropdown {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                min-width: 200px;
+                background-color: rgb(245, 245, 245, 0.5);
+                backdrop-filter: blur(8px);
+                padding: 0;
+                opacity: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+                z-index: 100;
+            }
+
+            .navMenu:hover .menu-dropdown {
+                padding: 15px 0;
+                opacity: 1;
+                max-height: 500px;
+            }
+
+            .menu-dropdown > li {
+                overflow: hidden;
+            }
+
+            .menu-dropdown a {
+                display: block;
+                padding: 5px 10px;
+                /*background: #f5f5f5;*/
+                color: #818a91;
+                text-align: center;
+                text-decoration: none;
+                white-space: nowrap;
+                transition: background 0.3s ease, color 0.3s ease;
+            }
+
+            .menu-dropdown a:hover {
+                /*background: rgba(0, 0, 0, 0.1);*/
+                color: #007bff;
+            }
+
+            #btnMES, #btnLogOut {
+                width: 100%;
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="nav">
+        <img class="navbar-brand img m-l-2" src="/img/test.jpg" width="80" height="50">
+        <ul class="navList">
+
+
+<!--                        <th:block th:if="${userMenu != null}" th:each="menu : ${userMenu}">-->
+<!--                            <div th:class="navMenu">-->
+<!--                                <h2 th:class="menu-title" th:text="${menu.menu}">메뉴이름</h2>-->
+<!--                                <ul class="menu-dropdown" th:if="${menu.subMenu != null and #lists.size(menu.subMenu) > 0}">-->
+<!--                                    <th:block th:each="subMenu : ${menu.subMenu}">-->
+<!--                                        <li><a th:href="@{${subMenu.link}(menuID=${subMenu.menuID})}" th:text="${subMenu.menu}" th:data-id="${subMenu.menuID}"></a></li>-->
+<!--                                    </th:block>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </th:block>-->
+            <div class="navMenu">
+                <h2 class="menu-title">영업조회</h2>
+                <ul class="menu-dropdown">
+                    <li><a href="/person/list?menuID=101" data-id="">제품출하 실적</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">제품출하 집계표</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">제품재고현황</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">제품수불내역</a></li>
+                </ul>
+            </div>
+
+            <div class="navMenu">
+                <h2 class="menu-title">자재조회</h2>
+                <ul class="menu-dropdown">
+                    <li><a href="/person/list?menuID=101" data-id="">자재입고 명세서</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">출고 및 이동 명세서</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">LOT별 재고조회</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">LOT별 수불조회</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">재고현황(제품포함)</a></li>
+                    <li><a href="/article/list?menuID=102" data-id="">수불내역(제품포함)</a></li>
+                </ul>
+            </div>
+
+            <div class="navMenu">
+                <h2 class="menu-title">생산·설비조회</h2>
+                <ul class="menu-dropdown">
+                    <li><a href="/product/result/daily?menuID=5320" data-id="5320">일 생산현황</a></li>
+                    <li><a href="/product/result/total?menuID=5330" data-id="5330">생산집계</a></li>
+                    <li><a href="/product/result/lot?menuID=5340" data-id="5340">로트추적</a></li>
+                    <li><a href="/kpi?menuID=5360" data-id="5360">KPI</a></li>
+                    <li><a href="/mc/repair/result?menuID=6103" data-id="6103">설비수리</a></li>
+                </ul>
+            </div>
+
+            <div class="navMenu">
+                <h2 class="menu-title">품질조회</h2>
+                <ul class="menu-dropdown">
+                    <li><a href="" data-id="5320">생산불량일보</a></li>
+                    <li><a href="" data-id="5330">생산집계</a></li>
+                    <li><a href="" data-id="5340">제품군별 품질분석</a></li>
+                    <li><a href="" data-id="5360">품질 X-bar차트</a></li>
+                    <li><a href="" data-id="6103">설비수리</a></li>
+                </ul>
+            </div>
+
+        </ul>
+        <div class="flx" style="width: 8%">
+            <button type="button" class="bi bi-arrow-up-right-circle-fill" id="btnMES" onclick="goMES()"></button>
+            <button type="button" class="bi bi-box-arrow-right" id="btnLogOut" onclick="logOut()"></button>
+        </div>
+    </div>
+    </body>
+</th:block>

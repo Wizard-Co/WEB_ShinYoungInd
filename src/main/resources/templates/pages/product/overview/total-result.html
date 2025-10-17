@@ -1,0 +1,205 @@
+<!--
+  *packageName      : templates.pages.product
+  *fileName         : total-result.html
+  *author           : sooJeong
+  *date             : 2025-02-12
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2025-02-12      sooJeong            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script type="module" src="/product/overview/total-result-columns.js"></script>
+    <script type="module" th:src="@{/product/overview/total-result.js}"></script>
+</th:block>
+
+<!--content-->
+<section layout:fragment="content">
+    <head>
+        <style>
+            .panel-body-multi input[type="text"],
+            .panel-body-multi select.form-select {
+                width: 160px;
+            }
+        </style>
+    </head>
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 생산 집계 조회
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper">
+            <!--            지시일자-->
+            <div class="date">
+                <div class="search-condition mx-0">
+                    <div>
+                        <input class="form-check-input" type="checkbox" value="Y" id="chkDate" checked="true"
+                        data-target="sDate, eDate">
+                        <label class="me-2" for="chkDate">
+                            지시일자
+                        </label>
+                    </div>
+                    <div class="flx gap-1">
+                        <input type="date" id="sDate" class="text-center">
+                        <input type="date" id="eDate" class="text-center">
+                    </div>
+                </div>
+                <div class="btn-date">
+                    <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                    <label class="btn" for="btnToday">금일</label>
+                    <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                    <label class="btn" for="btnThisMonth">금월</label>
+                    <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                    <label class="btn" for="btnYesterDay">전일</label>
+                    <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                    <label class="btn" for="btnLastMonth">전월</label>
+                </div>
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
+                        </label>
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 검색">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkArticle" data-target="txtArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkProcess" data-target="cboProcess"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkProcess">
+                            공정
+                        </label>
+                        <select id="cboProcess" class="form-select w150px">
+                            <option value=0>전체</option>
+                        </select>
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkMachine" data-target="cboMachine"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkMachine">
+                            호기
+                        </label>
+                        <select id="cboMachine" class="form-select w150px">
+                            <option value=0>전체</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkWorker" data-target="txtWorker"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkWorker">
+                            작업자
+                        </label>
+                        <input id="txtWorker"
+                               type="text" class="form-control" placeholder="공정 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkJobType" data-target="cboJobType"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkJobType">
+                            작업구분
+                        </label>
+                        <select id="cboJobType" class="form-select w150px">
+                            <option value="">전체</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkCustom" data-target="txtCustom"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustom">
+                            거래처
+                        </label>
+                        <input id="txtCustom"
+                               type="text" class="form-control" placeholder="공정 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkLike"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkLike">
+                            주요 관심 품목
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        메인-->
+        <section class="border">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="processTab" data-type="process"
+                            data-bs-toggle="tab" data-bs-target="#nav-process"
+                            type="button" role="tab" aria-controls="nav-process" aria-selected="true">공정별 호기별 집계
+                    </button>
+                    <button class="nav-link" id="articleTab" data-type="article"
+                            data-bs-toggle="tab" data-bs-target="#nav-article"
+                            type="button" role="tab" aria-controls="nav-article" aria-selected="false">품명별 집계
+                    </button>
+                    <button class="nav-link" id="workerTab" data-type="worker"
+                            data-bs-toggle="tab" data-bs-target="#nav-worker"
+                            type="button" role="tab" aria-controls="nav-worker" aria-selected="false">작업자별 집계
+                    </button>
+                    <button class="nav-link" id="dailyTab" data-type="daily"
+                            data-bs-toggle="tab" data-bs-target="#nav-daily"
+                            type="button" role="tab" aria-controls="nav-daily" aria-selected="false">일별 집계
+                    </button>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-process" role="tabpanel" aria-labelledby="processTab"
+                     tabindex="0">
+                    <table id="processTb" class="striped cell-border table-light-info" style="width:100%">
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-article" role="tabpanel" aria-labelledby="articleTab" tabindex="0">
+                    <table id="articleTb" class="striped cell-border table-light-info" style="width:100%">
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-worker" role="tabpanel" aria-labelledby="workerTab" tabindex="0">
+                    <table id="workerTb" class="striped cell-border table-light-info" style="width:100%">
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="nav-daily" role="tabpanel" aria-labelledby="dailyTab" tabindex="0">
+                    <table id="dailyTb" class="striped cell-border table-light-info" style="width:100%">
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    </body>
+</section>
+</html>
+

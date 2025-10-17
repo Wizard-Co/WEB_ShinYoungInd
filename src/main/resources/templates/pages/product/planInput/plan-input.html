@@ -1,0 +1,265 @@
+<!--
+  *packageName      : templates.pages.product
+  *fileName         : plan-input.html
+  *author           : sooJeong
+  *date             : 2024-10-18
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2024-10-18      sooJeong            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/product/plan/plan-input.js}"></script>
+</th:block>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" type="text/css" th:href="@{/product/plan/plan-input.css}"/>
+</th:block>
+
+<head>
+    <style>
+         .lbl-srh {
+            width: 80px !important;
+        }
+        .pl-condition {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .pl-lbl {
+            text-align: center;
+            white-space: nowrap;
+            padding: 5px;
+            background-color: aliceblue;
+            min-width: 80px;
+            margin-right: 3px;
+        }
+        #btns {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+    </style>
+</head>
+<!--content-->
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 작업지시 작성
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                </div>
+            </div>
+        </div>
+        <condition>
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="chkDate"
+                            data-target="sDate, eDate">
+                            <label class="me-2" for="chkDate">
+                                지시일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                        </div>
+                    </div>
+                    <div class="btn-date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkCustom"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustom">
+                            거래처
+                        </label>
+                        <input id="txtCustom"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkOrderNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label id="txtOrderNo"
+                               class="lbl-srh" for="chkOrderNo">
+                            관리번호
+                        </label>
+                        <input type="text" id="inputProcessSrh" class="form-control" placeholder="관리번호 입력">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="품명 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkBuyerArticleNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
+                        </label>
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkComplete"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkComplete">
+                            지시완료 포함
+                        </label>
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkClose"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkClose">
+                            수주마감 포함
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </condition>
+        <!--        메인-->
+        <section>
+            <div class="border mb-1" style="min-height: 200px">
+                <table id="tbMain" class="striped cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>수주일자</th>
+                        <th>거래처</th>
+                        <th>품번</th>
+                        <th>품명</th>
+                        <th>모델</th>
+
+                        <th>관리번호</th>
+                        <th>미계획량</th>
+                        <th>계획량</th>
+                        <th>투입량</th>
+                        <th>검사량</th>
+
+                        <th>출고량</th>
+                        <th>공정패턴</th>
+                        <th>품명그룹</th>
+                        <th>지시사항</th>
+                        <th>지시완료</th>
+
+                        <th>수주마감</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="border flx">
+                <div style="width: 85%">
+                    <div class="flx gap-3">
+                        <div class="pl-condition">
+                            <label class="pl-lbl">
+                                지시일자
+                            </label>
+                            <input id="txtInstDate"
+                                   type="date" class="form-control">
+                        </div>
+                        <div class="pl-condition">
+                            <label class="pl-lbl">
+                                지시 수량
+                            </label>
+                            <input id="txtInstQty"
+                                   type="text" class="form-control"
+                                   style="width: 5rem;">
+                        </div>
+                        <div class="pl-condition">
+                            <label class="pl-lbl">
+                                작업완료일
+                            </label>
+                            <input id="txtExpectDate"
+                                   type="date" class="form-control">
+                        </div>
+                    </div>
+                    <span class="caption"> * 지시수량의 단위가 EA인 공정을 포함하는 지시량이 있는 경우, 수주량에서 제외하고 미계획량을 표시
+                    </span>
+                    <div class="pl-condition mb-1">
+                        <label class="pl-lbl">
+                            공정패턴
+                        </label>
+                        <select id="cboPattern" class="form-select" style="width: 80%;"></select>
+                    </div>
+                    <div class="pl-condition">
+                        <label class="pl-lbl">
+                            비고
+                        </label>
+                        <input type="text" id="txtComments" class="form-control" style="width: 80%;"></input>
+                    </div>
+                </div>
+                <div class="border" style="width: 15%" id="btns">
+                    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover"
+                            data-bs-placement="right"
+                            data-bs-content="수주목록에서 대상을 선택➡️지시일자, 지시수량 입력➡️공정패턴 선택 후 [추가] 클릭
+                                             ➡️상세내용 확인 후 [작업지시]클릭">
+                        작업방법❓
+                    </button>
+                    <div class="flx gap-1">
+                        <button type="button" class="btn btn-print w100" id="btnAdd">추가</button>
+                        <button type="button" class="btn btn-print w100" id="btnCancel">취소</button>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btnInst">작업지시</button>
+                </div>
+            </div>
+            <span style="font-weight: bold">📒공정별 작업지시 상세 내용</span>
+            <div class="border">
+                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>공정명</th>
+                        <th>품번</th>
+                        <th>품명</th>
+                        <th>하위품번</th>
+                        <th>하위품명</th>
+
+                        <th>지시수량</th>
+                        <th>시작일</th>
+                        <th>종료일</th>
+                        <th>지시사항</th>
+
+                        <th>호기</th>
+                        <th>원자재 투입 예외</th>
+                        <th>선입선출 예외</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </section>
+    </main>
+    </body>
+</section>
+</html>
+

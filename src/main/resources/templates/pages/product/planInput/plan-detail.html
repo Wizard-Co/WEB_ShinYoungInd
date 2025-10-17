@@ -1,0 +1,123 @@
+<!--
+  *packageName      : templates.pages.product
+  *fileName         : plan-input.html
+  *author           : sooJeong
+  *date             : 2024-10-18
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2024-10-18      sooJeong            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/product/plan/plan-input.js}"></script>
+</th:block>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" type="text/css" th:href="@{/product/plan/plan-input.css}"/>
+</th:block>
+
+<!--content-->
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 작업지시 작성
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-print m-r-05 invisible">닫기</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnAdd">등록</button>
+                    <button type="button" class="btn btn-success m-r-05" id="btnUpdate">수정</button>
+                    <button type="button" class="btn btn-success" id="btnDelete">삭제</button>
+                </div>
+                <div class="flx mt-05">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="submit" id="btnSave" class="btn btn-print m-r-05">저장</button>
+                    <button type="button" id="btnCancel" class="btn btn-print m-r-05">취소</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <condition>
+            <div class="divide">
+                <div>
+                    <div class="flx">
+                        <label class="lbl-srh">지시일자</label>
+                        <div class="flx gap-1">
+                            <input type="date" class="text-center">
+                            <input type="date" class="text-center">
+                        </div>
+                    </div>
+                    <div class="date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="flx">
+                    <div class="flx m-r-4">
+                        <label for="inputProcessSrh" class="lbl-srh">공정명</label>
+                        <input type="text" id="inputProcessSrh" class="form-control" placeholder="공정명 검색">
+                    </div>
+                    <div class="flx m-r-4">
+                        <label for="cboArticleTypeSrh" class="lbl-srh">제품그룹</label>
+                        <select id="cboArticleTypeSrh" class="form-control w150px">
+                            <option value="">전체</option>
+
+                        </select>
+                    </div>
+                    <div class="m-r-4">
+                        <label class="form-check-label lbl-srh" for="chkIncludeUseYN">
+                            사용안함 포함
+                        </label>
+                        <input class="form-check-input lbl-srh" type="checkbox" value="Y" id="chkIncludeUseYN">
+                    </div>
+                </div>
+            </div>
+        </condition>
+        <section class="border flx gap-3">
+            <div id="divMain" class="tbWidth">
+                <table id="tbMain" class="cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>수주일자</th>
+                        <th>거래처</th>
+                        <th>품번</th>
+                        <th>품명</th>
+                        <th>모델</th>
+                        <th>관리번호</th>
+                        <th>Order No.</th>
+                        <th>미계획량</th>
+                        <th>계획량</th>
+                        <th>투입량</th>
+                        <th>검사량</th>
+                        <th>출고량</th>
+                        <th>공정패턴코드</th>
+                        <th>품명그룹</th>
+                        <th>지시사항</th>
+                        <th>지시완료</th>
+                        <th>수주마감</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+        </section>
+    </main>
+    </body>
+</section>
+</html>
+

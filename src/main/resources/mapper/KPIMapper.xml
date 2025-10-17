@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.KPI.KPIMapper">
+
+    <select id="getProduction" statementType="CALLABLE" resultType="wizard.ShinYoungInd.KPI.DTO.Production"
+            parameterType="map"> {
+        call xp_KPI_sProduction(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN},
+                                #{sDate, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                #{eDate, javaType=String, jdbcType=VARCHAR, mode=IN},
+                                #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN},
+                                #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+                                )}
+    </select>
+
+    <select id="getDefect" statementType="CALLABLE" resultType="wizard.ShinYoungInd.KPI.DTO.Defect"
+            parameterType="map"> {
+        call xp_KPI_sDefect(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN},
+                            #{sDate, javaType=String, jdbcType=VARCHAR, mode=IN},
+                            #{eDate, javaType=String, jdbcType=VARCHAR, mode=IN},
+                            #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN},
+                            #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )}
+    </select>
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.mc.runningRate.RRMapper">
+
+    <select id="getRunningRate" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.runningRate.DTO.RunningRate"
+            parameterType="map"> {
+        call xp_prd_sMCRunningRate(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getWork" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.runningRate.DTO.Work"
+            parameterType="map"> {
+        call xp_prd_sMCRunningRate_Detail_Work(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getMachine" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.runningRate.DTO.Machine"
+            parameterType="map"> {
+        call xp_prd_sMCRunningRate_Detail_MC(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getNoWork" statementType="CALLABLE" resultType="wizard.ShinYoungInd.mc.runningRate.DTO.NoWork"
+            parameterType="map"> {
+        call xp_prd_sMCRunningRate_Detail_NoWork(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+</mapper>

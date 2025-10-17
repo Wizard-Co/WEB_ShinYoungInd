@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--    설명: log 맵퍼.xml
+        작성일: 2024.11.20
+        개발자: KDH
+        ********************************************************
+        수정일자       수정자          요청자     요청내용
+        ********************************************************
+
+
+
+-->
+
+<mapper namespace="wizard.ShinYoungInd.wizLog.log.LogMapper">
+    <!--TODO Dto 생성-->
+    <!-- 에러 로그 저장 -->
+    <!--id 값과 call 값은 프로시저 이름으로 해야 됨-->
+    <select id="xp_iLog" statementType="CALLABLE" resultType="wizard.ShinYoungInd.wizLog.log.dto.LogDto" parameterType="map">
+        { call WizLog.dbo.xp_iLog(#{ComputerID, javaType=String, jdbcType=VARCHAR, mode=IN} <!--errID-->
+        ,#{UserID, javaType=String, jdbcType=VARCHAR, mode=IN} <!--컴퓨터이름-->
+        ,#{LogData,javaType=String, jdbcType=VARCHAR, mode=IN} <!--userID-->
+        )}
+    </select>
+
+
+    <select id="xp_iWorkLogWeb" statementType="CALLABLE" resultType="wizard.ShinYoungInd.wizLog.log.dto.LogDto" parameterType="map">
+        { call xp_iWorkLogWeb(#{sCompanyID, javaType=String, jdbcType=VARCHAR, mode=IN} <!--errID-->
+        ,#{sMenuID,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sWorkFlag,javaType=String, jdbcType=VARCHAR, mode=IN} <!--에러 파라미터-->
+        ,#{sWorkDate,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sWorkTime,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sUserID,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sWorkComputer,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sWorkComputerIP,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sWorkLog,javaType=String, jdbcType=VARCHAR, mode=IN}
+        ,#{sProgramID,javaType=String, jdbcType=VARCHAR, mode=IN}
+        )}
+    </select>
+
+    <select id="insert" statementType="CALLABLE" resultType="wizard.ShinYoungInd.wizLog.log.dto.Log" parameterType="wizard.ShinYoungInd.wizLog.log.dto.Log">
+        { call xp_iWorkLog_Web(
+                #{logID, javaType=INTEGER, jdbcType=INTEGER, mode=OUT}
+            ,   #{menuID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workFlag,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workDate,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workTime,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{userID,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{desktop,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{desktopIP,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{workLog,javaType=String, jdbcType=VARCHAR, mode=IN}
+               )}
+    </select>
+
+    <select id="update" statementType="CALLABLE" parameterType="wizard.ShinYoungInd.wizLog.log.dto.Log">
+        { call xp_uWorkLog_Web(
+                #{logID, javaType=INTEGER, jdbcType=INTEGER, mode=IN}
+            , #{endDate,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{endTime,javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{userID,javaType=String, jdbcType=VARCHAR, mode=IN}
+               )}
+    </select>
+
+</mapper>

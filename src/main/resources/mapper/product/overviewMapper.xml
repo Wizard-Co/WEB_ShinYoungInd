@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.product.overview.totalView.TotalMapper">
+
+<!--    생산집계조회-->
+    <select id="getProcessFromTotalResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_totalResult_process(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkLike, javaType=int, jdbcType=SMALLINT, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getArticleFromTotalResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_totalResult_article(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkLike, javaType=int, jdbcType=SMALLINT, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getWorkerFromTotalResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_totalResult_worker(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkLike, javaType=int, jdbcType=SMALLINT, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getDailyFromTotalResult" statementType="CALLABLE" resultType="map"
+            parameterType="map"> {
+        call xp_prd_totalResult_daily(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkLike, javaType=int, jdbcType=SMALLINT, mode=IN}
+             )
+        }
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,319 @@
+<!--
+  *packageName      : templates.pages.product
+  *fileName         : lot-detail.html
+  *author           : sooJeong
+  *date             : 2025-06-04
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2025-06-04      sooJeong            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/product/overview/lot-detail.js}"></script>
+</th:block>
+
+<!--content-->
+<section layout:fragment="content">
+    <head>
+        <style>
+            .panel-body-multi input[type="text"],
+            .panel-body-multi select.form-select {
+                width: 160px;
+            }
+
+            #rds {
+                background-color: aliceblue;
+                width: 15rem;
+            }
+
+            #rds .form-check-label {
+                font-weight: 400;
+                font-size: small;
+            }
+
+            table.dataTable thead span.dt-column-order::before,
+            table.dataTable thead span.dt-column-order::after {
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 로트별 상세 조회
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper">
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="chkDate" checked="true"
+                                   data-target="sDate, eDate">
+                            <label class="me-2" for="chkDate">
+                                생산일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                        </div>
+                    </div>
+                    <div class="btn-date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
+                        </label>
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 검색">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkArticle" data-target="txtArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <div>
+                            <div class="search-condition">
+                                <input id="chkLabelID" data-target="txtFromLabel, txtToLabel"
+                                       class="form-check-input" type="checkbox" value="Y">
+                                <label class="lbl-srh" for="chkLabelID">
+                                    자재로트, 하위제품 라벨
+                                </label>
+                            </div>
+                            <div class="flx">
+                                <input id="txtFromLabel"
+                                       class="form-control" type="text">
+                                ~
+                                <input id="txtToLabel"
+                                       class="form-control" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="rds" class="border p-0">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="rdLot" checked="true"
+                        value="1">
+                        <label class="form-check-label" for="rdLot">
+                            자재로트, 하위제품
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="rdProduct"
+                        value="2">
+                        <label class="form-check-label" for="rdProduct">
+                            제품
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="rdCustomLabel"
+                        value="3">
+                        <label class="form-check-label" for="rdCustomLabel">
+                            고객라벨
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        메인-->
+        <section class="flx gap-3">
+<!--            Label table-->
+            <div style="width: 30%" class="border">
+                <table id="tbLabel" class="striped cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th class="center comma">순번</th>
+                        <th class="left">라벨</th>
+                        <th class="left">품번</th>
+                        <th class="left">품명</th>
+                        <th class="center">생산일자</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div style="width: 50%">
+                <!--            작업정보 -->
+                <div class="border" style="height: 50%">
+                    <table id="tbWork" class="striped cell-border table-light-info" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th class="center comma">순번</th>
+                            <th class="center">일자</th>
+                            <th class="center">시간</th>
+                            <th class="center">공정</th>
+                            <th class="center">호기</th>
+                            <th class="right comma">수량</th>
+                            <th class="center">작업자</th>
+                            <th class="left">비고</th>
+                            <th class="center">필요 자격</th>
+                            <th class="left">불량 정보</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!--            하위결합-->
+                <div class="border" style="height: 50%">
+                    <table id="tbChild" class="striped cell-border table-light-info" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th class="center comma">순번</th>
+                            <th class="center">라벨ID</th>
+                            <th class="left">품번</th>
+                            <th class="left">품명</th>
+                            <th class="center">구분</th>
+                            <th class="center">일자</th>
+                            <th class="center">시간</th>
+                            <th class="right comma">수량</th>
+                            <th class="left">거래처</th>
+                            <th class="right comma">현 재고</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+<!--            form-->
+            <div style="width: 20%" class="border" id="form">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <label>라벨</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control input-auto"
+                            name="labelID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>품번</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="buyerArticleNo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>품명</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="article">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>규격</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="spec">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>4M번호</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="4MID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>수주번호</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="orderID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>관리번호</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="orderNo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>작업지시 번호</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="instID">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>고객라벨</label>
+                        </td>
+                        <td class="left">
+                            <input type="text" class="form-control"
+                            name="customBoxID">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <div class="modal fade" id="excelModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">테이블 선택</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success" data-table-id="tbLabel">📊 라벨 테이블</button>
+                            <button class="btn btn-outline-success" data-table-id="tbWork">📊 작업정보 테이블</button>
+                            <button class="btn btn-outline-success" data-table-id="tbChild">📊 하위결합 테이블</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </body>
+</section>
+</html>
+

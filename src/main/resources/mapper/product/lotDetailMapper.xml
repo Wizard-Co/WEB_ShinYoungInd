@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.product.overview.lotDetail.LotMapper">
+
+    <select id="getLabelList" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_sLabelIDList(
+            #{labelTypeID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkLabelID, javaType=int, jdbcType=SMALLINT, mode=IN}
+
+            , #{fromLabel, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{toLabel, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
+
+    <select id="getWorkList" statementType="CALLABLE" resultType="map"
+            parameterType="map"> {
+        call xp_prd_sLabelIDOneProcess(#{labelID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+    <select id="getChildList" statementType="CALLABLE" resultType="map"
+            parameterType="map"> {
+        call xp_prd_sLabelIDChild(#{labelID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+    <select id="getLabelDetail" statementType="CALLABLE" resultType="map"
+            parameterType="map"> {
+        call xp_trc_sLabelIDOneDetail(#{labelID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+    </select>
+
+</mapper>

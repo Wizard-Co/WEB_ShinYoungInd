@@ -1,0 +1,553 @@
+/**
+ 작성자:    김수정
+ 작성일:    2024-10-10
+ 내용:
+ **********************************************
+ 변경일자        변경자         요청자
+ **********************************************
+ **/
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700);
+
+html,
+body {
+    height: 100vh;
+    /*width: 100vw;*/
+    font-family: 'FontAwesome';
+    font-weight: 400;
+    font-size: 14px;
+    color: #555555;
+}
+
+a {
+    text-decoration: none;
+}
+
+body:before, body:after {
+    content: " ";
+    display: table;
+}
+
+body:after {
+    clear: both;
+}
+
+button {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    color: inherit;
+}
+
+main {
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+main .page-header {
+    padding: 20px 20px;
+    border-bottom: 0px solid;
+    font-size: 20px;
+    color: #818a91;
+    font-weight: 600;
+}
+
+main section {
+    width: 100%;
+}
+
+.flx {
+    display: flex;
+    flex-direction: row;
+}
+
+.flxCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    margin: 0.5rem;
+}
+
+.lbl-srh {
+    text-align: center;
+    margin-right: 1rem;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+.form-check-label {
+    margin-right: 0.5rem;
+}
+
+/*상단 메뉴-날짜 관련*/
+.btnDate {
+    float: right;
+}
+
+#sDate-srh,
+#eDate-srh {
+    width: 115px;
+}
+
+#searchConditionWrapper {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #e2e2e2;
+    box-shadow: none;
+    margin-bottom: 20px;
+    align-items: center;
+    height: 73px;
+}
+#searchConditionWrapper > :first-child {
+    margin-left: 1rem;
+}
+
+#searchConditionWrapper .btn {
+    min-width: 55px;
+    --bs-btn-padding-y: 0.15rem;
+}
+
+#searchConditionWrapper .btn-date {
+    text-align: end;
+    margin-top: 0.3rem;
+}
+
+#searchConditionWrapper .panel-body input[type="checkbox"] {
+    vertical-align: text-bottom;
+}
+
+
+/*input*/
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: #555555;
+    -webkit-box-shadow: transparent;
+    box-shadow: transparent;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.input-auto,
+.input-auto:focus{
+    background-color: #c2fdc3;
+}
+
+.input-necessary,
+.input-necessary:focus {
+    background-color: #fff2d2;
+}
+
+.input-group {
+    height: 40px;
+    margin-bottom: 2px;
+}
+
+.input-cbo {
+    flex: 1 1 auto;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.inputPf {
+    cursor: cell;
+}
+
+.label-file {
+    background-color: #F8F9FA;
+    width: 9rem;
+    border-right: 0px transparent;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.label-file:hover {
+    background-color: #dee2e6;
+}
+
+.label-s {
+    font-size: 10px;
+}
+
+/*정렬*/
+.right {
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.v-middle {
+    vertical-align: middle;
+}
+
+.date {
+    border-right: 1px solid #dee2e6;
+    padding-right: 1rem;
+    margin-right: 1rem;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.search-area {
+    width: 75%;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.search-condition {
+    display: flex;
+    flex-direction: row;
+    margin-right: 30px;
+    align-items: center;
+}
+
+.panel-body {
+    padding: 20px;
+}
+
+.panel-body-multi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    justify-content: center;
+}
+
+.panel-body-multi .lbl-srh:not(input[type="checkbox"]) {
+    width: 60px;
+    font-size: small;
+    text-align: left;
+}
+
+.search-condition .form-control,
+.search-condition select.form-select{
+    padding: 3px 3px 3px 1rem;
+    line-height: inherit;
+    width: 160px;
+}
+
+.form-notice {
+    color: #cf9b42;
+    letter-spacing: -0.2px;
+}
+/*form 관련 css */
+#addForm label {
+    white-space: nowrap;
+    font-size: small;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.w50px {
+    width: 50px;
+}
+
+.w100px {
+    width: 100px;
+}
+
+.w150px {
+    width: 150px;
+}
+
+
+.w200px {
+    width: 200px;
+}
+
+.w250px {
+    width: 250px;
+}
+
+.m-r-2 {
+    margin-right: 15px !important;
+}
+
+.m-l-2 {
+    margin-left: 15px !important;
+}
+
+.m-r-05 {
+    margin-right: 5px;
+}
+
+.m-r-4 {
+    margin-right: 30px !important;
+}
+
+@media (min-width: 768px) {
+    .btn,
+    button,
+    a {
+        outline: none !important;
+    }
+}
+
+.btn:hover {
+    animation: jelly 0.5s;
+}
+
+.btn {
+    min-width: 70px;
+    border-radius: 30px;
+}
+
+.btn-info {
+    color: #fff;
+    background: #59c4e4;
+    border-color: #59c4e4;
+}
+
+.btn-success {
+    color: #fff;
+    background: #78bd5d;
+    border-color: #78bd5d;
+}
+
+.btn-print {
+    color: #444;
+    background: #ececec;
+    border-color: #ececec;
+}
+
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+    color: white;
+    background-color: darkgray;
+    border-color: var(--bs-btn-active-border-color);
+}
+
+.panel {
+    display: block;
+    border: 1px solid #e2e2e2;
+    box-shadow: none;
+    margin-bottom: 20px;
+}
+
+.panel > hr {
+    margin: 0;
+}
+
+label,
+optgroup {
+    font-weight: 600;
+}
+
+.form-control {
+    box-shadow: none !important;
+}
+
+.border {
+    border: solid 1px #dee2e6;
+    padding: 0.5rem;
+}
+
+.page-header h1,
+.page-header h2,
+.page-header h3,
+.page-header h4,
+.page-header h5,
+.page-header h6 {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    outline: none;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1.light, h2.light, h3.light, h4.light, h5.light, h6.light {
+    font-weight: 300;
+}
+
+.display-inline-block {
+    display: inline-block !important;
+}
+
+.display-none {
+    display: none;
+}
+
+/*loading-form style*/
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    transition: all 2s;
+}
+
+#loading button {
+    border-radius: 30px;
+    background-color: rgba(13, 110, 253, 0.5);
+    backdrop-filter: blur(3px);
+    color: #fff;
+    padding: 1rem;
+}
+
+/*animation*/
+@keyframes jelly {
+    25% {
+        transform: scale(0.9, 1.1);
+    }
+    50% {
+        transform: scale(1.1, 0.9);
+    }
+    75% {
+        transform: scale(0.95, 1.05);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+
+}
+
+/*table style*/
+table label:not(:is(#divImage table label)) {
+    vertical-align: top;
+    margin-left: 0.5rem;
+}
+
+table.dataTable {
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+table.dataTable > tbody > tr:hover {
+    background-color: #f5f5f5;
+}
+
+table.dataTable.cell-border > tbody > tr > td {
+    /*border-color: #e8e8e8;*/
+}
+
+/*table.dataTable > tbody > tr > td {*/
+/*    padding: 4px 8px;*/
+/*}*/
+
+table.dataTable > tbody > tr.selected > * {
+    box-shadow: inset 0 0 0 9999px #f5f5f5;
+!important;
+    color: #555555;
+!important;
+}
+
+.table {
+    margin-top: 0.5rem;
+}
+table.dataTable thead tr th,
+.table thead > tr > th{
+    text-align: center;
+    border: 1px solid #e8e8e8;
+    font-weight: 600;
+    font-size: small;
+}
+
+table.dataTable > thead > tr > th,
+.table > thead > tr > th{
+    padding: 4px;
+}
+
+table.dataTable > tbody > tr > td,
+.table:not(#addForm table) > tbody > tr > td {
+    padding: 6px;
+}
+
+
+table.dataTable thead {
+    border-color: #bce8f1;
+
+}
+
+.table-light-info thead,
+.table-light-info thead tr,
+.table-light-info thead th {
+    background: #d9edf7;
+    border-color: #bce8f1 !important;
+    color: #3a87ad;
+}
+
+
+
+/*popUp style*/
+#addPop {
+    width: 100%;
+    font-size: small;
+}
+
+#addPop .page-header {
+    margin: 11px 0 0 10px;
+    padding-left: 11px;
+}
+
+#addPop .page-header h3 span {
+    font-size: 16px;
+}
+
+#addPop .icon {
+    float: right;
+    margin-top: 11px;
+}
+
+#addPop #main {
+    padding: 1rem;
+}
+
+#addPop .form-notice {
+    color: #cf9b42;
+    font-size: 12px;
+    letter-spacing: -0.2px;
+}
+
+#addPop .form-result {
+    margin-left: 1rem;
+    letter-spacing: -0.2px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+.caption {
+    font-family: var(--bs-font-monospace) !important;
+    font-size: small;
+}
+
+/* 집계 공통 스타일 */
+.total {
+    background-color: #aca8a8 !important;
+    font-weight: bold !important;
+}
