@@ -33,6 +33,7 @@ const tbLabel = new DataTable('#tbLabel', {
 })
 const tbWork = new DataTable('#tbWork', {
     searching: false,
+    paging: false,
     buttons: [{
         extend: 'excel',
         filename: '작업정보',
@@ -58,6 +59,7 @@ const tbWork = new DataTable('#tbWork', {
 })
 const tbChild = new DataTable('#tbChild', {
     searching: false,
+    paging: false,
     buttons: [{
         extend: 'excel',
         filename: '하위결합',

@@ -37,6 +37,7 @@ public class Overview {
 
     private long workQty;
     private long ctrlQty;
+    private String defect;
     private long defectQty;
     private double defectRate;
 
@@ -74,6 +75,19 @@ public class Overview {
     private int qtyPerBox;
     private double unitPrice;
     private double amount;
+
+    // 신영 추가
+    private String unlavelDir;
+    private String printThod;
+    private double needleSize;
+    private double needleDia;
+    private int needleQty;
+    private String colorCount;
+    private String colorCode;
+    private String cylinderSize;
+    private String remark;
+    private String spec;
+    private String startSaveLabelID;
 
 
 }

@@ -21,7 +21,7 @@ public class WorkLog {
     private String workDate;
     private String workTime;
     private String process;
-    private String machine;
+    private String machineNo;
 
     private int workQty;
     private int totalWorkQty;

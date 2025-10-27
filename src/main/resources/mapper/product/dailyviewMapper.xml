@@ -33,4 +33,29 @@
         call xp_prd_sWKResultDaily_Defect(#{jobID, javaType=BigDecimal, jdbcType=DECIMAL, mode=IN})}
     </select>
 
+    <select id="getDrillingResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_prd_drillingResult_S(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkArticle, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkProcess, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkMachine, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{machineID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkWorker, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{worker, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkJobType, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{JobTypeID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{chkDefect, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{chkSpec, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{spec, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )
+        }
+    </select>
 </mapper>

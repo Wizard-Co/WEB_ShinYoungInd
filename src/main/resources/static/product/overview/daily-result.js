@@ -29,17 +29,27 @@ const mainTb = new DataTable('#tbMain', {
         {data: "process"},
         {data: "orderID"},
         {data: "buyerArticleNo"},
-        {data: "article"},
 
+        {data: "article"},
+        {data: "spec"},
         {data: "custom"},
         {data: "orderQty"},
         {data: "workStartTime"},
         {data: "workEndTime"},
-        {data: "workQty"},
 
+        {data: "workQty"},
         {data: "worker"},
         {data: "jobType"},
         {data: "noWorkType"},
+        {data: "startSaveLabelID"},
+
+        {data: "colorCount"},
+        {data: "colorCode"},
+        {data: "cylinderSize"},
+        {data: "unlavelDir"},
+        {data: "printThod"},
+
+        {data: "remark"},
     ],
     rowCallback: function (row, data, index){
         if(data.cls == 2){
