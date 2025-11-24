@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.order.overview.outwareDetail.OutwareDetailMapper">
+
+    <select id="getOutwareResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.order.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Outware_sOutwareProduct(#{ChkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{SDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{EDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkCustomID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{CustomID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkOrderID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{OrderID, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+</mapper>
