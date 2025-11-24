@@ -1,0 +1,208 @@
+<!--
+  *packageName      : templates.pages.order
+  *fileName         : outwareDetail.html
+  *author           : gitcat87
+  *date             : 2025-11-24
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2025-11-24      gitcat87            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script type="module" src="/order/outwareDetail/inout-columns.js"></script>
+    <script type="module" th:src="@{/order/outwareDetail/inout.js}"></script>
+</th:block>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/order/outwareDetail/outwareDetail.css}" />
+</th:block>
+
+<section layout:fragment="content">
+    <head>
+        <style>
+            .panel-body-multi input[type="text"],
+            .panel-body-multi select.form-select {
+                width: 160px;
+            }
+        </style>
+    </head>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 제품 출하 집계 조회
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper">
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="chkDate" checked="true"
+                                   data-target="sDate, eDate">
+                            <label class="me-2" for="chkDate">
+                                지시일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                        </div>
+                    </div>
+                    <div class="btn-date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+            </div>
+            <!--검색조건-->
+            <div class="flx search-area">
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkCustom" data-target="txtCustom"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustom">
+                            거래처
+                        </label>
+                        <input id="txtCustom"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkArticle" data-target="txtArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="품명 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkOrderNo" data-target="txtOrderNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkOrderNo">
+                            오더번호
+                        </label>
+                        <input id="txtOrderNo"
+                               type="text" class="form-control" placeholder="오더번호 찾기">
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <div class="search-condition">
+                            <input id="rbnOrderNo" data-target="rbnOrderNo" name="ordType"
+                                   class="form-check-input" type="radio" value="Y">
+                            <label class="lbl-srh" for="rbnOrderNo">
+                                OrderNo
+                            </label>
+                        </div>
+                        <div class="search-condition">
+                            <input id="rbnOrderID" data-target="rbnOrderID" name="ordType" checked
+                                   class="form-check-input" type="radio" value="Y">
+                            <label class="lbl-srh" for="rbnOrderID">
+                                관리번호
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="flex-direction: row; display: flex">
+            <section class="border" style="width: 70%">
+                <div>
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="periodTab" data-type="period"
+                                    data-bs-toggle="tab" data-bs-target="#nav-period"
+                                    type="button" role="tab" aria-controls="nav-period" aria-selected="true">기간 집계
+                            </button>
+                            <button class="nav-link" id="dailyTab" data-type="daily"
+                                    data-bs-toggle="tab" data-bs-target="#nav-daily"
+                                    type="button" role="tab" aria-controls="nav-daily" aria-selected="false">일일 집계
+                            </button>
+                            <button class="nav-link" id="monthVTab" data-type="monthV"
+                                    data-bs-toggle="tab" data-bs-target="#nav-monthV"
+                                    type="button" role="tab" aria-controls="nav-monthV" aria-selected="false">월별집계(세로)
+                            </button>
+                            <button class="nav-link" id="monthHTab" data-type="monthH"
+                                    data-bs-toggle="tab" data-bs-target="#nav-monthH"
+                                    type="button" role="tab" aria-controls="nav-monthH" aria-selected="false">월별집계(가로)
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-period" role="tabpanel" aria-labelledby="periodTab"
+                             tabindex="0">
+                            <table id="periodTb" class="striped cell-border table-light-info" style="width:100%">
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-daily" role="tabpanel" aria-labelledby="dailyTab" tabindex="0">
+                            <table id="dailyTb" class="striped cell-border table-light-info" style="width:100%">
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-monthV" role="tabpanel" aria-labelledby="monthVTab" tabindex="0">
+                            <table id="monthVTb" class="striped cell-border table-light-info" style="width:100%">
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="nav-monthH" role="tabpanel" aria-labelledby="monthHTab" tabindex="0">
+                            <table id="monthHTb" class="striped cell-border table-light-info" style="width:100%">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div style="width: 30%"  class="border">
+                <label class="lbl-srh stats-container"  >[합계 데이터]</label>
+                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th class="center">출고건수</th>
+                        <th class="center">출고수량</th>
+                    </tr>
+                    </thead>
+                </table>
+                <table id="tbSubMonth" class="striped cell-border table-light-info" style="width:100%;">
+                    <thead>
+                    <tr>
+                        <th colspan="2" class="center">합계</th>
+                        <th colspan="2" class="center" id="month0Header">기준월</th>
+                        <th colspan="2" class="center" id="month1Header">기준+1월</th>
+                        <th colspan="2" class="center" id="month2Header">기준+2월</th>
+                    </tr>
+                    <tr>
+                        <th class="center">건수</th>
+                        <th class="center">수량</th>
+                        <th class="center">건수</th>
+                        <th class="center">수량</th>
+                        <th class="center">건수</th>
+                        <th class="center">수량</th>
+                        <th class="center">건수</th>
+                        <th class="center">수량</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </main>
+</section>
+</html>

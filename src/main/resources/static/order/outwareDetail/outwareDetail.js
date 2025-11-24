@@ -69,7 +69,7 @@ const subTb = new DataTable('#tbSub', {
 
 
 
-document.getElementById('btnSearch').addEventListener('click', Search)
+document.getElementById('btnSearch').addEventListener('click', search)
 document.getElementById('btnExcel').addEventListener("click", function () {
     const dtExcel = document.querySelector('.dt-button.buttons-excel')
     dtExcel.click();
@@ -92,7 +92,7 @@ function returnRbnInt(){
     return 0
 }
 
-async function Search() {
+async function search() {
     let param = {
         ChkDate: getChecked('chkDate') ? 1 : 0,
         SDate: document.getElementById('sDate').value.replaceAll('-',''),

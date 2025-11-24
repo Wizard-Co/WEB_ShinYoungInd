@@ -12,6 +12,7 @@ public class Overview {
 
     //order
     private int Depth;
+    private int Gbn;
     private String OrderID;
     private String CustomID;
     private String KCustom;
@@ -88,11 +89,27 @@ public class Overview {
     private BigDecimal LossRate;
     private long LossQty;
     private long OutRoll;
+    private long Roll;
     private long OutQty;
     private long OutRealQty;
+    private long TotQty;
+    private long TotalRoll;
+    private long TotalQty;
+    private long TotalAmount;
+    private long BaseMonthRoll;
+    private long BaseMonthQty;
+    private long BaseMonthAmount;
+    private long Add1MonthRoll;
+    private long Add1MonthQty;
+    private long Add1MonthAmount;
+    private long Add2MonthRoll;
+    private long Add2MonthQty;
+    private long Add2MonthAmount;
+    private BigDecimal CustomRate;
     private BigDecimal OutWeight;
     private BigDecimal OutRealWeight;
     private String OutDate;
+    private String IODate;
     private String Vat_Ind_YN;
     private long Amount;
     private long VatAmount;
