@@ -17,6 +17,7 @@ public class Overview {
     private String OrderID;
     private String CustomID;
     private String KCustom;
+    private String CustomName;
     private String CompanyID;
     private String BuyerID;
     private String InCustomID;
@@ -125,6 +126,7 @@ public class Overview {
     private String Memo;
     private String FromLocID;
     private String TOLocID;
+    private String LocName;
     private String MoveYN;
     private String ProdAutoStuffinYN;
     private String WorkJobID;
@@ -142,6 +144,9 @@ public class Overview {
     private long StuffQty;
     private long InitStockQty;
     private long StockQty;
+    private String REQ_ID;
+    private String ReqName;
+    private String InOutClssName;
     private long NeedstockQty;
     private long OverQty;
     private BigDecimal Weight;

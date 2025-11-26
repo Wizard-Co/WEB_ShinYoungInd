@@ -16,13 +16,13 @@ public class OutwareDetailController {
     private final OutwareDetailService service;
 
     @GetMapping("")
-    public String dailyResult(){
+    public String goPage(){
         return "pages/order/overview/outwareDetail";
     }
 
     @PostMapping(value = "/search")
     @ResponseBody
-    public List<Overview> getOutwareResult(@RequestBody Map<String, Object> param) {
+    public List<Overview> search(@RequestBody Map<String, Object> param) {
         return service.getOutwareResult(param);
     }
 }

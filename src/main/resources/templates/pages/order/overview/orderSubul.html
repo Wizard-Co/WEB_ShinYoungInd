@@ -14,7 +14,7 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/order/orderDetail/orderStock.js}"></script>
+    <script th:src="@{/order/orderDetail/orderSubul.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/order/orderDetail/orderDetail.css}" />
@@ -34,7 +34,7 @@
     <main>
         <div class="menu">
             <div class="page-header">
-                ■ 재고 현황 조회
+                ■ 수불 내역 조회
             </div>
             <div class="icon">
                 <div class="flx">
@@ -74,7 +74,7 @@
             </div>
             <!--            검색조건-->
             <div class="flx search-area">
-                <div class="panel-body-multi">
+                <div class="panel-body-multi m-10p">
                     <div class="search-condition">
                         <input id="chkCustom" data-target="txtCustom"
                                class="form-check-input" type="checkbox" value="Y">
@@ -93,8 +93,27 @@
                         <input id="txtArticle"
                                type="text" class="form-control" placeholder="품명 찾기">
                     </div>
+                    <div class="search-condition">
+                        <input id="chkReqID" data-target="txtReqID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkReqID">
+                            관리번호
+                        </label>
+                        <input id="txtReqID"
+                               type="text" class="form-control" placeholder="관리번호 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkOrderID" data-target="txtOrderID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkOrderID">
+                            발주번호
+                        </label>
+                        <input id="txtOrderID"
+                               type="text" class="form-control" placeholder="발주번호 찾기">
+                    </div>
                 </div>
-                <div class="panel-body-multi">
+
+                <div class="panel-body-multi v-top m-10p">
                     <div class="search-condition">
                         <input id="chkSuppleType" data-target="cboSuppleType"
                                class="form-check-input" type="checkbox" value="Y">
@@ -122,7 +141,9 @@
                         </select>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: row; margin: 5px; background-color: lightgray" class="border">
+
+
+                <div style="display: flex; flex-direction: row; margin: 5px; background-color: lightgray" class="border v-top m-10p">
                     <div class="panel-body-multi">
                         <div class="search-condition">
                             <input id="chkIn_NotApprovedIncloud" checked
@@ -141,10 +162,10 @@
                     </div>
                     <div class="panel-body-multi">
                         <div class="search-condition">
-                            <input id="chkOptimumStockBelowSee"
+                            <input id="chkHideInOutReasonNumber" checked
                                    class="form-check-input" type="checkbox" value="Y">
-                            <label class="lbl-srh" for="chkOptimumStockBelowSee">
-                                적정재고량 미달건 조회
+                            <label class="lbl-srh" for="chkHideInOutReasonNumber">
+                                입출고근거번호 숨김
                             </label>
                         </div>
                         <div class="search-condition">
@@ -166,15 +187,20 @@
                         <th class="center comma">순번</th>
                         <th class="left">품명</th>
                         <th class="left">Spec</th>
-                        <th class="right comma">이월</th>
-                        <th class="right comma">입고</th>
-                        <th class="right comma">출고</th>
+                        <th class="right">일자</th>
+                        <th class="right">창고</th>
 
+                        <th class="left">입고발주번호</th>
+                        <th class="right comma">입고수량</th>
+                        <th class="left">출고오더번호</th>
+                        <th class="right comma">출고수량></th>
+
+
+                        <th class="center" >입출고구분</th>
                         <th class="center" >단위</th>
-                        <th class="right comma" >재고량</th>
-                        <th class="right comma">적정재고량</th>
-                        <th class="right comma">과부족</th>
-                        <th class="right">재고율</th>
+                        <th class="center">입출고처</th>
+                        <th class="right comma">재고량</th>
+                        <th class="left">비고</th>
 
                     </tr>
                     </thead>
@@ -184,7 +210,6 @@
                 <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
                     <thead>
                     <tr>
-                        <th class="center comma">이월</th>
                         <th class="center comma">입고</th>
                         <th class="center comma">출고</th>
                         <th class="center comma">재고</th>

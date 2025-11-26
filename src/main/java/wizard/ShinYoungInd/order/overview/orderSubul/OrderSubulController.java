@@ -1,10 +1,10 @@
-package wizard.ShinYoungInd.order.overview.orderStock;
+package wizard.ShinYoungInd.order.overview.orderSubul;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import wizard.ShinYoungInd.common.CMService;
-import org.springframework.ui.Model;
 import wizard.ShinYoungInd.common.dto.CMCode;
 import wizard.ShinYoungInd.order.overview.DTO.Overview;
 
@@ -13,10 +13,10 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/order/result/orderStock")
-public class OrderStockController {
+@RequestMapping("/order/result/orderSubul")
+public class OrderSubulController {
 
-    private final OrderStockService service;
+    private final OrderSubulService service;
     private final CMService cmService;
 
     @ModelAttribute
@@ -28,17 +28,15 @@ public class OrderStockController {
         model.addAttribute("cboLocID", cboLocID);
     }
 
-
     @GetMapping("")
     public String goPage(){
-        return "pages/order/overview/orderStock";
+        return "pages/order/overview/orderSubul";
     }
 
     @PostMapping(value = "/search")
     @ResponseBody
     public List<Overview> search(@RequestBody Map<String, Object> param) {
-//        return service.getOrderStockData(param);
-        List<Overview> result = service.getOrderStockData(param);  // ← 여기 중단점
-        return result;
+        return service.getOrderSubulData(param);
     }
+
 }

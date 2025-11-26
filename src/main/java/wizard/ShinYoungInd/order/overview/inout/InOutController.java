@@ -16,7 +16,7 @@ public class InOutController {
     private final InOutService service;
 
     @GetMapping("")
-    public String dailyResult(){
+    public String goPage(){
         return "pages/order/overview/inout";
     }
 
