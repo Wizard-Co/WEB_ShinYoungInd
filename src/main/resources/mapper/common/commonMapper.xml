@@ -4,10 +4,11 @@
 <mapper namespace="wizard.ShinYoungInd.common.CMMapper">
 
     <select id="getCmCode" resultType="wizard.ShinYoungInd.common.dto.CMCode" parameterType="String">
-        select codeID
-             , codeName
+        select code_ID
+             , code_Name
         from cm_Code
-        where codeTypeID = #{codeTypeID}
+        where Code_GBN = #{codeTypeID}
+        and Use_YN = 'Y'
         order by seq
     </select>
 

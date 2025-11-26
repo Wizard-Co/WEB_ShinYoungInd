@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.order.overview.orderStock.OrderStockMapper">
+    <select id="getOrderStockData"   statementType="CALLABLE"   resultType="wizard.ShinYoungInd.order.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Subul_sStockList(
+                #{nChkDate, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sSDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sEDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkCustom, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sCustomID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkOrder, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sOrder, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ArticleGrpID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sFromLocID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sToLocID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkOutClss, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sOutClss, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkInClss, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sInClss, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkReqID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sReqID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{incNotApprovalYN, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{incAutoInOutYN, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sArticleIDS, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sMissSafelyStockQty, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sProductYN, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nMainItem, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{nCustomItem, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{nSupplyType, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{sSupplyType, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{JaturiNoYN, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+</mapper>

@@ -101,7 +101,6 @@ document.querySelectorAll('#nav-tab button').forEach(tab => {
 
         if (type.includes('month')) {
             if(!chkDate.checked){
-                console.log("들어옴")
                 chkDate.checked = true;
             }
             chkDate.disabled = true;
@@ -247,7 +246,7 @@ function createMultiHeaderTable(tableID, select, dataSet, type, multiHeader) {
             );
             filtered.cls = a.cls ?? null;
             return filtered;
-        });
+    });
 
     // DataTable 생성
     table[type] = new DataTable(tableID, {
@@ -303,7 +302,6 @@ function createMultiHeaderTable(tableID, select, dataSet, type, multiHeader) {
 }
 
 function createNormalTable(tableID, select, dataSet, type) {
-    // 기존 코드 그대로...
     let col = Object.entries(select).map(([key, meta]) => {
         const classList = meta.className?.split(" ") || [];
         const hasComma = classList.includes("comma");

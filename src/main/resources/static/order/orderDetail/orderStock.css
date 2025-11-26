@@ -1,0 +1,19 @@
+#searchConditionWrapper {
+    height: auto;
+    min-height: 73px;
+}
+
+.search-area {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.panel-body-multi .lbl-srh:not(input[type="checkbox"]) {
+    min-width: 80px;
+    width: auto;
+    font-size: small;
+    text-align: left;
+}
+
+

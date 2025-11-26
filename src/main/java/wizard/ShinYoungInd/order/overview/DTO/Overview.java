@@ -13,6 +13,7 @@ public class Overview {
     //order
     private int Depth;
     private int Gbn;
+    private String cls;
     private String OrderID;
     private String CustomID;
     private String KCustom;
@@ -139,7 +140,12 @@ public class Overview {
     private String Gubun;
     private String DefectID;
     private long StuffQty;
+    private long InitStockQty;
+    private long StockQty;
+    private long NeedstockQty;
+    private long OverQty;
     private BigDecimal Weight;
+    private BigDecimal StockRate;
     private long nOutQty;
     private String StuffInID;
     private int StuffInsubSeq;
