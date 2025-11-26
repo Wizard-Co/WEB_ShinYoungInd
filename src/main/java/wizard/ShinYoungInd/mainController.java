@@ -29,8 +29,8 @@ public class mainController {
         //Person loginUser = loginManager.getLoginUser();
         loginManager.setLoginUser("admin");
 
-        //return "pages/order/overview/orderStock";
-        return "redirect:/order/result/orderStock";
+        return "pages/kpi";
+        //return "redirect:/order/result/orderSubul";
 //
 //        if (loginUser != null) {
 //            return "pages/infoMgmt/infoSearch/infoSearch";
