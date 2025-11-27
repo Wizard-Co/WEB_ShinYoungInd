@@ -12,8 +12,12 @@
     </select>
 
     <select id="getProcessSub" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.process.Process"
-            parameterType="string"> {
-        call xp_prd_sProcessSub(#{processID, javaType=String, jdbcType=VARCHAR, mode=IN})}
+            parameterType="map"> {
+        call xp_prd_sProcessSub(#{processID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            ,#{chkArticleGrpID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            ,#{articleGrpID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            ,#{useClss, javaType=String, jdbcType=VARCHAR, mode=IN}
+             )}
     </select>
 
     <select id="saveProcess" statementType="CALLABLE"

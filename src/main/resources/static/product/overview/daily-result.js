@@ -99,21 +99,22 @@ async function Search() {
         customID: document.getElementById('txtCustom').value,
 
         chkArticle: getChecked('chkArticle') ? 1 : 0,
-        articleID: document.getElementById('txtArticle').value,
+        articleID: document.getElementById('txtArticle').dataset.id,
         chkBuyerArticleNo: getChecked('chkBuyerArticleNo') ? 1 : 0,
-        buyerArticleNo: document.getElementById('txtBuyerArticleNo').value,
+        buyerArticleNo: document.getElementById('txtBuyerArticleNo').dataset.id,
 
         chkProcess: getChecked('chkProcess') ? 1 : 0,
-        processID: document.getElementById('cboProcess').value,
+        processID: getCombo('cboProcess').value,
         chkMachine: getChecked('chkMachine') ? 1 : 0,
-        machineID: document.getElementById('cboMachine').value,
+        machineID: getCombo('cboMachine').value,
 
         chkWorker: getChecked('chkWorker') ? 1 : 0,
-        worker: document.getElementById('txtWorker').value,
+        worker: document.getElementById('txtWorker').dataset.id,
         chkJobType: getChecked('chkJobType') ? 1 : 0,
-        jobTypeID: document.getElementById('cboJobType').value,
+        jobTypeID: getCombo('cboJobType').value,
         chkDefect: getChecked('chkDefect') ? 1 : 0,
     }
+
 
     loading.visible();
 

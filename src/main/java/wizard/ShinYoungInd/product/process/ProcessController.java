@@ -57,8 +57,8 @@ public class ProcessController {
 
     @GetMapping("/detail")
     @ResponseBody
-    public List<Process> searchSub(@RequestParam String processID) {
-        List<Process> data = service.getProcessSub(processID);
+    public List<Process> searchSub(@RequestParam Map<String, Object> param) {
+        List<Process> data = service.getProcessSub(param);
         return data;
     }
 

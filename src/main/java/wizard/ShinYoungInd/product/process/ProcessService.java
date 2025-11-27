@@ -28,9 +28,11 @@ public class ProcessService {
         return mapper.getProcess(param);
     }
 
-    List<Process> getProcessSub(String parentID) {
-        return mapper.getProcessSub(parentID);
+    //공정 소분류 가져오기
+    public List<Process> getProcessSub(Map<String, Object> param) {
+        return mapper.getProcessSub(param);
     }
+
 
     public void saveProcess(Process process) throws Exception {
         if (process.processID == null || process.processID.isBlank()) return;

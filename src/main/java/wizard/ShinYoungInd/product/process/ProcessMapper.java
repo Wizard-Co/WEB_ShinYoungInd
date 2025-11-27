@@ -18,7 +18,7 @@ import java.util.Map;
 @Mapper
 public interface ProcessMapper {
     List<Process> getProcess(Map<String, Object> param);
-    List<Process> getProcessSub(String parentID);
+    List<Process> getProcessSub(Map<String, Object> param);
     void saveProcess(Process process);
     void updateProcess(Process process);
     void deleteProcess(String processID, String lastUpdateUserID);
