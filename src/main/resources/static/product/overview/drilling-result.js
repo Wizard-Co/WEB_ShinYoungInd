@@ -42,7 +42,7 @@ const mainTb = new DataTable('#tbMain', {
         {data: "labelID"},
         {data: "startSaveLabelID"},
 
-        {data: "needleSize"},
+        {data: "perforSize"},
         {data: "needleDia"},
         {data: "needleQty"},
         {data: "jobType"},

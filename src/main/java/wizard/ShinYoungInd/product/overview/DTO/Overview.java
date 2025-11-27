@@ -79,7 +79,7 @@ public class Overview {
     // 신영 추가
     private String unlavelDir;
     private String printThod;
-    private double needleSize;
+    private double perforSize;
     private double needleDia;
     private int needleQty;
     private String colorCount;
@@ -88,6 +88,5 @@ public class Overview {
     private String remark;
     private String spec;
     private String startSaveLabelID;
-
 
 }
