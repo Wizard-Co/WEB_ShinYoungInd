@@ -1,12 +1,12 @@
 <!--
-  *packageName      : templates.pages.order
-  *fileName         : outwareDetail.html
+  *packageName      : templates.pages.qul
+  *fileName         : dateProd.html
   *author           : gitcat87
-  *date             : 2025-11-24
+  *date             : 2025-11-27
   *======================================================
   *DATE             AUTHOR               NOTE
   *------------------------------------------------------
-  * 2025-11-24      gitcat87            최초 생성
+  * 2025-11-27      gitcat87            최초 생성
  -->
 
 <html xmlns:th="http://www.thymeleaf.org"
@@ -14,10 +14,10 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/order/overview/outwareDetail/outwareDetail.js}"></script>
+    <script th:src="@{/qul/overview/dateProd.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/order/overview/outwareDetail/outwareDetail.css}" />
+    <link rel="stylesheet" th:href="@{/qul/qul.css}" />
 </th:block>
 
 <section layout:fragment="content">
@@ -33,7 +33,7 @@
     <main>
         <div class="menu">
             <div class="page-header">
-                ■ 제품 출하 실적 조회
+                ■ 생산 불량 일보
             </div>
             <div class="icon">
                 <div class="flx">
@@ -43,7 +43,6 @@
             </div>
         </div>
         <div id="searchConditionWrapper">
-            <!--            지시일자-->
             <div class="date">
                 <div>
                     <div class="search-condition mx-0">
@@ -75,13 +74,13 @@
             <div class="flx search-area">
                 <div class="panel-body-multi">
                     <div class="search-condition">
-                        <input id="chkCustom" data-target="txtCustom"
+                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
                                class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkCustom">
-                            거래처
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
                         </label>
-                        <input id="txtCustom"
-                               type="text" class="form-control" placeholder="거래처 찾기">
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 찾기">
                     </div>
                     <div class="search-condition">
                         <input id="chkArticle" data-target="txtArticle"
@@ -95,29 +94,39 @@
                 </div>
                 <div class="panel-body-multi">
                     <div class="search-condition">
-                        <input id="chkOrderNo" data-target="txtOrderNo"
+                        <input id="chkProcessID" data-target="cboProcessID"
                                class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkOrderNo">
-                            오더번호
+                        <label class="lbl-srh" for="chkProcessID">
+                            공정명
                         </label>
-                        <input id="txtOrderNo"
-                               type="text" class="form-control" placeholder="오더번호 찾기">
+                        <select id="cboProcessID" name="processID" class="form-select w150px">
+                            <option th:each="item : ${cboProcessID}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
                     </div>
-                    <div style="display: flex; flex-direction: row">
-                        <div class="search-condition">
-                            <input id="rbnOrderNo" data-target="rbnOrderNo" name="ordType"
-                                   class="form-check-input" type="radio" value="Y">
-                            <label class="lbl-srh" for="rbnOrderNo">
-                                OrderNo
-                            </label>
-                        </div>
-                        <div class="search-condition">
-                            <input id="rbnOrderID" data-target="rbnOrderID" name="ordType" checked
-                                   class="form-check-input" type="radio" value="Y">
-                            <label class="lbl-srh" for="rbnOrderID">
-                                관리번호
-                            </label>
-                        </div>
+                    <div class="search-condition">
+                        <input id="chkMachineID" data-target="cboMachineID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkMachineID">
+                            호기
+                        </label>
+                        <select id="cboMachineID" name="machineID" class="form-select w150px">
+                            <option th:each="item : ${cboMachineID}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body-multi v-top">
+                    <div class="search-condition">
+                        <input id="chkExceptInitialDefect" data-target="chkExceptInitialDefect"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkExceptInitialDefect">
+                            초도 불량건 제외
+                        </label>
                     </div>
                 </div>
             </div>
@@ -125,9 +134,9 @@
         <section class="flx gap-3">
             <div id="main-table" class="border" style="width: 80%; overflow-x: auto" ></div>
             <!-- 합계 출력 영역 -->
-                <div style="width: 20%" class="border">
-                    <div id="sub-table" style="height: 100%; overflow-x:auto;"></div>
-                </div>
+            <div style="width: 20%" class="border">
+                <div id="sub-table" style="height: 100%; overflow-x:auto;"></div>
+            </div>
         </section>
 
     </main>

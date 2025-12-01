@@ -14,10 +14,10 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/order/orderDetail/orderStock.js}"></script>
+    <script th:src="@{/order/overview/orderDetail/orderStock.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/order/orderDetail/orderDetail.css}" />
+    <link rel="stylesheet" th:href="@{/order/overview/orderDetail/orderDetail.css}" />
 </th:block>
 
 
@@ -159,38 +159,9 @@
             </div>
         </div>
         <section class="flx gap-3">
-            <div style="width: 80%" class="border">
-                <table id="tbMain" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="left">품명</th>
-                        <th class="left">Spec</th>
-                        <th class="right comma">이월</th>
-                        <th class="right comma">입고</th>
-                        <th class="right comma">출고</th>
-
-                        <th class="center" >단위</th>
-                        <th class="right comma" >재고량</th>
-                        <th class="right comma">적정재고량</th>
-                        <th class="right comma">과부족</th>
-                        <th class="right">재고율</th>
-
-                    </tr>
-                    </thead>
-                </table>
-            </div>
+            <div id="main-table" class="border" style="width: 80%; overflow-x: auto" ></div>
             <div style="width: 20%" class="border">
-                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">이월</th>
-                        <th class="center comma">입고</th>
-                        <th class="center comma">출고</th>
-                        <th class="center comma">재고</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div id="sub-table" style="height: 100%; overflow-x:auto;"></div>
             </div>
         </section>
     </main>

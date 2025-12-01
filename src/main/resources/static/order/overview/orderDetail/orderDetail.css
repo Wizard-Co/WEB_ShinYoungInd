@@ -25,3 +25,14 @@
     vertical-align: top;
     align-self: flex-start;
 }
+
+.tabulator .tabulator-header .tabulator-col {
+    vertical-align: middle !important;
+}
+
+.tabulator .tabulator-header .tabulator-col-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+}

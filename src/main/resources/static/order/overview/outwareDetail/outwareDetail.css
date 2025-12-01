@@ -1,0 +1,18 @@
+.div-radio {
+    background-color: lightgray ;
+    border: 1px solid #4e4e4e;
+    min-width: 120px;
+    margin: 5px;
+}
+
+
+.tabulator .tabulator-header .tabulator-col {
+    vertical-align: middle !important;
+}
+
+.tabulator .tabulator-header .tabulator-col-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+}

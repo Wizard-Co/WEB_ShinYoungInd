@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.qul.overview.dateProd.DateProdMapper">
+
+    <resultMap id="getWorkProcessMap" type="wizard.ShinYoungInd.common.dto.CMCode">
+        <result property="code_ID" column="ProcessID"/>
+        <result property="code_Name" column="Process"/>
+    </resultMap>
+
+    <select id="getWorkProcess" resultMap="getWorkProcessMap"
+            parameterType="map">{ call xp_Work_sProcess(
+                 #{nchkProc, javaType=int, jdbcType=CHAR, mode=IN},
+                 #{ProcessID, javaType=String, jdbcType=CHAR, mode=IN}
+            )}
+    </select>
+
+    <select id="getMachineList" resultType="wizard.ShinYoungInd.common.dto.CMCode">
+            <![CDATA[
+            SELECT
+                CASE WHEN #{sProcessID} = '' THEN mp.ProcessID + mm.MachineID
+                     ELSE mm.MachineID END AS code_ID,
+                CASE WHEN #{sProcessID} <> '' THEN mm.MachineNo
+                     ELSE mp.Process + ' 공정 : ' + mm.MachineNo END AS code_Name
+            FROM mt_Machine mm
+                     LEFT OUTER JOIN mt_Process mp ON mm.ProcessID = mp.ProcessID
+            WHERE (#{sProcessID} = '' OR (#{sProcessID} <> '' AND mm.ProcessID = #{sProcessID}))
+              AND ISNULL(mp.UseClss, '') <> '*'
+            ORDER BY mm.ProcessID, mm.MachineID
+            ]]>
+    </select>
+
+    <select id="getDateProdData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Inspect_sInspectDefect(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProcessID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ProcessID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkMachineID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{MachineID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkExceptInitialDefect, javaType=int, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+</mapper>

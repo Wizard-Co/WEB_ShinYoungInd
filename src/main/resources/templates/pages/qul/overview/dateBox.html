@@ -1,12 +1,12 @@
 <!--
-  *packageName      : templates.pages.order
-  *fileName         : outwareDetail.html
+  *packageName      : templates.pages.qul
+  *fileName         : dateBox.html
   *author           : gitcat87
-  *date             : 2025-11-24
+  *date             : 2025-12-01
   *======================================================
   *DATE             AUTHOR               NOTE
   *------------------------------------------------------
-  * 2025-11-24      gitcat87            최초 생성
+  * 2025-12-01      gitcat87            최초 생성
  -->
 
 <html xmlns:th="http://www.thymeleaf.org"
@@ -14,10 +14,10 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/order/overview/outwareDetail/outwareDetail.js}"></script>
+    <script th:src="@{/qul/overview/dateBox.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/order/overview/outwareDetail/outwareDetail.css}" />
+    <link rel="stylesheet" th:href="@{/qul/qul.css}" />
 </th:block>
 
 <section layout:fragment="content">
@@ -33,7 +33,7 @@
     <main>
         <div class="menu">
             <div class="page-header">
-                ■ 제품 출하 실적 조회
+                ■ 최종 검사 이력 조회
             </div>
             <div class="icon">
                 <div class="flx">
@@ -43,7 +43,6 @@
             </div>
         </div>
         <div id="searchConditionWrapper">
-            <!--            지시일자-->
             <div class="date">
                 <div>
                     <div class="search-condition mx-0">
@@ -75,13 +74,13 @@
             <div class="flx search-area">
                 <div class="panel-body-multi">
                     <div class="search-condition">
-                        <input id="chkCustom" data-target="txtCustom"
+                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
                                class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkCustom">
-                            거래처
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
                         </label>
-                        <input id="txtCustom"
-                               type="text" class="form-control" placeholder="거래처 찾기">
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 찾기">
                     </div>
                     <div class="search-condition">
                         <input id="chkArticle" data-target="txtArticle"
@@ -91,6 +90,41 @@
                         </label>
                         <input id="txtArticle"
                                type="text" class="form-control" placeholder="품명 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkCustomID" data-target="txtCustomID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustomID">
+                            거래처
+                        </label>
+                        <input id="txtCustomID"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkDefectGrpID" data-target="cboDefectGrpID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkDefectGrpID">
+                            공정명
+                        </label>
+                        <select id="cboDefectGrpID" name="DefectGrpID" class="form-select w150px">
+                            <option th:each="item : ${cboDefectGrpID}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body-multi v-top">
+                    <div class="search-condition">
+                        <input id="chkBoxLabel" data-target="txtBoxLabel"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBoxLabel">
+                            박스번호
+                        </label>
+                        <input id="txtBoxLabel"
+                               type="text" class="form-control" placeholder="라벨 찾기">
                     </div>
                 </div>
                 <div class="panel-body-multi">
@@ -125,9 +159,9 @@
         <section class="flx gap-3">
             <div id="main-table" class="border" style="width: 80%; overflow-x: auto" ></div>
             <!-- 합계 출력 영역 -->
-                <div style="width: 20%" class="border">
-                    <div id="sub-table" style="height: 100%; overflow-x:auto;"></div>
-                </div>
+            <div style="width: 20%" class="border">
+                <div id="sub-table" style="height: 100%; overflow-x:auto;"></div>
+            </div>
         </section>
 
     </main>

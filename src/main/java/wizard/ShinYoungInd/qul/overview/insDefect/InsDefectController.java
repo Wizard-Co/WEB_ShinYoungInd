@@ -1,30 +1,30 @@
-package wizard.ShinYoungInd.order.overview.outwareDetail;
+package wizard.ShinYoungInd.qul.overview.insDefect;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import wizard.ShinYoungInd.order.overview.DTO.Overview;
+import wizard.ShinYoungInd.qul.overview.DTO.Overview;
 
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/order/result/outwareDetail")
 @Controller
 @RequiredArgsConstructor
-public class OutwareDetailController {
+@RequestMapping("/qul/result/insDefect")
+public class InsDefectController {
 
-    private final OutwareDetailService service;
+    private final InsDefectService service;
 
     @GetMapping("")
     public String goPage(){
-        return "pages/order/overview/outwareDetail";
+        return "pages/qul/overview/insDefect";
     }
 
     @PostMapping(value = "/search")
     @ResponseBody
     public List<Overview> search(@RequestBody Map<String, Object> param) {
 
-        List<Overview> data = service.getOutwareResult(param);
+        List<Overview> data = service.getInsDefectData(param);
         return data;
         //return service.getOutwareResult(param);
     }

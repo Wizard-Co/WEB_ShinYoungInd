@@ -14,11 +14,11 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script type="module" src="/order/outwareDetail/inout-columns.js"></script>
-    <script type="module" th:src="@{/order/outwareDetail/inout.js}"></script>
+    <script type="module" src="/order/overview/outwareDetail/inout-columns.js"></script>
+    <script type="module" th:src="@{/order/overview/outwareDetail/inout.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/order/outwareDetail/outwareDetail.css}" />
+    <link rel="stylesheet" th:href="@{/order/overview/outwareDetail/outwareDetail.css}" />
 </th:block>
 
 <section layout:fragment="content">
@@ -124,7 +124,7 @@
             </div>
         </div>
         <div style="flex-direction: row; display: flex">
-            <section class="border" style="width: 70%">
+            <section class="border" style="width: 60%">
                 <div>
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -149,55 +149,24 @@
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-period" role="tabpanel" aria-labelledby="periodTab"
                              tabindex="0">
-                            <table id="periodTb" class="striped cell-border table-light-info" style="width:100%">
-                            </table>
+                            <div id="periodTb"></div>  <!-- ← table 태그를 div로 변경 -->
                         </div>
                         <div class="tab-pane fade" id="nav-daily" role="tabpanel" aria-labelledby="dailyTab" tabindex="0">
-                            <table id="dailyTb" class="striped cell-border table-light-info" style="width:100%">
-                            </table>
+                            <div id="dailyTb"></div>  <!-- ← table 태그를 div로 변경 -->
                         </div>
                         <div class="tab-pane fade" id="nav-monthV" role="tabpanel" aria-labelledby="monthVTab" tabindex="0">
-                            <table id="monthVTb" class="striped cell-border table-light-info" style="width:100%">
-                            </table>
+                            <div id="monthVTb"></div>  <!-- ← table 태그를 div로 변경 -->
                         </div>
                         <div class="tab-pane fade" id="nav-monthH" role="tabpanel" aria-labelledby="monthHTab" tabindex="0">
-                            <table id="monthHTb" class="striped cell-border table-light-info" style="width:100%">
-                            </table>
+                            <div id="monthHTb"></div>  <!-- ← table 태그를 div로 변경 -->
                         </div>
                     </div>
                 </div>
             </section>
-            <div style="width: 30%"  class="border">
-                <label class="lbl-srh stats-container"  >[합계 데이터]</label>
-                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center">출고건수</th>
-                        <th class="center">출고수량</th>
-                    </tr>
-                    </thead>
-                </table>
-                <table id="tbSubMonth" class="striped cell-border table-light-info" style="width:100%;">
-                    <thead>
-                    <tr>
-                        <th colspan="2" class="center">합계</th>
-                        <th colspan="2" class="center" id="month0Header">기준월</th>
-                        <th colspan="2" class="center" id="month1Header">기준+1월</th>
-                        <th colspan="2" class="center" id="month2Header">기준+2월</th>
-                    </tr>
-                    <tr>
-                        <th class="center">건수</th>
-                        <th class="center">수량</th>
-                        <th class="center">건수</th>
-                        <th class="center">수량</th>
-                        <th class="center">건수</th>
-                        <th class="center">수량</th>
-                        <th class="center">건수</th>
-                        <th class="center">수량</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div style="width: 40%"  class="border">
+                <label class="lbl-srh stats-container">[합계 데이터]</label>
+                <div id="tbSub"></div>
+                <div id="tbSubMonth"></div>
             </div>
         </div>
 
