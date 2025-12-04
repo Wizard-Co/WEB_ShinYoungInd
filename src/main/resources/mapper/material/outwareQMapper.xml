@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wizard.ShinYoungInd.material.overview.outware_Q.OutwareQMapper">
+
+    <!--    자재입고명세서 조회-->
+    <select id="getOutwareQ" statementType="CALLABLE" resultType="wizard.ShinYoungInd.material.overview.DTO.OutwareView"
+            parameterType="map"> {
+        call xp_Outware_sOutwareDetail_Web(
+                #{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkCustomID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{customID, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{custom, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{chkArticleID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkOrder, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{order, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{orderFlag, javaType=int, jdbcType=SMALLINT, mode=IN}
+
+            , #{articleGrpID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{fromLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{toLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{outClss, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{sProductYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{nBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+
+
+             )
+        }
+    </select>
+
+</mapper>

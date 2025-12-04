@@ -1,0 +1,186 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/material/overview/stuffinQ-result.js}"></script>
+</th:block>
+
+<!--content-->
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 자재입고명세서 조회
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper" style="height: 140px;" >
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="nChkDate" checked="true"
+                                   data-target="sDate, eDate">
+                            <label class="me-2" for="nChkDate">
+                                입고일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                    </div>
+                </div>
+                <div class="btn-date">
+                    <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                    <label class="btn" for="btnToday">금일</label>
+                    <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                    <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+
+                <div class="search-condition" >
+                    <label class="lbl-srh" >　</label>
+                </div>
+
+                <div class="search-condition" >
+                    <label class="lbl-srh" >　</label>
+                </div>
+
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkArticleGrpSrh" data-target="cboArticleGrpSrh"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticleGrpSrh">
+                            품명그룹
+                        </label>
+                        <select id="cboArticleGrpSrh" class="form-select w150px">
+                            <option th:each="item : ${cboArticleGrpSrh}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkArticleSrh" data-target="txtArticleSrh"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticleSrh">
+                            품명
+                        </label>
+                        <input id="txtArticleSrh"
+                               type="text" class="form-control" placeholder="품명 찾기"
+                               ondblclick="openModalFinder('txtArticleSrh','txtArticleSrh',77,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtArticleSrh','txtArticleSrh',77,this.value)}">
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkArticleNoSrh" data-target="txtArticleNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticleNoSrh">
+                            품번
+                        </label>
+                        <input id="txtArticleNo"
+                               type="text" class="form-control" placeholder="품번 검색"
+                               ondblclick="openModalFinder('txtArticleNo','txtArticleNo',76,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtArticleNo','txtArticleNo',76,this.value)}">
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkBuyCustomSrh" data-target="txtBuyCustomSrh"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBuyCustomSrh">
+                            구매거래처
+                        </label>
+                        <input id="txtBuyCustomSrh"
+                               type="text" class="form-control" placeholder="거래처 검색"
+                               ondblclick="openModalFinder('txtBuyCustomSrh','txtBuyCustomSrh',0,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtBuyCustomSrh','txtBuyCustomSrh',0,this.value)}">
+                    </div>
+                </div>
+
+                <div class="panel-body-multi">
+
+                    <div class="search-condition">
+                        <input id="chkStuffClssSrh" data-target="cboStuffClssSrh"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkStuffClssSrh" style="margin-right: 20px">
+                            입고구분
+                        </label>
+                        <select id="cboStuffClssSrh" class="form-select w150px">
+                            <option th:each="item : ${cboStuffClssSrh}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkToLocSrh" data-target="cboToLocSrh"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkToLocSrh" style="margin-right: 20px">
+                            입고창고
+                        </label>
+                        <select id="cboToLocSrh" class="form-select w150px">
+                            <option th:each="item : ${cboToLocSrh}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <div class="search-condition">
+                        <input id="chksInspectApprovalYN" data-target="cbosInspectApprovalYN"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chksInspectApprovalYN" style="margin-right: 20px">
+                            입고검수구분
+                        </label>
+                        <select id="cbosInspectApprovalYN" class="form-select w150px">
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </div>
+
+                    <div class="search-condition" >
+                        <label class="lbl-srh" >
+                            　
+                        </label>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+        <!--        메인-->
+        <section>
+            <div id="main-table" class="border" style="width: 100%; overflow-x:auto;"></div>
+        </section>
+    </main>
+    </body>
+</section>
+</html>

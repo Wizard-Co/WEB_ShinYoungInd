@@ -15,6 +15,29 @@ public class CMController {
     @Autowired
     private CMService service;
 
+    @GetMapping("modalfinder")
+    @ResponseBody
+    public List<LinkedHashMap<String, Object>> modal(@RequestParam int nLarge,
+                                                     @RequestParam(required = false) String sMiddle) {
+
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("nLarge", nLarge);
+        params.put("sMiddle", sMiddle);
+
+        List<LinkedHashMap<String, Object>> lstpf = service.getPlusFinder(params);
+
+        return lstpf;
+    }
+
+    /**
+     * old PlusFinder PopUp Method
+     *
+     * @param model
+     * @param nLarge
+     * @param sMiddle
+     * @return
+     */
+
     @GetMapping("pages/common/plusFinder")
     public String home(Model model, @RequestParam(value = "nLarge", defaultValue = "0") int nLarge,
                          @RequestParam(value = "sMiddle", defaultValue = "") String sMiddle) {

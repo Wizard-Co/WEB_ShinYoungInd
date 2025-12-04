@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wizard.ShinYoungInd.material.overview.stuffin_Q.StuffinQMapper">
+
+    <!--    자재입고명세서 조회-->
+    <select id="getStuffinQ" statementType="CALLABLE" resultType="wizard.ShinYoungInd.material.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_StuffIN_sStuffIN_Web(
+            #{nChkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sSDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sEDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sCustom, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{nChkArticleID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkStuffClss, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sStuffClss, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{nChkIncStuffIN, javaType=int, jdbcType=SMALLINT, mode=IN}
+
+            , #{nChkArticleGrp, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{articleGrpID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkInspect, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sInspect, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{nChkBuyCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sBuyCustom, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{orderrByClss, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{InspectBasisID, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{sToLocID, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{nBuyArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkLotID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sLotID, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+             )
+        }
+    </select>
+
+</mapper>

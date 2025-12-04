@@ -12,6 +12,33 @@
         order by seq
     </select>
 
+    <select id="getCmCodeOld" resultType="wizard.ShinYoungInd.common.dto.CMCode" parameterType="String">
+        select code_ID
+             , code_Name
+        from cm_Code
+        where Code_GBN = #{codeTypeID}
+          and Use_YN = 'Y'
+        order by seq
+    </select>
+
+    <select id="getArticleGrp" resultType="wizard.ShinYoungInd.common.dto.CMCode">
+        select ArticleGrpID as code_ID
+             , ArticleGrp as code_Name
+        from mt_ArticleGrp
+        where UseClss != '*'
+
+    </select>
+
+    <select id="getCmCodeOldRel" resultType="wizard.ShinYoungInd.common.dto.CMCode" parameterType="Map">
+        select code_ID
+             , code_Name
+        from cm_Code
+        where Code_GBN = #{codeTypeID}
+          and Relation = #{psRelation}
+          and Use_YN = 'Y'
+        order by seq
+    </select>
+
     <select id="getPlusFinder" statementType="CALLABLE" resultType="java.util.LinkedHashMap" parameterType="hashmap">
         { call xp_Common_PlusFinder(#{nLarge, javaType=int,jdbcType=INTEGER, mode=IN}
             , #{sMiddle, javaType=String, jdbcType=VARCHAR, mode=IN})}

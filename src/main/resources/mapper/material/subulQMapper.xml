@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wizard.ShinYoungInd.material.overview.subul_Q.SubulQMapper">
+
+    <!--    자재입고명세서 조회-->
+    <select id="getSubulQ" statementType="CALLABLE" resultType="wizard.ShinYoungInd.material.overview.DTO.SubulQView"
+            parameterType="map"> {
+        call xp_Subul_sSubul_MTR_Web(
+                #{nChkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sSDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sEDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sCustomID, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{nChkArticleID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkOrder, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sOrder, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{articleGrpID, javaType=String, jdbcType=CHAR, mode=IN}
+
+            , #{sFromLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{sToLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkOutClss, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sOutClss, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkInClss, javaType=int, jdbcType=SMALLINT, mode=IN}
+
+            , #{sInClss, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkReqID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sReqID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{incNotApprovalYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{incAutoInOutYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{sProductYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nMainItem, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{nCustomItem, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{nSupplyType, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sSupplyType, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{jaturiNoYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nBuyerArticleNo, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{buyerArticleNo, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+
+             )
+        }
+    </select>
+
+</mapper>

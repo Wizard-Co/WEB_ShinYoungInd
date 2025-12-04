@@ -21,7 +21,14 @@ import java.util.List;
 @Mapper
 public interface CMMapper {
     List<CMCode> getCmCode(String codeTypeID);
+
+    List<CMCode> getCmCodeOld(String codeTypeID);
+    List<CMCode> getArticleGrp();
+
     List<LinkedHashMap<String, Object>> getPlusFinder(HashMap<String, Object> param);
     List<Process> getProcess(HashMap<String, Object> param);
+
+    List<CMCode> getCmCodeOldRel(String codeTypeID, String psRelation);
+
 
 }
