@@ -16,6 +16,18 @@ public class CMService {
         return mapper.getCmCode(codeTypeID);
     }
 
+    public List<CMCode> getCmCodeOld(String codeTypeID) {
+        return mapper.getCmCodeOld(codeTypeID);
+    }
+
+    public List<CMCode> getArticleGrp() {
+        return mapper.getArticleGrp();
+    }
+
+    public List<CMCode> getCmCodeOldRel(String codeTypeID, String psRelation) {
+        return mapper.getCmCodeOldRel(codeTypeID, psRelation);
+    }
+
     public List<LinkedHashMap<String, Object>> getPlusFinder(HashMap<String, Object> param) {
         return mapper.getPlusFinder(param);
     }

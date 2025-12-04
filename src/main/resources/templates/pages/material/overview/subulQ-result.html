@@ -1,0 +1,263 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/material/overview/subulQ-result.js}"></script>
+</th:block>
+
+<section layout:fragment="content">
+    <body>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ 수불내역 조회 (제품포함)
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper" style="height: 140px;">
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="nChkDate" checked="true"
+                                   data-target="sDate, eDate">
+                            <label class="me-2" for="nChkDate">
+                                입출일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                        </div>
+                    </div>
+                    <div class="btn-date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+
+                    <div class="search-condition" >
+                        <label class="lbl-srh" >　</label>
+                    </div>
+
+                    <div class="search-condition" >
+                        <label class="lbl-srh" >　</label>
+                    </div>
+
+                </div>
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkArticleGroup" data-target="cboArticleGroup"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticleGroup">
+                            제품그룹
+                        </label>
+                        <select id="cboArticleGroup" class="form-select w150px">
+                            <option th:each="item : ${cboArticleGroup}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkCustomer" data-target="txtCustomer"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustomer">
+                            거래처
+                        </label>
+                        <input id="txtCustomer"
+                               type="text" class="form-control" placeholder="거래처 검색"
+                               ondblclick="openModalFinder('txtCustomer','txtCustomer',0,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtCustomer','txtCustomer',0,this.value)}"
+                        >
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkArticle" data-target="txtArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="품명 찾기"
+                               ondblclick="openModalFinder('txtArticle','txtArticle',77,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtArticle','txtArticle',77,this.value)}">
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkWareHouse" data-target="cboWareHouse"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkWareHouse">
+                            창고
+                        </label>
+                        <select id="cboWareHouse" class="form-select w150px">
+                            <option th:each="item : ${cboWareHouse}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="panel-body-multi">
+
+
+                    <div class="search-condition">
+                        <input id="chkSupplyType" data-target="cboSupplyType"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkSupplyType">
+                            공급유형
+                        </label>
+                        <select id="cboSupplyType" class="form-select w150px">
+                            <option th:each="item : ${cboSupplyType}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <div class="search-condition">
+                        <input id="chkOrderNum" data-target="txtOrderNum"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkOrderNum">
+                            발주번호
+                        </label>
+                        <input id="txtOrderNum"
+                               type="text" class="form-control" placeholder="발주번호 찾기"
+                               ondblclick="openModalFinder('txtOrderNum','txtOrderNum',4,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtOrderNum','txtOrderNum',4,this.value)}">
+                    </div>
+
+
+                    <div class="search-condition">
+                        <input id="chkInGbn" data-target="cboInGbn"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkInGbn">
+                            입고구분
+                        </label>
+                        <select id="cboInGbn" class="form-select w150px">
+                            <option th:each="item : ${cboInGbn}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkOutGbn" data-target="cboOutGbn"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkOutGbn">
+                            출고구분
+                        </label>
+                        <select id="cboOutGbn" class="form-select w150px">
+                            <option th:each="item : ${cboOutGbn}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+
+                <div class="panel-body-multi">
+
+                    <div class="search-condition">
+                        <input id="chkIn_NotApprovedIncloud"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkIn_NotApprovedIncloud">
+                            입고미승인건 포함
+                        </label>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkMainInterestItemsSee"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkMainInterestItemsSee">
+                            세부 조회
+                        </label>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkRegistItemsByCustomer"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkRegistItemsByCustomer">
+                            거래처별 등록 품목
+                        </label>
+                    </div>
+
+                    <div class="search-condition" >
+                        <label class="lbl-srh" >　</label>
+                    </div>
+                    
+                </div>
+
+
+                <div class="panel-body-multi" style="margin-left: 10px">
+                    <div class="search-condition">
+                        <input id="chkAutoInOutItemsIncloud"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkAutoInOutItemsIncloud">
+                            자동입출고건 포함
+                        </label>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkHideInOutReasonNumber"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkHideInOutReasonNumber">
+                            입출고 근거번호 숨김
+                        </label>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkStockLacklist"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkStockLacklist">
+                            재고 부족분 조회
+                        </label>
+                    </div>
+
+                    <div class="search-condition">
+                        <input id="chkIncludingsubProduct"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkIncludingsubProduct">
+                            하위품포함조회
+                        </label>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!--        메인-->
+        <section>
+            <div id="main-table" class="border" style="width: 100%; overflow-x:auto;"></div>
+        </section>
+    </main>
+    </body>
+</section>
+</html>
+

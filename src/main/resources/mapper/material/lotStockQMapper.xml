@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wizard.ShinYoungInd.material.overview.lotStock_Q.LotStockQMapper">
+
+    <!--    자재입고명세서 조회-->
+    <select id="getLotStockQ" statementType="CALLABLE" resultType="wizard.ShinYoungInd.material.overview.DTO.LotStockQView"
+            parameterType="map"> {
+        call xp_Subul_sMtrSubul_Lot_One_Web(
+                #{nChkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sSDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sEDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{nChkArticleID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sArticleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{nChkParentArticleID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sParentArticleID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sCustomID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{incNotApprovalYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{incAutoInOutYN, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nMainItem, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{nCustomItem, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{nIncZeroQty, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sFromLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+            , #{sToLocID, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{nChkLotID, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{sLotID	, javaType=String, jdbcType=VARCHAR, mode=IN}
+
+             )
+        }
+    </select>
+
+</mapper>
