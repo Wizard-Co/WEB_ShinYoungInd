@@ -40,4 +40,22 @@ public class Overview {
  private String MCNAME;
  private String SortOrder;
 
+ //제품군별품질화면
+ private double M1;
+ private double M2;
+ private double M3;
+ private double M4;
+ private double M5;
+ private double M6;
+ private double M7;
+ private double M8;
+ private double M9;
+ private double M10;
+ private double M11;
+ private double M12;
+ private double M13;
+ private long seq;
+
+ private String GroupingName;
+
 }

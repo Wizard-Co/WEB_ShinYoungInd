@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.qul.overview.defectArticle.DefectArticleMapper">
+    <select id="getDefectArticleData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qul_sStsDefectArticle_DefectCount(#{YYYY, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{MM, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProdGroupID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ProdGroupID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkInspectPointID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{InspectPointID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+    <select id="getModelDefectData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qul_sStsDefectArticle_DefectCountsub(#{YYYYMM, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProdGroupID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ProdGroupID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkInspectPointID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{InspectPointID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , '3'
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+    <select id="getTypeDefectData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qul_sStsDefectArticle_DefectCountsub(#{YYYYMM, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProdGroupID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ProdGroupID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkInspectPointID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{InspectPointID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , '1'
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+    <select id="getWorkerDefectData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qul_sStsWorker_DefectCountsub(#{YYYYMM, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkProdGroupID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ProdGroupID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkInspectPointID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{InspectPointID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{chkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , '4'
+            , #{chkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN})
+        }
+    </select>
+
+
+</mapper>
