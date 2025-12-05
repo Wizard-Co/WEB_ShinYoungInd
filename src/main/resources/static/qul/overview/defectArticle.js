@@ -22,7 +22,7 @@ document.getElementById('btnExcel').addEventListener("click", function () {
     XLSX.utils.book_append_sheet(wb, ws2, "상세현황");
 
     // 엑셀 파일로 다운로드
-    const fileName = `불량현황_${toDateString(new Date(), 'yyyyMMdd')}.xlsx`;
+    const fileName = `제품군별 품질분석 .xlsx`;
     XLSX.writeFile(wb, fileName);
 });
 

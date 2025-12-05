@@ -1,0 +1,167 @@
+<!--
+  *packageName      : templates.pages.order
+  *fileName         : xbar.html
+  *author           : gitcat87
+  *date             : 2025-12-04
+  *======================================================
+  *DATE             AUTHOR               NOTE
+  *------------------------------------------------------
+  * 2025-12-04      gitcat87            최초 생성
+ -->
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/qul/overview/xbar.js}"></script>
+</th:block>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/qul/qul.css}" />
+</th:block>
+
+<section layout:fragment="content">
+    <head>
+        <style>
+            .panel-body-multi input[type="text"],
+            .panel-body-multi select.form-select {
+                width: 160px;
+            }
+        </style>
+    </head>
+    <loading-form id="loading" class="display-none"></loading-form>
+    <main>
+        <div class="menu">
+            <div class="page-header">
+                ■ Xbar-Rchart조회
+            </div>
+            <div class="icon">
+                <div class="flx">
+                    <button type="button" class="btn btn-info m-r-05" id="btnSearch">조회</button>
+                    <button type="button" id="btnExcel" class="btn btn-print m-r-05">엑셀</button>
+                </div>
+            </div>
+        </div>
+        <div id="searchConditionWrapper">
+            <!--            지시일자-->
+            <div class="date">
+                <div>
+                    <div class="search-condition mx-0">
+                        <div>
+                            <input class="form-check-input" type="checkbox" value="Y" id="chkDate" checked="true"
+                                   data-target="sDate, eDate">
+                            <label class="me-2" for="chkDate">
+                                검색일자
+                            </label>
+                        </div>
+                        <div class="flx gap-1">
+                            <input type="date" id="sDate" class="text-center">
+                            <input type="date" id="eDate" class="text-center">
+                        </div>
+                    </div>
+                    <div class="btn-date">
+                        <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
+                        <label class="btn" for="btnToday">금일</label>
+                        <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
+                        <label class="btn" for="btnThisMonth">금월</label>
+                        <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
+                        <label class="btn" for="btnYesterDay">전일</label>
+                        <input type="radio" class="btn-check" id="btnLastMonth" name="category">
+                        <label class="btn" for="btnLastMonth">전월</label>
+                    </div>
+                </div>
+            </div>
+            <!--            검색조건-->
+            <div class="flx search-area">
+                <div class="panel-body-multi">
+                    <div class="search-condition">
+                        <input id="chkCustomID" data-target="txtCustomID"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkCustomID">
+                            거래처
+                        </label>
+                        <input id="txtCustomID"
+                               type="text" class="form-control" placeholder="거래처 찾기">
+                    </div>
+                    <div class="search-condition">
+                        <input id="chkArticle" data-target="txtArticle"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkArticle">
+                            품명
+                        </label>
+                        <input id="txtArticle"
+                               type="text" class="form-control" placeholder="품명 찾기">
+                    </div>
+                </div>
+                <div class="panel-body-multi v-top">
+                    <div class="search-condition">
+                        <input id="chkOccurStep" data-target="cboOccurStep" checked disabled="disabled"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkOccurStep">
+                            발생단계
+                        </label>
+                        <select id="cboOccurStep" name="OccurStep" class="form-select w150px">
+                            <option th:each="item : ${cboOccurStep}"
+                                    th:value="${item.code_ID}"
+                                    th:text="${item.code_Name}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="flx gap-3">
+            <div id="main-table" class="border" style="width: 30%;overflow-x: auto"></div>
+            <div class="border" style="width: 20%; box-sizing: border-box">
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">통계치 Summary</label>
+                <div class="container">
+                    <label class="retro-label col-span2">CPK</label>
+                    <input id="txtCPK" type="text" class="form-control">
+                    <label class="retro-label col-span2">CPU</label>
+                    <input id="txtCPU" type="text" class="form-control">
+                    <label class="retro-label col-span2">CPL</label>
+                    <input id="txtCPL" type="text" class="form-control">
+                    <label class="retro-label col-span2">CP</label>
+                    <input id="txtCP" type="text" class="form-control">
+                    <label class="retro-label col-span2">최대값</label>
+                    <input id="txtMaxValue" type="text" class="form-control">
+                    <label class="retro-label col-span2">최소값</label>
+                    <input id="txtMinValue" type="text" class="form-control">
+                    <label class="retro-label col-span2">평균</label>
+                    <input id="txtAverage" type="text" class="form-control">
+                    <label class="retro-label col-span2">표준편차</label>
+                    <input id="txtStandardDeviation" type="text" class="form-control">
+                    <label class="retro-label row-xbar" style="margin-right: 0px;">X-BAR</label>
+                    <label class="retro-label">UCL</label>
+                    <input id="txtXbarUCL" type="text" class="form-control">
+                    <label class="retro-label">CL</label>
+                    <input id="txtXbarCL" type="text" class="form-control">
+                    <label class="retro-label">LCL</label>
+                    <input id="txtXbarLCL" type="text" class="form-control">
+                    <label class="retro-label row-rChart" style="margin-right: 0px;">R</label>
+                    <label class="retro-label">UCL</label>
+                    <input id="txtRUCL" type="text" class="form-control">
+                    <label class="retro-label">CL</label>
+                    <input id="txtRCL" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="border" style="width: 50%">
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">X-Bar Chart</label>
+                <div class="border">
+                    <canvas id="graphXbar"></canvas>
+                </div>
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">R Chart</label>
+                <div class="border">
+                    <canvas id="graphRchart"></canvas>
+                </div>
+            </div>
+        </section>
+        <section class="flx gap-3">
+            <div id="sub-table" class="border" style="width: 100%; overflow-x: auto"></div>
+
+        </section>
+
+
+    </main>
+</section>
+</html>

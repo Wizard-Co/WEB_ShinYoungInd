@@ -58,4 +58,81 @@ public class Overview {
 
  private String GroupingName;
 
+ //Xbar
+ private String InsItemName;
+ private String EcoNo;
+ private String InspectBasisID;
+ private long SubSeq;
+
+ private double InsRASpecMax;
+ private double InsRASpecMin;
+
+ private String InspectPoint;
+
+ private String cls;
+ private String step;
+ private String YYYYMMDD1;
+ private double InspectValue1;
+ private String YYYYMMDD2;
+ private double InspectValue2;
+ private String YYYYMMDD3;
+ private double InspectValue3;
+ private String YYYYMMDD4;
+ private double InspectValue4;
+ private String YYYYMMDD5;
+ private double InspectValue5;
+ private String YYYYMMDD6;
+ private double InspectValue6;
+ private String YYYYMMDD7;
+ private double InspectValue7;
+ private String YYYYMMDD8;
+ private double InspectValue8;
+ private String YYYYMMDD9;
+ private double InspectValue9;
+ private String YYYYMMDD10;
+ private double InspectValue10;
+ private String YYYYMMDD11;
+ private double InspectValue11;
+ private String YYYYMMDD12;
+ private double InspectValue12;
+ private String YYYYMMDD13;
+ private double InspectValue13;
+ private String YYYYMMDD14;
+ private double InspectValue14;
+ private String YYYYMMDD15;
+ private double InspectValue15;
+ private String YYYYMMDD16;
+ private double InspectValue16;
+ private String YYYYMMDD17;
+ private double InspectValue17;
+ private String YYYYMMDD18;
+ private double InspectValue18;
+ private String YYYYMMDD19;
+ private double InspectValue19;
+ private String YYYYMMDD20;
+ private double InspectValue20;
+ private String YYYYMMDD21;
+ private double InspectValue21;
+ private String YYYYMMDD22;
+ private double InspectValue22;
+ private String YYYYMMDD23;
+ private double InspectValue23;
+ private String YYYYMMDD24;
+ private double InspectValue24;
+ private String YYYYMMDD25;
+ private double InspectValue25;
+ private String YYYYMMDD26;
+ private double InspectValue26;
+ private String YYYYMMDD27;
+ private double InspectValue27;
+ private String YYYYMMDD28;
+ private double InspectValue28;
+ private String YYYYMMDD29;
+ private double InspectValue29;
+ private String YYYYMMDD30;
+ private double InspectValue30;
+ private String YYYYMMDD31;
+ private double InspectValue31;
+
+
 }
