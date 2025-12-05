@@ -264,10 +264,10 @@ async function search() {
             InspectPointID : document.getElementById('cboOccurStep').value,
 
             chkArticleID : getChecked('chkArticle') ? 1:0,
-            ArticleID : document.getElementById('txtArticle').value,
+            ArticleID : document.getElementById('txtArticle').dataset.id,
 
             chkBuyerArticleNo : getChecked('chkBuyerArticleNo')? 1:0,
-            BuyerArticleNo :  document.getElementById('txtBuyerArticleNo').value,
+            BuyerArticleNo :  document.getElementById('txtBuyerArticleNo').dataset.id,
         }
 
         loading.visible();

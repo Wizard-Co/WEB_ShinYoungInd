@@ -603,10 +603,10 @@ async function search() {
             TODate: document.getElementById('eDate').value.replaceAll('-',''),
 
             ChkCustomID : getChecked('chkCustomID') ?  1: 0,
-            CustomID : document.getElementById('txtCustomID').value,
+            CustomID : document.getElementById('txtCustomID').dataset.id,
 
             ChkArticleID : getChecked('chkArticle') ? 1:0,
-            ArticleID : document.getElementById('txtArticle').value,
+            ArticleID : document.getElementById('txtArticle').dataset.id,
 
             ChkBuyerArticleNo :0,
             BuyerArticleNo : ''
