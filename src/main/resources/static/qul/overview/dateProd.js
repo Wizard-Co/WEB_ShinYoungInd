@@ -133,10 +133,10 @@ async function search() {
         ProcessID: document.getElementById('cboProcessID').value,
 
         chkArticleID: getChecked('chkArticle') ? 1 : 0,
-        ArticleID: document.getElementById('txtArticle').dataset.id,
+        ArticleID: document.getElementById('txtArticle').dataset.id ?? "",
 
         chkBuyerArticleNo: getChecked('chkBuyerArticleNo') ? 1:0,
-        BuyerArticleNo : document.getElementById('txtBuyerArticleNo').dataset.id,
+        BuyerArticleNo : document.getElementById('txtBuyerArticleNo').dataset.id ?? "",
 
         chkMachineID : getChecked('chkMachineID')? 1:0,
         MachineID : document.getElementById('cboMachineID').value,

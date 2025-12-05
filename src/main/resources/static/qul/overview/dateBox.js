@@ -120,13 +120,13 @@ async function search() {
         eDate: document.getElementById('eDate').value.replaceAll('-',''),
 
         ChkBuyerArticleNo: getChecked('chkBuyerArticleNo') ? 1 : 0,
-        BuyerArticleNo: document.getElementById('txtBuyerArticleNo').dataset.id,
+        BuyerArticleNo: document.getElementById('txtBuyerArticleNo').dataset.id ?? "",
 
         ChkArticleID: getChecked('chkArticle') ? 1 : 0,
-        ArticleID: document.getElementById('txtArticle').dataset.id,
+        ArticleID: document.getElementById('txtArticle').dataset.id ?? "",
 
         ChkCustomID : getChecked('chkCustomID') ? 1:0,
-        CustomID : document.getElementById('txtCustomID').dataset.id,
+        CustomID : document.getElementById('txtCustomID').dataset.id ?? "",
 
         ChkdefectGrpID: getChecked('chkDefectGrpID') ? 1:0,
         DefectGrpID : document.getElementById('cboDefectGrpID').value,

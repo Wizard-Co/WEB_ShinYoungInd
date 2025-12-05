@@ -600,13 +600,13 @@ async function search() {
 
             ChkDate: getChecked('chkDate') ? 1 : 0,
             FromDate: document.getElementById('sDate').value.replaceAll('-',''),
-            TODate: document.getElementById('eDate').value.replaceAll('-',''),
+            ToDate: document.getElementById('eDate').value.replaceAll('-',''),
 
             ChkCustomID : getChecked('chkCustomID') ?  1: 0,
-            CustomID : document.getElementById('txtCustomID').dataset.id,
+            CustomID : document.getElementById('txtCustomID').dataset.id ?? "",
 
             ChkArticleID : getChecked('chkArticle') ? 1:0,
-            ArticleID : document.getElementById('txtArticle').dataset.id,
+            ArticleID : document.getElementById('txtArticle').dataset.id ?? "",
 
             ChkBuyerArticleNo :0,
             BuyerArticleNo : ''

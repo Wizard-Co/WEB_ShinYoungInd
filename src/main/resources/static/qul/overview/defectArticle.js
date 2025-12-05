@@ -46,7 +46,6 @@ function createDefectTable(data, baseDate) {
     const months = getPreviousMonths(12, baseDate);
     const subMonth = getPreviousMonths(13, baseDate);
 
-    // 포맷 함수
     const formatNumber = (value) => {
         if (!value || value === 0) return '-';
         return Number(value).toLocaleString('ko-KR');
@@ -57,7 +56,11 @@ function createDefectTable(data, baseDate) {
         return Number(value).toFixed(2);
     };
 
-    // 데이터가 없을 때 빈 객체 사용
+    const createTooltip = (value, label) => {
+        if (!value || value === 0 || value === '-') return '';
+        return `data-tooltip="${label}: ${value}"`;
+    };
+
     const defectData = data?.defectArticleData || [];
     const modelData = data?.modelDefectData || [];
     const typeData = data?.typeDefectData || [];
@@ -82,23 +85,43 @@ function createDefectTable(data, baseDate) {
                 <tr>
                     <td rowspan="4" class="group-header">불량지수<br>(건수)</td>
                     <td class="sub-header">목표PPM</td>
-                    ${months.map((_, idx) => `<td class="data-cell-right">${formatDecimal(targetPPM[`m${idx + 1}`])}</td>`).join('')}
-                    <td class="total-cell">${formatDecimal(targetPPM.m13)}</td>
+                    ${months.map((month, idx) => {
+        const value = targetPPM[`m${idx + 1}`];
+        const formatted = formatDecimal(value);
+        const tooltip = createTooltip(formatted, `${month} 목표PPM`);
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
+                    <td class="total-cell" ${createTooltip(formatDecimal(targetPPM.m13), '합계 목표PPM')}>${formatDecimal(targetPPM.m13)}</td>
                 </tr>
                 <tr>
                     <td class="sub-header">전체수량</td>
-                    ${months.map((_, idx) => `<td class="data-cell-right">${formatNumber(totalQty[`m${idx + 1}`])}</td>`).join('')}
-                    <td class="total-cell">${formatNumber(totalQty.m13)}</td>
+                    ${months.map((month, idx) => {
+        const value = totalQty[`m${idx + 1}`];
+        const formatted = formatNumber(value);
+        const tooltip = createTooltip(formatted, `${month} 전체수량`);
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
+                    <td class="total-cell" ${createTooltip(formatNumber(totalQty.m13), '합계 전체수량')}>${formatNumber(totalQty.m13)}</td>
                 </tr>
                 <tr>
                     <td class="sub-header">불량수량</td>
-                    ${months.map((_, idx) => `<td class="data-cell-right">${formatNumber(defectQty[`m${idx + 1}`])}</td>`).join('')}
-                    <td class="total-cell">${formatNumber(defectQty.m13)}</td>
+                    ${months.map((month, idx) => {
+        const value = defectQty[`m${idx + 1}`];
+        const formatted = formatNumber(value);
+        const tooltip = createTooltip(formatted, `${month} 불량수량`);
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
+                    <td class="total-cell" ${createTooltip(formatNumber(defectQty.m13), '합계 불량수량')}>${formatNumber(defectQty.m13)}</td>
                 </tr>
                 <tr>
                     <td class="sub-header">불량PPM</td>
-                    ${months.map((_, idx) => `<td class="data-cell-right">${formatDecimal(defectPPM[`m${idx + 1}`])}</td>`).join('')}
-                    <td class="total-cell">${formatDecimal(defectPPM.m13)}</td>
+                    ${months.map((month, idx) => {
+        const value = defectPPM[`m${idx + 1}`];
+        const formatted = formatDecimal(value);
+        const tooltip = createTooltip(formatted, `${month} 불량PPM`);
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
+                    <td class="total-cell" ${createTooltip(formatDecimal(defectPPM.m13), '합계 불량PPM')}>${formatDecimal(defectPPM.m13)}</td>
                 </tr>
             </tbody>
         </table>
@@ -117,29 +140,56 @@ function createDefectTable(data, baseDate) {
                    <tr>
                         <td rowspan="2" class="group-header">점유제품</td>
                         <td class="sub-header">제품명</td>                        
-                        ${subMonth.map((_, idx) => `<td class="data-cell-left">${modelData[idx]?.groupingName || '-'}</td>`).join('')}
+                        ${subMonth.map((_, idx) => {
+        const name = modelData[idx]?.groupingName || '-';
+        const tooltip = name !== '-' ? `data-tooltip="제품명: ${name}"` : '';
+        return `<td class="data-cell-left" ${tooltip}>${name}</td>`;
+    }).join('')}
                    </tr>
                    <tr>
-                        <td class="sub-header">불량유형</td>
-                        ${subMonth.map((_, idx) => `<td class="data-cell-right">${formatNumber(modelData[idx]?.defectQty) || '-'}</td>`).join('')}
+                        <td class="sub-header">불량수량</td>
+                        ${subMonth.map((_, idx) => {
+        const qty = modelData[idx]?.defectQty;
+        const formatted = formatNumber(qty) || '-';
+        const tooltip = createTooltip(formatted, '불량수량');
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
                    </tr>
                    <tr>
                         <td rowspan="2" class="group-header">불량유형</td>
                         <td class="sub-header">유형</td>                       
-                        ${subMonth.map((_, idx) => `<td class="data-cell-left">${typeData[idx]?.groupingName || '-'}</td>`).join('')}
+                        ${subMonth.map((_, idx) => {
+        const type = typeData[idx]?.groupingName || '-';
+        const tooltip = type !== '-' ? `data-tooltip="불량유형: ${type}"` : '';
+        return `<td class="data-cell-left" ${tooltip}>${type}</td>`;
+    }).join('')}
                    </tr>
                    <tr>
                         <td class="sub-header">불량수량</td>
-                        ${subMonth.map((_, idx) => `<td class="data-cell-right">${formatNumber(typeData[idx]?.defectQty) || '-'}</td>`).join('')}
+                        ${subMonth.map((_, idx) => {
+        const qty = typeData[idx]?.defectQty;
+        const formatted = formatNumber(qty) || '-';
+        const tooltip = createTooltip(formatted, '불량수량');
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}
                    </tr>             
                    <tr>
                         <td rowspan="2" class="group-header">작업자</td>
-                        <td class="sub-header">유형</td>                        
-                        ${subMonth.map((_, idx) => `<td class="data-cell-left">${workerData[idx]?.groupingName || '-'}</td>`).join('')}                        
+                        <td class="sub-header">작업자명</td>                        
+                        ${subMonth.map((_, idx) => {
+        const worker = workerData[idx]?.groupingName || '-';
+        const tooltip = worker !== '-' ? `data-tooltip="작업자: ${worker}"` : '';
+        return `<td class="data-cell-left" ${tooltip}>${worker}</td>`;
+    }).join('')}                        
                    </tr>
                    <tr>
                         <td class="sub-header">불량수량</td>
-                        ${subMonth.map((_, idx) => `<td class="data-cell-right">${formatNumber(workerData[idx]?.defectQty) || '-'}</td>`).join('')}                        
+                        ${subMonth.map((_, idx) => {
+        const qty = workerData[idx]?.defectQty;
+        const formatted = formatNumber(qty) || '-';
+        const tooltip = createTooltip(formatted, '불량수량');
+        return `<td class="data-cell-right" ${tooltip}>${formatted}</td>`;
+    }).join('')}                        
                    </tr>
                 </tbody>                  
             </thead>
@@ -149,6 +199,87 @@ function createDefectTable(data, baseDate) {
 
     container.innerHTML = html;
     subContainer.innerHTML = subHtml;
+
+    addSimpleTooltips();
+}
+
+function addSimpleTooltips() {
+    let currentTooltip = null;
+    let fadeOutTimer = null; // ✅ 타이머 추가
+
+    document.querySelectorAll('[data-tooltip]').forEach(cell => {
+        cell.addEventListener('mouseenter', function(e) {
+            //페이드아웃 중이면 바로 취소
+            if (fadeOutTimer) {
+                clearTimeout(fadeOutTimer);
+                fadeOutTimer = null;
+            }
+
+            //툴팁도 제거하기
+            if (currentTooltip) {
+                currentTooltip.remove();
+                currentTooltip = null;
+            }
+
+            const isEllipsed = this.scrollWidth > this.clientWidth;
+            if (!isEllipsed) return;
+
+            const text = this.getAttribute('data-tooltip');
+            if (!text) return;
+
+            currentTooltip = document.createElement('div');
+            currentTooltip.textContent = text;
+            currentTooltip.style.cssText = `
+                position: fixed;
+                background: rgba(0, 0, 0, 0.9);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                z-index: 99999;
+                pointer-events: none;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                opacity: 0;
+                transition: opacity 0.2s ease-in-out;
+            `;
+            document.body.appendChild(currentTooltip);
+
+            const rect = this.getBoundingClientRect();
+            let left = rect.left + rect.width/2 - currentTooltip.offsetWidth/2;
+            let top = rect.top - currentTooltip.offsetHeight - 10;
+
+            if (left < 5) left = 5;
+            if (left + currentTooltip.offsetWidth > window.innerWidth - 5) {
+                left = window.innerWidth - currentTooltip.offsetWidth - 5;
+            }
+            if (top < 5) {
+                top = rect.bottom + 10;
+            }
+
+            currentTooltip.style.left = left + 'px';
+            currentTooltip.style.top = top + 'px';
+
+            setTimeout(() => {
+                if (currentTooltip) {
+                    currentTooltip.style.opacity = '1';
+                }
+            }, 10);
+        });
+
+        cell.addEventListener('mouseleave', function() {
+            if (currentTooltip) {
+                currentTooltip.style.opacity = '0';
+
+                fadeOutTimer = setTimeout(() => {
+                    if (currentTooltip && currentTooltip.parentNode) {
+                        currentTooltip.remove();
+                    }
+                    currentTooltip = null;
+                    fadeOutTimer = null;
+                }, 200);
+            }
+        });
+    });
 }
 
 function clearAllData() {
@@ -264,10 +395,10 @@ async function search() {
             InspectPointID : document.getElementById('cboOccurStep').value,
 
             chkArticleID : getChecked('chkArticle') ? 1:0,
-            ArticleID : document.getElementById('txtArticle').dataset.id,
+            ArticleID : document.getElementById('txtArticle').dataset.id ?? "",
 
             chkBuyerArticleNo : getChecked('chkBuyerArticleNo')? 1:0,
-            BuyerArticleNo :  document.getElementById('txtBuyerArticleNo').dataset.id,
+            BuyerArticleNo :  document.getElementById('txtBuyerArticleNo').dataset.id ?? "",
         }
 
         loading.visible();

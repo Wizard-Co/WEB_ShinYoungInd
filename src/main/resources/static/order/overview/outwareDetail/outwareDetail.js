@@ -140,10 +140,10 @@ async function search() {
         EDate: document.getElementById('eDate').value.replaceAll('-',''),
 
         ChkCustomID: getChecked('chkCustom') ? 1 : 0,
-        CustomID: document.getElementById('txtCustom').dataset.id,
+        CustomID: document.getElementById('txtCustom').dataset.id ?? "",
 
         ChkArticleID: getChecked('chkArticle') ? 1 : 0,
-        ArticleID: document.getElementById('txtArticle').dataset.id,
+        ArticleID: document.getElementById('txtArticle').dataset.id ?? "",
 
         ChkBuyerArticleNo: 0,
         BuyerArticleNo : '',

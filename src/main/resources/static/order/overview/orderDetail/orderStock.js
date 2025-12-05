@@ -52,7 +52,7 @@ let mainTable = new Tabulator("#main-table", {
                 return ((page - 1) * pageSize) + rowIndex;
             }},
         {title: "품명", field: "article", hozAlign: "center"},
-        {title: "Spec", field: "spec", hozAlign: "left"},
+        {title: "규격", field: "spec", hozAlign: "left"},
         {title: "OrderNO", field: "orderNo", hozAlign: "center"},
         {title: "이월", field: "initStockQty", hozAlign: "right", formatter:"number"},
         {title: "입고", field: "stuffQty", hozAlign: "right", formatter:"number"},
@@ -124,8 +124,8 @@ async function search() {
         sOrder : "",
         ArticleGrpID : "05",
 
-        sFromLocID : "",
-        sToLocID : document.getElementById('cboLocID').value,
+        sFromLocID :getChecked('chkLocID') ? document.getElementById('cboLocID').value : "",
+        sToLocID : "",
 
         nChkOutClss :0,
         sOutClss : "",

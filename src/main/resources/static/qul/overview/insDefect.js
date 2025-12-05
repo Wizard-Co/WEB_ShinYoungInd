@@ -176,10 +176,10 @@ async function search() {
             InCustomID : "",
 
             ChkBuyerArticleNo : getChecked('chkBuyerArticleNo') ?  1:0,
-            BuyerArticleNo : document.getElementById('txtBuyerArticleNo').dataset.id,
+            BuyerArticleNo : document.getElementById('txtBuyerArticleNo').dataset.id ?? "",
 
             ChkArticleID : getChecked('chkArticle') ? 1:0,
-            ArticleID : document.getElementById('txtArticle').dataset.id,
+            ArticleID : document.getElementById('txtArticle').dataset.id ?? "",
 
             nClss : i,
 
