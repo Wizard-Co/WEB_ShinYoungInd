@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="wizard.ShinYoungInd.qul.overview.xbar.XbarMapper">
+
+    <select id="getXbarData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qual_sSpc_std(
+                #{InspectPoint, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkDate, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{FromDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ToDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkArticleID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{ArticleID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkCustomID, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{CustomID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ChkBuyerArticleNo, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{BuyerArticleNo, javaType=String, jdbcType=CHAR, mode=IN}
+
+             )}
+    </select>
+
+    <select id="getRaMinAndRaMaxData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qual_sSpc_spec(
+                #{FromDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{ToDate, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{InspectBasisID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{SubSeq, javaType=int, jdbcType=CHAR, mode=IN}
+             )}
+    </select>
+
+    <select id="getSubXbarData" statementType="CALLABLE" resultType="wizard.ShinYoungInd.qul.overview.DTO.Overview"
+            parameterType="map"> {
+        call xp_Qual_sSpc_DailySpread(
+                #{InspectPoint, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{sMonth, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{InspectBasisID, javaType=String, jdbcType=CHAR, mode=IN}
+            , #{SubSeq, javaType=int, jdbcType=CHAR, mode=IN}
+            , #{CustomID, javaType=String, jdbcType=CHAR, mode=IN}
+             )}
+    </select>
+
+</mapper>

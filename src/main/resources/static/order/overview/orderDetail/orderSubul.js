@@ -54,7 +54,7 @@ let mainTable = new Tabulator("#main-table", {
                 return ((page - 1) * pageSize) + rowIndex;
             }},
         {title: "품명", field: "article", hozAlign: "left"},
-        {title: "Spec", field: "spec", hozAlign: "center", },
+        {title: "규격", field: "spec", hozAlign: "center", },
         {title: "일자", field: "iodate", hozAlign: "center"},
         {title: "창고", field: "locName", hozAlign: "center"},
         {title: "입고발주번호", field: "req_ID", hozAlign: "left"},

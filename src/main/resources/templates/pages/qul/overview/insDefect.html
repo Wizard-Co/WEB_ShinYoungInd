@@ -81,7 +81,10 @@
                             품번
                         </label>
                         <input id="txtBuyerArticleNo"
-                               type="text" class="form-control" placeholder="품번 찾기">
+                               type="text" class="form-control" placeholder="품번 찾기"
+                               ondblclick="openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)}"
+                        >
                     </div>
                     <div class="search-condition">
                         <input id="chkArticle" data-target="txtArticle"
@@ -90,7 +93,10 @@
                             품명
                         </label>
                         <input id="txtArticle"
-                               type="text" class="form-control" placeholder="품명 찾기">
+                               type="text" class="form-control" placeholder="품명 찾기"
+                               ondblclick="openModalFinder('txtArticle','txtArticle',77,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtArticle','txtArticle',77,this.value)}"
+                        >
                     </div>
                 </div>
                 <div class="panel-body-multi v-top">
@@ -101,7 +107,10 @@
                             거래처
                         </label>
                         <input id="txtCustomID"
-                               type="text" class="form-control" placeholder="거래처 찾기">
+                               type="text" class="form-control" placeholder="거래처 찾기"
+                               ondblclick="openModalFinder('txtCustomID','txtCustomID',200,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtCustomID','txtCustomID',200,this.value)}"
+                        >
                     </div>
                 </div>
             </div>

@@ -1,12 +1,12 @@
 <!--
   *packageName      : templates.pages.order
-  *fileName         : defectArticle.html
+  *fileName         : xbar.html
   *author           : gitcat87
-  *date             : 2025-12-02
+  *date             : 2025-12-04
   *======================================================
   *DATE             AUTHOR               NOTE
   *------------------------------------------------------
-  * 2025-12-02     gitcat87            최초 생성
+  * 2025-12-04      gitcat87            최초 생성
  -->
 
 <html xmlns:th="http://www.thymeleaf.org"
@@ -14,7 +14,7 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/qul/overview/defectArticle.js}"></script>
+    <script th:src="@{/qul/overview/xbar.js}"></script>
 </th:block>
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/qul/qul.css}" />
@@ -33,7 +33,7 @@
     <main>
         <div class="menu">
             <div class="page-header">
-                ■ 제품군별 품질분석
+                ■ Xbar-Rchart조회
             </div>
             <div class="icon">
                 <div class="flx">
@@ -75,15 +75,15 @@
             <div class="flx search-area">
                 <div class="panel-body-multi">
                     <div class="search-condition">
-                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
+                        <input id="chkCustomID" data-target="txtCustomID"
                                class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkBuyerArticleNo">
-                            품번
+                        <label class="lbl-srh" for="chkCustomID">
+                            거래처
                         </label>
-                        <input id="txtBuyerArticleNo"
-                               type="text" class="form-control" placeholder="품번 찾기"
-                               ondblclick="openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)"
-                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)}"
+                        <input id="txtCustomID"
+                               type="text" class="form-control" placeholder="거래처 찾기"
+                               ondblclick="openModalFinder('txtCustomID','txtCustomID',200,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtCustomID','txtCustomID',200,this.value)}"
                         >
                     </div>
                     <div class="search-condition">
@@ -99,36 +99,9 @@
                         >
                     </div>
                 </div>
-                <div class="panel-body-multi">
-                    <div class="search-condition">
-                        <input id="chkCustomID" data-target="txtCustomID"
-                               class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkCustomID">
-                            거래처
-                        </label>
-                        <input id="txtCustomID"
-                               type="text" class="form-control" placeholder="거래처 찾기"
-                               ondblclick="openModalFinder('txtCustomID','txtCustomID',200,this.value)"
-                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtCustomID','txtCustomID',200,this.value)}"
-                        >
-                    </div>
-                    <div class="search-condition">
-                        <input id="chkProductGrpID" data-target="cboProductGrpID"
-                               class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkProductGrpID">
-                            제품그룹
-                        </label>
-                        <select id="cboProductGrpID" name="ProductGrpID" class="form-select w150px">
-                            <option th:each="item : ${cboProductGrpID}"
-                                    th:value="${item.code_ID}"
-                                    th:text="${item.code_Name}">
-                            </option>
-                        </select>
-                    </div>
-                </div>
                 <div class="panel-body-multi v-top">
                     <div class="search-condition">
-                        <input id="chkOccurStep" data-target="cboOccurStep" checked
+                        <input id="chkOccurStep" data-target="cboOccurStep" checked disabled="disabled"
                                class="form-check-input" type="checkbox" value="Y">
                         <label class="lbl-srh" for="chkOccurStep">
                             발생단계
@@ -144,47 +117,56 @@
             </div>
         </div>
         <section class="flx gap-3">
-            <div class="border round-border color-green" style="width: 50%">
-                <label>
-                    1. 월별 불량지수
-                </label>
+            <div id="main-table" class="border" style="width: 30%;overflow-x: auto"></div>
+            <div class="border" style="width: 20%; box-sizing: border-box">
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">통계치 Summary</label>
+                <div class="container">
+                    <label class="retro-label col-span2">CPK</label>
+                    <input id="txtCPK" type="text" class="form-control">
+                    <label class="retro-label col-span2">CPU</label>
+                    <input id="txtCPU" type="text" class="form-control">
+                    <label class="retro-label col-span2">CPL</label>
+                    <input id="txtCPL" type="text" class="form-control">
+                    <label class="retro-label col-span2">CP</label>
+                    <input id="txtCP" type="text" class="form-control">
+                    <label class="retro-label col-span2">최대값</label>
+                    <input id="txtMaxValue" type="text" class="form-control">
+                    <label class="retro-label col-span2">최소값</label>
+                    <input id="txtMinValue" type="text" class="form-control">
+                    <label class="retro-label col-span2">평균</label>
+                    <input id="txtAverage" type="text" class="form-control">
+                    <label class="retro-label col-span2">표준편차</label>
+                    <input id="txtStandardDeviation" type="text" class="form-control">
+                    <label class="retro-label row-xbar" style="margin-right: 0px;">X-BAR</label>
+                    <label class="retro-label">UCL</label>
+                    <input id="txtXbarUCL" type="text" class="form-control">
+                    <label class="retro-label">CL</label>
+                    <input id="txtXbarCL" type="text" class="form-control">
+                    <label class="retro-label">LCL</label>
+                    <input id="txtXbarLCL" type="text" class="form-control">
+                    <label class="retro-label row-rChart" style="margin-right: 0px;">R</label>
+                    <label class="retro-label">UCL</label>
+                    <input id="txtRUCL" type="text" class="form-control">
+                    <label class="retro-label">CL</label>
+                    <input id="txtRCL" type="text" class="form-control">
+                </div>
             </div>
-            <div class="border round-border color-green" style="width: 50%">
-                <label>
-                    2. 불량유형
-                </label>
+            <div class="border" style="width: 50%">
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">X-Bar Chart</label>
+                <div class="border">
+                    <canvas id="graphXbar"></canvas>
+                </div>
+                <label class="border color-green" style="width: 100%;box-shadow: 0 2px 8px rgba(0,0,0,0.1)">R Chart</label>
+                <div class="border">
+                    <canvas id="graphRchart"></canvas>
+                </div>
             </div>
         </section>
         <section class="flx gap-3">
-            <div class="border" style="width: 50%">
-                <canvas id="graphDefectIndex"></canvas>
-            </div>
-            <div class="flx border" style="width: 50%">
-                <div class="border" style="width: 50%;">
-                    <label>제품별 점유율(%)</label>
-                    <canvas id="graphModelIndex"></canvas>
-                </div>
-                <div style="width: 50px"></div>
-                <div class="border" style="width: 50%;">
-                    <label>유형별 점유율(%)</label>
-                    <canvas id="graphTypeIndex"></canvas>
-                </div>
-            </div>
+            <div id="sub-table" class="border" style="width: 100%; overflow-x: auto"></div>
+
         </section>
 
-        <section class="flx gap-3">
-            <div id="defect-table-container" style="width: 100%"></div>
-        </section>
-        <section class="flx gap-3" style="margin-top: 10px">
-            <div class="border round-border color-green" style="width: 100%">
-                <label>
-                    ※ 상위 12개 불량정보
-                </label>
-            </div>
-        </section>
-        <section class="flx gap-3" style="margin-top: 10px">
-            <div id="defect-table-Sub-container" style="width: 100%"></div>
-        </section>
 
     </main>
 </section>
