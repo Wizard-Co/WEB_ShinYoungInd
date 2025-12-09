@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import wizard.ShinYoungInd.sysMgmt.login.Dto.LoginDto;
 import wizard.ShinYoungInd.sysMgmt.login.Dto.Utils;
+import wizard.ShinYoungInd.sysMgmt.login.Aes256Util;   // ⭐ 반드시 추가해야 함
+
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -60,13 +62,35 @@ public class UserLoginController {
             return returnURL;
         }
 
+        // ★★★ URL 디코딩 (자동로그인 대비)
+//        password = java.net.URLDecoder.decode(password, java.nio.charset.StandardCharsets.UTF_8);
+
+        // ★★★ 일반 비밀번호인지 AES 암호문인지 판별 (Base64 판정)
+        boolean isBase64Encrypted = false;
+        try {
+            java.util.Base64.getDecoder().decode(password);
+            isBase64Encrypted = true;   // Base64 문자열 → AES 암호문으로 판단
+        } catch (IllegalArgumentException e) {
+            isBase64Encrypted = false;  // Base64 아님 → 일반 웹 PW
+        }
+
+        // ★★★ AES 복호화 or 일반 PW 로 처리
+        String decryptedPassword;
+        if (isBase64Encrypted) {
+            // 🔥 AES 암호문 → 복호화
+            decryptedPassword = Aes256Util.decrypt(password);
+        } else {
+            // 🔥 일반 웹 로그인 → 그대로 사용
+            decryptedPassword = password;
+        }
+
         // 로그인 검증
-        LoginDto dto = service.xp_Common_Login(userID, password);
+        // 🔥 암호화 PW가 오든, 일반 PW가 오든 decryptedPassword 로 통일 처리
+        LoginDto dto = service.xp_Common_Login(userID, decryptedPassword);
         String error = dto.getResult();
 
 //        if (error == null || error.equals("")) {
         // 로그인 성공
-
 
         loginManager.setLoginUser(userID);
 
@@ -74,10 +98,8 @@ public class UserLoginController {
         request.getSession().setAttribute("personID", loginManager.getPersonID());
 
         session.setAttribute("userID", userID);
-        session.setAttribute("Password", password);
+        session.setAttribute("Password", decryptedPassword);  // ★ 세션도 복호화된 PW 저장
         session.setMaxInactiveInterval(-1);
-
-
 
         // 파일로 저장하는 대신 레지스트리 사용
 //        File sessionFile = new File("session.txt");
@@ -88,14 +110,16 @@ public class UserLoginController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
         // 로그인 성공 시 세션에서 실패 횟수 초기화
-        //session.setAttribute("failedAttempts", 0);
+        // session.setAttribute("failedAttempts", 0);
 
         // 리디렉션 URL을 JSON으로 반환
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.getWriter().write("{\"redirectUrl\":\"/\"}");
         return null; // 반환값이 없으므로 바로 응답을 보냄
+
 //        } else {
         // 로그인 실패 시 실패 횟수 증가
 //            failedAttempts++;
