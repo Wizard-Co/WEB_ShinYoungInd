@@ -21,7 +21,7 @@ spring:
   datasource:
     username: dbuser
     password: Wizardis
-    url: jdbc:sqlserver://121.254.224.196:20220;databaseName=WizardWeb;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://192.168.0.61:2433;databaseName=MES_ShinYoungInd;encrypt=true;trustServerCertificate=true
 ---
 spring:
   devtools:
