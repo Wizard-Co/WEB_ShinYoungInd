@@ -52,8 +52,8 @@ let mainTable = new Tabulator("#main-table", {
                 return ((page - 1) * pageSize) + rowIndex;
             }},
         {title: "품명", field: "article", hozAlign: "center"},
-        {title: "규격", field: "spec", hozAlign: "left"},
-        {title: "OrderNO", field: "orderNo", hozAlign: "center"},
+        {title: "규격", field: "spec", hozAlign: "center"},
+        // {title: "OrderNO", field: "orderNo", hozAlign: "center"},
         {title: "이월", field: "initStockQty", hozAlign: "right", formatter:"number"},
         {title: "입고", field: "stuffQty", hozAlign: "right", formatter:"number"},
         {title: "출고", field: "outQty", hozAlign: "right", formatter:"number"},
@@ -115,10 +115,10 @@ async function search() {
         sEDate: document.getElementById('eDate').value.replaceAll('-',''),
 
         nChkCustom: getChecked('chkCustom') ? 1 : 0,
-        sCustomID: document.getElementById('txtCustom').value,
+        sCustomID: document.getElementById('txtCustom').dataset.id ?? "",
 
         nChkArticleID: getChecked('chkArticle') ? 1 : 0,
-        sArticleID: document.getElementById('txtArticle').value,
+        sArticleID: document.getElementById('txtArticle').dataset.id ?? "",
 
         nChkOrder : 0,
         sOrder : "",
