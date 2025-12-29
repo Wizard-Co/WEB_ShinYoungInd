@@ -33,7 +33,18 @@ const mainTb = new DataTable('#tbMain', {
 
         {data: "workQty"},
         {data: "totalWorkQty"},
-        {data: "defectQty"}
+        {data: "defectQty"},
+
+        {data: "rpm"},
+        {data: "tQtyReset"},
+        {data: "qtyReset"},
+        {data: "temper"},
+        {data: "setTemper"},
+        {data: "upperTemper"},
+        {data: "upperSetTemper"},
+        {data: "lowerTemper"},
+        {data: "lowerSetTemper"},
+
     ],
     scrollX: true
 })
