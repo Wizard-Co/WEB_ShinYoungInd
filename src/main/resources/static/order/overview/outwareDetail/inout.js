@@ -179,7 +179,13 @@ function updateStatsTable(type, data) {
     if (type === 'monthH') {
         $('#tbSub').hide();
         $('#tbSubMonth').show();
-
+        const lblMonthH = document.getElementById('lbl-monthHTb');
+        if(table['monthH'].length > 0){
+            lblMonthH.style.visibility = 'visible'
+        }
+        else{
+            lblMonthH.style.visibility = 'hidden'
+        }
         const statsData = calculateStatsMonthH(data);
         table.tbSubMonth.setData(statsData);
     } else {
@@ -196,13 +202,13 @@ function updateStatsTable(type, data) {
 document.querySelectorAll('#nav-tab button').forEach(tab => {
     tab.addEventListener('shown.bs.tab', function(e) {
         const type = e.target.dataset.type;
-
+        const eDate = document.getElementById('eDate')
         if (tabData[type] && tabData[type].length > 0) {
             updateStatsTable(type, tabData[type]);
         } else {
-            // 데이터 없으면 통계 테이블 비우기
-            table.tbSub?.clearData();      // ← 수정
-            table.tbSubMonth?.clearData(); // ← 수정
+
+            table.tbSub?.clearData();
+            table.tbSubMonth?.clearData();
         }
 
         const chkDate = document.getElementById('chkDate');
@@ -211,9 +217,13 @@ document.querySelectorAll('#nav-tab button').forEach(tab => {
             if(!chkDate.checked){
                 chkDate.checked = true;
             }
+            if(type === 'monthH'){
+                eDate.style.visibility ='hidden'
+            }
             chkDate.disabled = true;
         } else {
             chkDate.disabled = false;
+            eDate.style.visibility ='visible'
         }
     });
 });
@@ -282,28 +292,25 @@ function getMonthHeaders() {
 }
 
 function createMultiHeaderTable(tableID, select, dataSet, type, multiHeader) {
-    // Tabulator 컬럼 정의 생성
     let columns = [];
-
-    // 먼저 rowspan=2인 컬럼들 (단일 컬럼)
     let row2Index = 0;
+    let fieldIndex = 0;
+
+    const fieldKeys = Object.keys(select);
 
     multiHeader.row1.forEach(header => {
-        const fieldKeys = Object.keys(select);
+        const meta = select[fieldKeys[fieldIndex]];
+        const classList = meta?.className?.split(" ") || [];
 
         if (header.rowspan === 2) {
             // 단일 컬럼
-            const fieldKey = fieldKeys[columns.length];
-            const meta = select[fieldKey];
-            const classList = meta?.className?.split(" ") || [];
-
             let hozAlign = "left";
             if (classList.includes("center")) hozAlign = "center";
             if (classList.includes("right")) hozAlign = "right";
 
             columns.push({
                 title: header.title,
-                field: fieldKey,
+                field: fieldKeys[fieldIndex],
                 hozAlign: hozAlign,
                 columnHeaderVertAlign: "middle",
                 width: meta?.width,
@@ -313,32 +320,34 @@ function createMultiHeaderTable(tableID, select, dataSet, type, multiHeader) {
                     precision: meta?.decimal ?? 0
                 } : undefined
             });
+
+            fieldIndex++;
+
         } else if (header.colspan) {
             // 컬럼 그룹
             let subColumns = [];
 
             for (let i = 0; i < header.colspan; i++) {
                 const subHeader = multiHeader.row2[row2Index++];
-                // 6은 rowspan=2인 기본 컬럼 개수
-                const fieldIndex = 6 + (columns.length - 6) + i;
-                const fieldKey = fieldKeys[fieldIndex];
-                const meta = select[fieldKey];
-                const classList = meta?.className?.split(" ") || [];
+                const subMeta = select[fieldKeys[fieldIndex]];
+                const subClassList = subMeta?.className?.split(" ") || [];
 
                 let hozAlign = "left";
-                if (classList.includes("center")) hozAlign = "center";
-                if (classList.includes("right")) hozAlign = "right";
+                if (subClassList.includes("center")) hozAlign = "center";
+                if (subClassList.includes("right")) hozAlign = "right";
 
                 subColumns.push({
                     title: subHeader.title,
-                    field: fieldKey,
+                    field: fieldKeys[fieldIndex],
                     hozAlign: hozAlign,
-                    formatter: classList.includes("comma") ? "number" : undefined,
-                    formatterParams: classList.includes("comma") ? {
+                    formatter: subClassList.includes("comma") ? "number" : undefined,
+                    formatterParams: subClassList.includes("comma") ? {
                         thousand: ",",
-                        precision: meta?.decimal ?? 0
+                        precision: subMeta?.decimal ?? 0
                     } : undefined
                 });
+
+                fieldIndex++;
             }
 
             columns.push({
@@ -571,6 +580,7 @@ function returnRbnInt(){
 async function search() {
 
     let type = getTab().dataset.type;
+    const lblMonthH = document.getElementById('lbl-monthHTb');
 
     let param = {
         ChkDate: getChecked('chkDate') ? 1 : 0,
@@ -605,6 +615,7 @@ async function search() {
 
         if (!data?.length) {
             toastr.warning('조회된 데이터가 없습니다');
+            lblMonthH.style.visibility = 'hidden';
 
             if (table[type]) {
                 table[type].clearData();
@@ -624,17 +635,18 @@ async function search() {
             $('#tbSub').hide();
             $('#tbSubMonth').show();
 
-            console.log('tbSubMonth 존재:', table.tbSubMonth);
-            console.log('tbSubMonth element:', $('#tbSubMonth'));
+            // console.log('tbSubMonth 존재:', table.tbSubMonth);
+            // console.log('tbSubMonth element:', $('#tbSubMonth'));
 
             const statsData = calculateStatsMonthH(data);
             table.tbSubMonth.setData(statsData);
+            lblMonthH.style.visibility = 'visible';
         } else {
             $('#tbSubMonth').hide();
             $('#tbSub').show();
 
             const statsData = calculateStats(data);
-            console.log('statsData:', statsData);
+            // console.log('statsData:', statsData);
 
             table.tbSub.setData(statsData);
         }

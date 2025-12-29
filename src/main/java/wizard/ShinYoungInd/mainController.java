@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import wizard.ShinYoungInd.baseMgmt.person.DTO.Person;
 import wizard.ShinYoungInd.sysMgmt.login.LoginManager;
 import wizard.ShinYoungInd.sysMgmt.login.UserLoginService;
 import wizard.ShinYoungInd.wizLog.log.LogService;
@@ -26,17 +27,12 @@ public class mainController {
 
     @GetMapping("/")
     public String login(Model model) {
-        //Person loginUser = loginManager.getLoginUser();
-        loginManager.setLoginUser("admin");
-
-        return "pages/kpi";
-        //return "redirect:/order/result/orderSubul";
-//
-//        if (loginUser != null) {
-//            return "pages/infoMgmt/infoSearch/infoSearch";
-//        }else {
-//            return "pages/sysMgmt/login/login";
-//        }
+        Person loginUser = loginManager.getLoginUser();
+        if (loginUser != null) {
+            return "pages/kpi";
+        }else {
+            return "pages/sysMgmt/login/login";
+        }
     }
     /**
      * 2025.05.20, 김수정, 로그 저장

@@ -136,17 +136,17 @@ async function search() {
         sEDate: document.getElementById('eDate').value.replaceAll('-',''),
 
         nChkCustom: getChecked('chkCustom') ? 1 : 0,
-        sCustomID: document.getElementById('txtCustom').value,
+        sCustomID: document.getElementById('txtCustom').dataset.id ?? "",
 
         nChkArticleID: getChecked('chkArticle') ? 1 : 0,
-        sArticleID: document.getElementById('txtArticle').value,
+        sArticleID: document.getElementById('txtArticle').dataset.id ?? "",
 
         nChkOrder : getChecked('chkOrderID') ? 1:0,
-        sOrder : document.getElementById('txtOrderID').value,
+        sOrder : document.getElementById('txtOrderID').dataset.id ?? "",
         ArticleGrpID : "05",
 
         sFromLocID : "",
-        sToLocID : document.getElementById('cboLocID').value,
+        sToLocID : document.getElementById('cboLocID').dataset.id ?? "",
 
         nChkOutClss :0,
         sOutClss : "",

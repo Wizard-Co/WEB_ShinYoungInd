@@ -580,3 +580,84 @@ function setNo(data) {
     }
 }
 
+/**
+ * 최대현, 타뷸레이터 셀 마우스오버 툴팁 *
+ * 셀 내용이 너비보다 클 경우 발생, 전역 이벤트
+ */
+
+(function() {
+    let globalTooltip = null;
+
+    function createTableTooltip() {
+        if (!globalTooltip) {
+            globalTooltip = document.createElement('div');
+            globalTooltip.id = 'tabulator-global-tooltip';
+            globalTooltip.style.cssText = `
+                position: fixed;
+                padding: 8px 12px;
+                background-color: #333;
+                color: #fff;
+                border-radius: 4px;
+                font-size: 13px;
+                white-space: nowrap;
+                z-index: 99999;
+                pointer-events: none;
+                display: none;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                max-width: 400px;
+            `;
+            document.body.appendChild(globalTooltip);
+
+            document.addEventListener('scroll', function() {
+                if (globalTooltip.style.display === 'block') {
+                    globalTooltip.style.display = 'none';
+                }
+            }, true);
+        }
+        return globalTooltip;
+    }
+
+    function checkAndAddTooltips() {
+        const tooltip = createTableTooltip();
+        const cells = document.querySelectorAll('.tabulator-cell:not([data-tooltip-processed])');
+
+        cells.forEach(cell => {
+            // 처리 완료 마크
+            cell.setAttribute('data-tooltip-processed', 'true');
+
+            // 다음 프레임에서 체크 (렌더링 완료 대기)
+            requestAnimationFrame(() => {
+                if (cell.scrollWidth > cell.clientWidth) {
+                    const text = cell.textContent.trim();
+                    if (!text) return;
+
+                    cell.style.cursor = 'pointer';
+
+                    cell.addEventListener('mouseenter', function() {
+                        tooltip.textContent = text;
+                        tooltip.style.display = 'block';
+
+                        const rect = cell.getBoundingClientRect();
+                        tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+                        tooltip.style.top = (rect.top - 35) + 'px';
+                        tooltip.style.transform = 'translateX(-50%)';
+                    });
+
+                    cell.addEventListener('mouseleave', function() {
+                        tooltip.style.display = 'none';
+                    });
+                }
+            });
+        });
+    }
+
+    // 주기적으로 체크 (500ms마다)
+    setInterval(checkAndAddTooltips, 500);
+
+    // 페이지 로드 시 즉시 실행
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAndAddTooltips);
+    } else {
+        checkAndAddTooltips();
+    }
+})();
