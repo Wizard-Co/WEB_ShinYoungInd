@@ -44,6 +44,8 @@ public class PersonService {
 
     public Person getPersonDetail(String personID) {
         Person person = mapper.getPersonDetail(personID);
+        System.out.println("아아여기는 펄슨아이디"+personID);
+        System.out.println("아아여기는 퍼얼슨"+person.getEndDate());
         person.setEndDate(date.stringDateFormat(person.getEndDate()));
         person.setStartDate(date.stringDateFormat(person.getStartDate()));
 

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,9 @@ import wizard.ShinYoungInd.sysMgmt.login.Dto.Utils;
 import wizard.ShinYoungInd.sysMgmt.login.Aes256Util;   // ⭐ 반드시 추가해야 함
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,102 +40,131 @@ import java.util.Map;
 @RequestMapping("/sysMgmt/userLogin")
 @Slf4j
 public class UserLoginController {
+
     private UserLoginService service;
     private LoginManager loginManager;
 
     @PostMapping("/")
-    public String loginProc(HttpSession session, Model model, String userID, String password, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        String returnURL = "";
+    public String loginProc(
+            HttpSession session,
+            Model model,
+            String userID,
+            String password,
+            HttpServletResponse response,
+            HttpServletRequest request
+    ) throws IOException {
 
-        // 세션에서 실패 횟수 가져오기 (기본값 0)
-        Integer failedAttempts = (Integer) session.getAttribute("failedAttempts");
-        if (failedAttempts == null) {
-            failedAttempts = 0; // 첫 로그인 시 0으로 초기화
+        // ===============================
+        // 아이디별 실패 횟수 Map
+        // ===============================
+        Map<String, Integer> failedMap =
+                (Map<String, Integer>) session.getAttribute("failedAttemptsMap");
+
+        if (failedMap == null) {
+            failedMap = new HashMap<>();
+            session.setAttribute("failedAttemptsMap", failedMap);
         }
 
-        // 로그인 시도 횟수가 5번 이상이면 계정 잠금 처리
+        int failedAttempts = failedMap.getOrDefault(userID, 0);
+
+        // ===============================
+        // ❗ 이미 5회 초과 → 바로 잠김 메시지
+        // ===============================
         if (failedAttempts >= 5) {
-            // 계정 잠금 처리
-            Utils.alertAndBackPage(response, "로그인 시도가 너무 많습니다. 계정이 잠겼습니다.");
-//            User lockedUser = service.personLock(userID);
-//            if (lockedUser != null) {
-//                Utils.alertAndBackPage(response, "로그인 시도가 너무 많습니다. 계정이 잠겼습니다.");
-//            } else {
-//                Utils.alertAndBackPage(response, "계정 잠금 처리 중 오류가 발생했습니다.");
-//            }
-            return returnURL;
+            service.personLock(userID);
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
+
+            // 🔥 JS가 읽는 key = error
+            response.getWriter().write(
+                    "{\"error\":\"로그인 시도가 너무 많습니다. 계정이 잠겼습니다.\"}"
+            );
+            return null;
         }
 
-        // ★★★ URL 디코딩 (자동로그인 대비)
-//        password = java.net.URLDecoder.decode(password, java.nio.charset.StandardCharsets.UTF_8);
+        // ===============================
+        // URL 디코딩
+        // ===============================
+        password = java.net.URLDecoder.decode(
+                password,
+                java.nio.charset.StandardCharsets.UTF_8
+        );
 
-        // ★★★ 일반 비밀번호인지 AES 암호문인지 판별 (Base64 판정)
-        boolean isBase64Encrypted = false;
+        // ===============================
+        // AES 암호문 여부 판별
+        // ===============================
+        boolean isAesEncrypted = false;
+        byte[] decodedBytes;
+
         try {
-            java.util.Base64.getDecoder().decode(password);
-            isBase64Encrypted = true;   // Base64 문자열 → AES 암호문으로 판단
+            decodedBytes = java.util.Base64.getDecoder().decode(password);
+            if (decodedBytes.length % 16 == 0) {
+                isAesEncrypted = true;
+            }
         } catch (IllegalArgumentException e) {
-            isBase64Encrypted = false;  // Base64 아님 → 일반 웹 PW
+            isAesEncrypted = false;
         }
 
-        // ★★★ AES 복호화 or 일반 PW 로 처리
-        String decryptedPassword;
-        if (isBase64Encrypted) {
-            // 🔥 AES 암호문 → 복호화
-            decryptedPassword = Aes256Util.decrypt(password);
-        } else {
-            // 🔥 일반 웹 로그인 → 그대로 사용
-            decryptedPassword = password;
-        }
+        String decryptedPassword =
+                isAesEncrypted ? Aes256Util.decrypt(password) : password;
 
+        // ===============================
         // 로그인 검증
-        // 🔥 암호화 PW가 오든, 일반 PW가 오든 decryptedPassword 로 통일 처리
+        // ===============================
         LoginDto dto = service.xp_Common_Login(userID, decryptedPassword);
         String error = dto.getResult();
 
-//        if (error == null || error.equals("")) {
-        // 로그인 성공
+        if (error == null || error.isEmpty()) {
+            // ===============================
+            // 로그인 성공
+            // ===============================
+            loginManager.setLoginUser(userID);
 
-        loginManager.setLoginUser(userID);
+            // ✅ 성공 시 해당 아이디 실패 횟수 초기화
+            failedMap.remove(userID);
 
-        model.addAttribute("user", loginManager.getLoginUser());
-        request.getSession().setAttribute("personID", loginManager.getPersonID());
+            session.setAttribute("userID", userID);
+            session.setMaxInactiveInterval(-1);
 
-        session.setAttribute("userID", userID);
-        session.setAttribute("Password", decryptedPassword);  // ★ 세션도 복호화된 PW 저장
-        session.setMaxInactiveInterval(-1);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().write("{\"redirectUrl\":\"/\"}");
 
-        // 파일로 저장하는 대신 레지스트리 사용
-//        File sessionFile = new File("session.txt");
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(sessionFile))) {
-//            writer.write("userID=" + userID);
-//            writer.write("\nPassword=" + password);  // 비밀번호도 같이 저장 (암호화 고려 필요)
-//            writer.flush();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            return null;
 
-        // 로그인 성공 시 세션에서 실패 횟수 초기화
-        // session.setAttribute("failedAttempts", 0);
+        } else {
+            // ===============================
+            // 로그인 실패
+            // ===============================
+            failedAttempts++;
+            failedMap.put(userID, failedAttempts);
 
-        // 리디렉션 URL을 JSON으로 반환
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
-        response.getWriter().write("{\"redirectUrl\":\"/\"}");
-        return null; // 반환값이 없으므로 바로 응답을 보냄
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json; charset=UTF-8");
+            response.setCharacterEncoding("UTF-8");
 
-//        } else {
-        // 로그인 실패 시 실패 횟수 증가
-//            failedAttempts++;
-//            session.setAttribute("failedAttempts", failedAttempts); // 세션에 실패 횟수 업데이트
-//
-//            // 로그인 실패 메시지 및 실패 횟수 반환
-//            response.setStatus(HttpServletResponse.SC_OK); // HTTP 상태 코드 200으로 설정
-//            response.setContentType("application/json");
-//            response.getWriter().write("{\"error\":\"" + error + "\", \"failedAttempts\":" + failedAttempts + "}");
-//            return null; // 반환값이 없으므로 바로 응답을 보냄
-//        }
+            // ❗ 이번 실패로 5회 도달 → 잠금 처리
+            if (failedAttempts >= 5) {
+                service.personLock(userID);
+
+                response.getWriter().write(
+                        "{\"error\":\"로그인 시도가 너무 많습니다. 계정이 잠겼습니다.\"}"
+                );
+                return null;
+            }
+
+            String errorMessage =
+                    error + " (실패 횟수: " + failedAttempts + "/5)";
+
+            response.getWriter().write(
+                    "{\"error\":\"" + errorMessage + "\"}"
+            );
+            return null;
+        }
     }
+
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {

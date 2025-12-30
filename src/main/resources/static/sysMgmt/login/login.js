@@ -3,97 +3,53 @@ const loginFormElem = document.querySelector('#loginForm');
 const UserIDElem = document.querySelector('#userID');
 const passwordElem = document.querySelector('#password');
 
-// 정규식
-let chkPw = /(?=.*[~`!@#$%\^&*()-+=]{2,50}).{8,50}$/;
+// ===============================
+// 간단 암호화 / 복호화
+// ===============================
+function encrypt(text) {
+    return btoa(unescape(encodeURIComponent(text)));
+}
 
+function decrypt(text) {
+    return decodeURIComponent(escape(atob(text)));
+}
+
+// ===============================
+// URL 파라미터 자동 로그인 (유지)
+// ===============================
 function getQueryParameter(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
-window.addEventListener('DOMContentLoaded',function () {
 
-    // URL에서 userID와 password 값을 가져오기
+window.addEventListener('DOMContentLoaded', function () {
     const userID = getQueryParameter("userID");
     const password = getQueryParameter("password");
 
-    // 콘솔에 userID와 password 값을 출력하여 확인
-    console.log(`userID from URL: ${userID}`);
-    console.log(`password from URL: ${password}`);
-
-    // userID와 password가 URL에 있다면 폼에 채우기
     if (userID && password) {
         UserIDElem.value = userID;
         passwordElem.value = password;
 
-        document.getElementById("loginBtn").click();
-
-    } else {
-        console.error("userID or password missing in URL parameters.");
+        // URL 자동 로그인 시에는 저장 안 함
+        loginProc(new Event("submit"));
     }
-})
-
-// 세션, 쿠키 아이디 저장
-$(document).ready(function () {
-    if (sessionStorage.length !== 0) {
-        sessionStorage.clear();
-        console.log(sessionStorage.length);
-    }
-
-    // 쿠키에서 userID와 password 값을 가져옴
-    const UserID = getCookie("userID");
-    const password = getCookie("password");
-    $("input[name='userID']").val(UserID);
-    $("input[name='password']").val(password);
-
-    if ($("input[name='userID']").val() !== "" && $("input[name='password']").val() !== "") {
-        $("#saveIdChk").attr("checked", true);
-        if ($("#saveIdChk").is(":checked")) {
-            loginProc();
-        }
-    }
-
-    $("#saveIdChk").change(function () {
-        if ($("#saveIdChk").is(":checked")) {
-            const UserID = $("input[name='userID']").val();
-            const password = $("input[name='password']").val();
-            setCookie("userID", UserID, 365);
-            setCookie("password", password, 365);
-        } else {
-            deleteCookie("userID");
-            deleteCookie("password");
-        }
-    });
-
-    $("input[name='userID']").keyup(function () {
-        if ($("#saveIdChk").is(":checked")) {
-            const UserID = $("input[name='userID']").val();
-            setCookie("userID", UserID, 365);
-        }
-    });
-
-    $("input[name='password']").keyup(function () {
-        if ($("#saveIdChk").is(":checked")) {
-            const password = $("input[name='password']").val();
-            setCookie("password", password, 365);
-        }
-    });
 });
 
-
-
-// 로그인 실패 횟수를 추적하고 메시지 표시
+// ===============================
+// 로그인 처리
+// ===============================
 function loginProc(e) {
-    const currentID = document.loginForm.userID.value;
-    const password = document.loginForm.password.value;
+    if (e) e.preventDefault();
 
-    // 로그인 정보가 비어있으면 처리
+    const currentID = UserIDElem.value.trim();
+    const password = passwordElem.value;
+    const saveId = document.getElementById("saveIdChk").checked;
+
     if (!currentID || !password) {
         alert("아이디와 비밀번호를 입력해 주세요.");
-        e.preventDefault(); // 기본 동작(폼 제출) 막기
         return;
     }
 
-    // 로그인 시도
     fetch('/sysMgmt/userLogin/', {
         method: 'POST',
         body: new URLSearchParams({
@@ -104,27 +60,81 @@ function loginProc(e) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     })
-        .then(response => response.json()) // 응답을 JSON으로 처리
+        .then(res => res.json())
         .then(result => {
             if (result.redirectUrl) {
-                // 로그인 성공 시 리디렉션 처리
-                window.location.href = result.redirectUrl; // /main으로 리디렉션
-            } else if (result.error) {
-                // DB에서 에러 메시지가 있는 경우 경고창 출력
+
+                // ✅ 자동 로그인 체크 시에만 localStorage 저장
+                if (saveId) {
+                    localStorage.setItem("autoLogin", "Y");
+                    localStorage.setItem("autoUserID", encrypt(currentID));
+                    localStorage.setItem("autoPassword", encrypt(password));
+                }
+
+                window.location.href = result.redirectUrl;
+            }
+            else if (result.error) {
                 alert(result.error);
             }
         })
-        .catch(error => console.error('Login failed:', error));
+        .catch(err => console.error('Login failed:', err));
 }
 
-// 로그인 버튼 클릭 시 로그인 처리
+// ===============================
+// localStorage 기반 자동 로그인 (confirm)
+// ===============================
+window.addEventListener("load", function () {
+
+    // URL 자동 로그인이 있으면 localStorage 자동 로그인은 실행 안 함
+    if (getQueryParameter("userID") && getQueryParameter("password")) {
+        return;
+    }
+
+    const autoLogin = localStorage.getItem("autoLogin");
+    const encUserID = localStorage.getItem("autoUserID");
+    const encPassword = localStorage.getItem("autoPassword");
+
+    if (autoLogin === "Y" && encUserID && encPassword) {
+
+        const userID = decrypt(encUserID);
+        const password = decrypt(encPassword);
+
+        const confirmLogin = confirm(
+            "이전에 로그인한 기록이 있습니다.\n같은 아이디로 로그인하시겠습니까?"
+        );
+
+        if (confirmLogin) {
+            fetch('/sysMgmt/userLogin/', {
+                method: 'POST',
+                body: new URLSearchParams({
+                    userID: userID,
+                    password: password
+                }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.redirectUrl) {
+                        window.location.href = result.redirectUrl;
+                    } else if (result.error) {
+                        alert(result.error);
+                    }
+                });
+        }
+    }
+});
+
+// ===============================
+// 버튼 / 엔터 이벤트
+// ===============================
 loginBtnElem.addEventListener('click', (e) => {
     loginProc(e);
 });
 
-// 엔터 키로 로그인 처리
 loginFormElem.addEventListener('keyup', (e) => {
-    if (e.keyCode === 13) { // Enter 키가 눌렸을 때
+    if (e.key === "Enter") {
         loginProc(e);
     }
 });
