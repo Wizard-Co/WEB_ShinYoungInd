@@ -99,7 +99,7 @@ async function Search() {
         eDate: document.getElementById('eDate').value.replaceAll('-',''),
 
         chkCustom: getChecked('chkCustom') ? 1 : 0,
-        customID: document.getElementById('txtCustom').value,
+        customID: document.getElementById('txtCustom').dataset.id,
 
         chkArticle: getChecked('chkArticle') ? 1 : 0,
         articleID: document.getElementById('txtArticle').dataset.id,

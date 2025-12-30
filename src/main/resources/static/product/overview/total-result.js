@@ -47,9 +47,9 @@ async function search() {
         buyerArticleNo: document.getElementById('txtBuyerArticleNo').dataset.id,
 
         chkProcess: getChecked('chkProcess') ? 1 : 0,
-        processID: document.getElementById('cboProcess').value,
+        processID: getCombo('cboProcess')?.value ?? "",
         chkMachine: getChecked('chkMachine') ? 1 : 0,
-        machineID: document.getElementById('cboMachine').value,
+        machineID: getCombo('cboMachine')?.value ?? "",
 
         chkWorker: getChecked('chkWorker') ? 1 : 0,
         worker: document.getElementById('txtWorker').dataset.id,
