@@ -15,6 +15,7 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/mc/workLog/work-log.js}"></script>
+    <script th:src="@{/mc/common.js}"></script>
 </th:block>
 
 <!--content-->
@@ -72,7 +73,9 @@
                             공정
                         </label>
                         <select id="cboProcess" class="form-select w150px">
-                            <option value=0>전체</option>
+                            <option value="">전체</option>
+                            <option th:each="option : ${cboProcess}"
+                                    th:value="${option.processID}" th:text="${option.process}">
                         </select>
                     </div>
                     <div class="search-condition">
@@ -81,8 +84,8 @@
                         <label class="lbl-srh" for="chkMachine">
                             호기
                         </label>
-                        <select id="cboMachine" class="form-select w150px">
-                            <option value=0>전체</option>
+                        <select id="cboMachine" class="form-select w150px" disabled>
+                            <option value="">전체</option>
                         </select>
                     </div>
                 </div>

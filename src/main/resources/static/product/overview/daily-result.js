@@ -7,9 +7,12 @@
  **********************************************
  **/
 
+
 window.addEventListener('DOMContentLoaded', function () {
     init();
+    updateMachineEnabled();
 });
+
 
 let selectedRow;
 const mainTb = new DataTable('#tbMain', {
@@ -174,3 +177,4 @@ async function getDefect(jobID) {
         loading.invisible();
     }
 }
+

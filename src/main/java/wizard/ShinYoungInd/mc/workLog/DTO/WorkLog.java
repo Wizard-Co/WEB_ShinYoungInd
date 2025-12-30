@@ -28,7 +28,8 @@ public class WorkLog {
     private int defectQty;
 
     private double rpm;
-    private double tQtyReset;
+    private double tqtyReset;
+    private double qtyReset;
     private double temper;
     private double setTemper;
     private double upperTemper;

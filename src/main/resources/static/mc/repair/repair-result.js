@@ -52,7 +52,6 @@ const mainTb = new DataTable('#tbMain', {
 
 mainTb.on('select', function (e, dt, type, indexes) {
     let main = mainTb.row(indexes).data();
-    getDefect(main.jobID);
 })
 document.getElementById('btnExcel').addEventListener("click", function () {
     const dtExcel = document.querySelector('.dt-button.buttons-excel')
@@ -79,7 +78,7 @@ async function Search() {
         mcName: document.getElementById('txtMCName').value,
 
         chkMCPart: getChecked('chkMCPart') ? 1 : 0,
-        mcPartID: document.getElementById('txtMCPart').value,
+        mcPartID: document.getElementById('txtMCPart').dataset.id,
     }
 
     loading.visible();

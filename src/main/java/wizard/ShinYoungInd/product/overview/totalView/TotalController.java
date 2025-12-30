@@ -2,8 +2,13 @@ package wizard.ShinYoungInd.product.overview.totalView;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import wizard.ShinYoungInd.mc.machine.Machine;
+import wizard.ShinYoungInd.mc.machine.MachineService;
 import wizard.ShinYoungInd.product.overview.DTO.Overview;
+import wizard.ShinYoungInd.product.process.Process;
+import wizard.ShinYoungInd.product.process.ProcessService;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +29,24 @@ import java.util.Map;
 public class TotalController {
 
     private final TotalService service;
+    private final ProcessService processService;
+    private final MachineService machineService;
 
+    @ModelAttribute
+    public void setting(Model model) {
+
+        List<Process> cboProcess = processService.getProcessSub(Map.of(
+                        "processID", "",
+                        "chkArticleGrpID", 0,
+                        "articleGrpID", "",
+                        "useClss", "")
+                                                               );
+        model.addAttribute("cboProcess", cboProcess);
+
+        List<Machine> cboMachine = machineService.getMachine("");
+        model.addAttribute("cboMachine", cboMachine);
+
+    }
     /**
      * 생산집계조회
      */

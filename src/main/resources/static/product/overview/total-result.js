@@ -39,12 +39,12 @@ async function search() {
         eDate: document.getElementById('eDate').value.replaceAll('-', ''),
 
         chkCustom: getChecked('chkCustom') ? 1 : 0,
-        customID: document.getElementById('txtCustom').value,
+        customID: document.getElementById('txtCustom').dataset.id,
 
         chkArticle: getChecked('chkArticle') ? 1 : 0,
-        articleID: document.getElementById('txtArticle').value,
+        articleID: document.getElementById('txtArticle').dataset.id,
         chkBuyerArticleNo: getChecked('chkBuyerArticleNo') ? 1 : 0,
-        buyerArticleNo: document.getElementById('txtBuyerArticleNo').value,
+        buyerArticleNo: document.getElementById('txtBuyerArticleNo').dataset.id,
 
         chkProcess: getChecked('chkProcess') ? 1 : 0,
         processID: document.getElementById('cboProcess').value,
@@ -52,7 +52,7 @@ async function search() {
         machineID: document.getElementById('cboMachine').value,
 
         chkWorker: getChecked('chkWorker') ? 1 : 0,
-        worker: document.getElementById('txtWorker').value,
+        worker: document.getElementById('txtWorker').dataset.id,
         chkLike: getChecked('chkLike') ? 1 : 0,
     }
 

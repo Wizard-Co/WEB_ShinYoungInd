@@ -81,7 +81,10 @@
                             예비품
                         </label>
                         <input id="txtMCPart"
-                               type="text" class="form-control" placeholder="거래처 찾기">
+                               type="text" class="form-control" placeholder="예비품 검색"
+                               ondblclick="openModalFinder('txtMCPart','txtMCPart',77,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtMCPart','txtMCPart',77,this.value)}"
+                        >
                     </div>
                 </div>
             </div>

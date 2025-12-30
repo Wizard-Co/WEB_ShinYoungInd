@@ -15,6 +15,7 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/product/overview/daily-result.js}"></script>
+    <script th:src="@{/mc/common.js}"></script>
 </th:block>
 
 <!--content-->
@@ -74,23 +75,28 @@
             <div class="flx search-area">
                 <div class="panel-body-multi">
                     <div class="search-condition">
-                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
-                               class="form-check-input" type="checkbox" value="Y">
-                        <label class="lbl-srh" for="chkBuyerArticleNo">
-                            품번
-                        </label>
-                        <input id="txtBuyerArticleNo"
-                               type="text" class="form-control" placeholder="품번 검색">
-                    </div>
-                    <div class="search-condition">
                         <input id="chkArticle" data-target="txtArticle"
                                class="form-check-input" type="checkbox" value="Y">
                         <label class="lbl-srh" for="chkArticle">
                             품명
                         </label>
                         <input id="txtArticle"
-                               type="text" class="form-control" placeholder="품명 검색">
+                               type="text" class="form-control" placeholder="품명 찾기"
+                               ondblclick="openModalFinder('txtArticle','txtArticle',77,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtArticle','txtArticle',77,this.value)}">
                     </div>
+                    <div class="search-condition">
+                        <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
+                               class="form-check-input" type="checkbox" value="Y">
+                        <label class="lbl-srh" for="chkBuyerArticleNo">
+                            품번
+                        </label>
+                        <input id="txtBuyerArticleNo"
+                               type="text" class="form-control" placeholder="품번 검색"
+                               ondblclick="openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtBuyerArticleNo','txtBuyerArticleNo',76,this.value)}">
+                    </div>
+
                 </div>
                 <div class="panel-body-multi">
                     <div class="search-condition">
@@ -100,7 +106,9 @@
                             공정
                         </label>
                         <select id="cboProcess" class="form-control w150px">
-                            <option value=0>전체</option>
+                            <option value="">전체</option>
+                            <option th:each="option : ${cboProcess}"
+                                    th:value="${option.processID}" th:text="${option.process}">
                         </select>
                     </div>
                     <div class="search-condition">
@@ -110,7 +118,9 @@
                             호기
                         </label>
                         <select id="cboMachine" class="form-control w150px">
-                            <option value=0>전체</option>
+                            <option value="">전체</option>
+                            <option th:each="option : ${cboMachine}"
+                                    th:value="${option.machineID}" th:text="${option.machine}">
                         </select>
                     </div>
                 </div>
@@ -122,7 +132,9 @@
                             작업자
                         </label>
                         <input id="txtWorker"
-                               type="text" class="form-control" placeholder="공정 찾기">
+                               type="text" class="form-control" placeholder="작업자 찾기"
+                               ondblclick="openModalFinder('txtWorker','txtWorker',92,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtWorker','txtWorker',92,this.value)}">
                     </div>
                     <div class="search-condition">
                         <input id="chkJobType" data-target="cboJobType"
@@ -143,7 +155,9 @@
                             거래처
                         </label>
                         <input id="txtCustom"
-                               type="text" class="form-control" placeholder="공정 찾기">
+                               type="text" class="form-control" placeholder="거래처 찾기"
+                               ondblclick="openModalFinder('txtCustom','txtCustom',0,this.value)"
+                               onkeydown="if(event.key === 'Enter'){openModalFinder('txtCustom','txtCustom',0,this.value)}">
                     </div>
                     <div class="search-condition">
                         <input id="chkDefect"

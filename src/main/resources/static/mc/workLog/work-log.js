@@ -7,10 +7,12 @@
  **********************************************
  **/
 
-
 window.addEventListener('DOMContentLoaded', function () {
     init();
+    updateMachineEnabled();
 });
+
+
 
 let selectedRow;
 const mainTb = new DataTable('#tbMain', {
@@ -25,25 +27,25 @@ const mainTb = new DataTable('#tbMain', {
         }
     }],
     columns: [
-        {data: "num"},
-        {data: "workDate"},
-        {data: "workTime"},
-        {data: "process"},
-        {data: "machineNo"},
+        {data: "num", className: "center comma"},
+        {data: "workDate", className: "center"},
+        {data: "workTime", className: "center"},
+        {data: "process", className: "center"},
+        {data: "machineNo", className: "center"},
 
-        {data: "workQty"},
-        {data: "totalWorkQty"},
-        {data: "defectQty"},
+        {data: "workQty", className: "right comma"},
+        {data: "totalWorkQty", className: "right comma"},
+        {data: "defectQty", className: "right comma"},
 
-        {data: "rpm"},
-        {data: "tQtyReset"},
-        {data: "qtyReset"},
-        {data: "temper"},
-        {data: "setTemper"},
-        {data: "upperTemper"},
-        {data: "upperSetTemper"},
-        {data: "lowerTemper"},
-        {data: "lowerSetTemper"},
+        {data: "rpm", className: "right comma"},
+        {data: "tqtyReset", className: "right comma"},
+        {data: "qtyReset", className: "right comma"},
+        {data: "temper", className: "right comma"},
+        {data: "setTemper", className: "right comma"},
+        {data: "upperTemper", className: "right comma"},
+        {data: "upperSetTemper", className: "right comma"},
+        {data: "lowerTemper", className: "right comma"},
+        {data: "lowerSetTemper", className: "right comma"},
 
     ],
     scrollX: true
@@ -71,10 +73,10 @@ async function Search() {
         eDate: document.getElementById('eDate').value.replaceAll('-', ''),
 
         chkProcess: getChecked('chkProcess') ? 1 : 0,
-        processID: getCombo('cboProcess').value,
+        processID: getCombo('cboProcess')?.value ?? "",
 
         chkMachine: getChecked('chkMachine') ? 1 : 0,
-        machineID: getCombo('cboMachine').value,
+        machineID: getCombo('cboMachine')?.value ?? ""
     }
 
     loading.visible();
@@ -108,3 +110,4 @@ async function Search() {
         loading.invisible();
     }
 }
+

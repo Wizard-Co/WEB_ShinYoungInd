@@ -223,16 +223,21 @@ function formDisabled(formID, isDisabled){
  * @returns {*}
  */
 function getCombo(id) {
-    let obj;
+    let cbo;
 
-    if(typeof id == 'string'){
-        let cbo = document.getElementById(id);
-        obj = cbo.options[cbo.selectedIndex];
+    if (typeof id === 'string') {
+        cbo = document.getElementById(id);
     } else {
-        obj = id.options[id.selectedIndex];
+        cbo = id;
     }
-    return obj;
+
+    if (!cbo || cbo.selectedIndex < 0) {
+        return null;
+    }
+
+    return cbo.options[cbo.selectedIndex];
 }
+
 /**
  * 김수정, 2024
  * pop up post형식으로 열기
