@@ -8,4 +8,10 @@
                     #{password, mode=IN, jdbcType=NVARCHAR}
                   )}
         </select>
+    <select id="personLock" parameterType="wizard.ShinYoungInd.sysMgmt.login.Dto.LoginDto" resultType="wizard.ShinYoungInd.sysMgmt.login.Dto.LoginDto">
+        {CALL xp_Moblie_uPerson (
+                #{personId, mode = IN ,jdbcType= VARCHAR}
+              )}
+
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package wizard.ShinYoungInd.sysMgmt.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 import wizard.ShinYoungInd.baseMgmt.person.DTO.Person;
 import wizard.ShinYoungInd.baseMgmt.person.PersonService;
@@ -32,6 +33,10 @@ public class UserLoginService {
     public UserLoginService(LoginManager loginManager, PersonService personService) {
         this.loginManager = loginManager;
         this.personService = personService;
+    }
+
+    public LoginDto personLock(String personId){
+        return mapper.personLock(personId);
     }
 
     public LoginDto xp_Common_Login(String loginId, String password) {

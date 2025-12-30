@@ -8,4 +8,5 @@ public interface UserLoginMapper {
 
     LoginDto xp_Common_Login(String userID, String password);
 
+    LoginDto personLock (String personId);
 }
