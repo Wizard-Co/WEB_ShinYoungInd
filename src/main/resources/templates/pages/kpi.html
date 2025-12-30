@@ -14,7 +14,8 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script type="module" src="/kpi/kpi.js"></script>
+    <script type="module" src="/KPI/kpi.js"></script>
+<!--    <script th:src="@{//lotstockQ-result.js}"></script>-->
 </th:block>
 
 <!--content-->
@@ -63,18 +64,20 @@
                     </div>
                 </div>
                 <div class="btn-date">
-                    <input type="radio" class="btn-check date" id="btnToday" name="category" checked>
-                    <label class="btn" for="btnToday">금일</label>
+                    <input type="radio" class="btn-check date" id="btnToday" name="category" checked style="display:none;">
+                    <label class="btn" for="btnToday" style="display:none;">금일</label>
                     <input type="radio" class="btn-check date" id="btnThisMonth" name="category">
                     <label class="btn" for="btnThisMonth">금월</label>
-                    <input type="radio" class="btn-check date" id="btnYesterDay" name="category">
-                    <label class="btn" for="btnYesterDay">전일</label>
+                    <input type="radio" class="btn-check date" id="btnYesterDay" name="category" style="display:none;">
+                    <label class="btn" for="btnYesterDay" style="display:none;">전일</label>
                     <input type="radio" class="btn-check" id="btnLastMonth" name="category">
                     <label class="btn" for="btnLastMonth">전월</label>
+                    <label class="btn" for="btnLastMonth">　</label>
+                    <label class="btn" for="btnLastMonth">　</label>
                 </div>
             </div>
             <!--            검색조건-->
-            <div class="flx search-area">
+            <div class="flx search-area" style="display:none;">
                 <div class="panel-body-multi">
                     <div class="search-condition">
                         <input id="chkBuyerArticleNo" data-target="txtBuyerArticleNo"
@@ -105,14 +108,15 @@
                     <table id="tableP" class="striped cell-border table-light-info" style="width:100%">
                         <thead>
                         <tr>
-                            <th class="center">일자</th>
-                            <th class="left">품번</th>
-                            <th class="left">품번</th>
-                            <th class="right comma">생산수량(EA)</th>
+                            <th class="center">년월</th>
+                            <th class="left" style="display:none;">품번</th>
+                            <th class="left" style="display:none;">품번</th>
+                            <th class="right comma">생산량(EA)</th>
                             <th class="right comma">작업시간(Hr)</th>
-                            <th class="right comma">시간당 생산량(EA/Hr)</th>
-                            <th class="right comma">향상률(%)</th>
+                            <th class="right comma">시간당<br>생산량(EA/Hr)</th>
                             <th class="right comma">목표달성률(%)</th>
+                            <th class="right comma">개선률(%)</th>
+
                         </tr>
                         </thead>
                     </table>
@@ -127,12 +131,13 @@
                     <table id="tableD" class="striped cell-border table-light-info" style="width:100%">
                         <thead>
                         <tr>
-                            <th class="center">일자</th>
-                            <th class="right comma">생산수량(EA)</th>
-                            <th class="right comma">불량(EA)</th>
+                            <th class="center">년월</th>
+                            <th class="right comma">검사수량(EA)</th>
+                            <th class="right comma">불량수량(EA)</th>
                             <th class="right comma">불량률(%)</th>
-                            <th class="right comma">향상률(%)</th>
                             <th class="right comma">목표달성률(%)</th>
+                            <th class="right comma">개선률(%)</th>
+
                         </tr>
                         </thead>
                     </table>

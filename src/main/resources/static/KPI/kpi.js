@@ -19,13 +19,14 @@ const tableP = new DataTable('#tableP', {
     paging: false,
     columns: [
         {data: "yyyyMM"},
-        {data: "buyerArticleNo"},
-        {data: "article"},
+        {data: "buyerArticleNo", visible: false },
+        {data: "article" , visible: false },
         {data: "workQty"},
         {data: "workTime"},
         {data: "workQtyPerHour"},
-        {data: "workUpRate"},
         {data: "workGoalRate"},
+        {data: "workUpRate"},
+
     ],
     rowCallback: function (row, data, index) {
         if (data.sort == 9) {
@@ -43,8 +44,9 @@ const tableD = new DataTable('#tableD', {
         {data: "defectWorkQty"},
         {data: "defectQty"},
         {data: "defectRate"},
+        {data: "defectGoalRate"},
         {data: "defectUpRate"},
-        {data: "defectGoalRate"}
+
     ],
     rowCallback: function (row, data, index) {
         if (data.sort == 9) {
