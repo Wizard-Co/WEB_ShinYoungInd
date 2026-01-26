@@ -22,7 +22,10 @@ const tableP = new DataTable('#tableP', {
         {data: "buyerArticleNo", visible: false },
         {data: "article" , visible: false },
         {data: "workQty"},
-        {data: "workTime"},
+        {data: "workTime", render: function (data, type, row) {
+                if (data == null) return '';
+                return Number(data).toFixed(1); // ✅ 19.8
+            }},
         {data: "workQtyPerHour"},
         {data: "workGoalRate"},
         {data: "workUpRate"},
@@ -43,7 +46,10 @@ const tableD = new DataTable('#tableD', {
         {data: "yyyyMM"},
         {data: "defectWorkQty"},
         {data: "defectQty"},
-        {data: "defectRate"},
+        {data: "defectRate",render: function (data, type, row) {
+                if (data == null) return '';
+                return Number(data).toFixed(1);
+        }},
         {data: "defectGoalRate"},
         {data: "defectUpRate"},
 
