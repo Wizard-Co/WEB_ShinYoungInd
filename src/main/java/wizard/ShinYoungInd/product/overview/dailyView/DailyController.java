@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import wizard.ShinYoungInd.mc.machine.Machine;
 import wizard.ShinYoungInd.mc.machine.MachineService;
+import wizard.ShinYoungInd.product.overview.DTO.DailyResultRes;
 import wizard.ShinYoungInd.product.overview.DTO.Overview;
 import wizard.ShinYoungInd.product.process.Process;
 import wizard.ShinYoungInd.product.process.ProcessService;
@@ -55,7 +56,7 @@ public class DailyController {
 
     @PostMapping(value = "/search")
     @ResponseBody
-    public List<Overview> getDailyResult(@RequestBody Map<String, Object> param) {
+    public DailyResultRes getDailyResult(@RequestBody Map<String, Object> param) {
         return service.getDailyResult(param);
     }
 
