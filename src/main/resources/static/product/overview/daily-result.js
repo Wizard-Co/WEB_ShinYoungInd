@@ -157,7 +157,6 @@ async function Search() {
         mappedProcessId : cboMachine.options[cboMachine.selectedIndex]?.dataset.mappedProcessId || ''
 
     }
-    console.log('param', param)
 
     loading.visible();
 

@@ -157,8 +157,6 @@ async function Search() {
     }
     loading.visible();
 
-    console.log('param', param)
-
     try {
 
         const response = await fetch("/product/result/daily/drilling/search", {
@@ -179,7 +177,7 @@ async function Search() {
 
         if (!list?.length) {
             mainTb.clear().draw();
-            subTb.clear().draw();
+            sumTb.clear().draw();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
@@ -191,7 +189,6 @@ async function Search() {
         if (summary) sumTb.rows.add([summary]);
         sumTb.draw();
 
-        console.log('list', list)
     } catch (error) {
         console.error("Fetch error:", error);
     } finally {

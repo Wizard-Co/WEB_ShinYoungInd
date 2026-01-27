@@ -21,7 +21,6 @@ cboProcess.addEventListener('change', function () {
 })
 
 function getMachine(processID) {
-    console.log('processId', processID)
     fetch(`/machine/machine?processID=${processID}`)
         .then(response => response.json())
         .then(data => {
@@ -34,7 +33,6 @@ function getMachine(processID) {
 
 function setCboMachine(data) {
     cboMachine.innerHTML = '';
-    console.log('data', data)
 
     data.forEach(item => {
         const option = document.createElement('option');
