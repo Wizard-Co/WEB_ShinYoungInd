@@ -61,15 +61,16 @@ const mainTb = new DataTable('#tbMain', {
         {data: "remark"},
     ],
     rowCallback: function (row, data, index){
-        if(data.cls == 2){          // 일반데이터
+        if(data.cls == 2){          // 공정계
             row.style.backgroundColor = '#b8d6f6';
         } else if(data.cls == 3){   // 날짜계
             row.style.backgroundColor = '#6aacfa';
         }
+
+        // 이 아래는 안 쓰는 기능
         else if(data.cls == 4){   // 공정계(공정 + 날짜)
             row.style.backgroundColor = '#419bf6';
         } 
-        // 이건 안쓰는 기능
         else if(data.cls == 9){
             row.classList.add('total');
         }

@@ -14,6 +14,13 @@ window.addEventListener('DOMContentLoaded', function () {
 let selectedRow;
 const mainTb = new DataTable('#tbMain', {
     searching: false,
+
+    // 테이블이 비었을 때 옵션 추가
+    language: {
+        emptyTable: "검색된 항목이 없습니다.",
+        zeroRecords: "검색된 항목이 없습니다.",
+        infoEmpty: "검색된 항목이 없습니다.",
+    },
     buttons: [{
         extend: 'excel',
         filename: '천공 작업 일보',
@@ -49,11 +56,17 @@ const mainTb = new DataTable('#tbMain', {
         {data: "noWorkType"},
     ],
     rowCallback: function (row, data, index){
-        if(data.cls == 2){
+        if(data.cls == 2){          // 호기+날짜계
             row.style.backgroundColor = '#b8d6f6';
-        } else if(data.cls == 4){
+        } else if(data.cls == 3){   // 날짜계
+            row.style.backgroundColor = '#6aacfa';
+        }
+
+        // 이 아래는 안 쓰는 기능
+        else if(data.cls == 4){
             row.style.backgroundColor = '#419bf6';
-        } else if(data.cls == 9){
+        }
+        else if(data.cls == 9){
             row.classList.add('total');
         }
     },
@@ -61,12 +74,36 @@ const mainTb = new DataTable('#tbMain', {
 })
 const subTb = new DataTable('#tbSub', {
     searching: false,
+
+    // 테이블이 비었을 때 옵션 추가
+    language: {
+        emptyTable: "불량이 있는 생산현황을 클릭해주세요.",
+        zeroRecords: "불량이 있는 생산현황을 클릭해주세요.",
+        infoEmpty: "불량이 있는 생산현황을 클릭해주세요.",
+    },
     columns: [
         {data: "num", className: 'center'},
         {data: "defect", className: 'left'},
         {data: "defectQty", className: 'left'},
     ]
 })
+
+const sumTb = new DataTable('#sumTb', {
+    searching: false,
+    pagination: false,
+
+    // 테이블이 비었을 때 옵션 추가
+    language: {
+        emptyTable: "검색된 항목이 없습니다.",
+        zeroRecords: "검색된 항목이 없습니다.",
+        infoEmpty: "검색된 항목이 없습니다.",
+    },
+    columns: [
+        { data: "workCnt", className: 'center'},
+        { data: "workQty", className: 'left'},
+        { data: "defectQty", className: 'left'},
+    ]
+});
 
 mainTb.on('select', function (e, dt, type, indexes) {
     let main = mainTb.row(indexes).data();
@@ -111,8 +148,9 @@ async function Search() {
         jobTypeID: document.getElementById('cboJobType').value,
         chkDefect: getChecked('chkDefect') ? 1 : 0,
 
+        chkSpec: getChecked('chkSpec') ? 1 : 0,
+        spec: document.getElementById('txtSpec').value,
     }
-
     loading.visible();
 
     try {
@@ -130,13 +168,22 @@ async function Search() {
         }
         const data = await response.json();
 
-        if (!data?.length) {
-            table.clear().draw(); // 기존 데이터 지워주기
+        const list = data?.list ?? [];
+        const summary = data?.summary ?? null;
+
+        if (!list?.length) {
+            mainTb.clear().draw();
+            subTb.clear().draw();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
-        setNo(data);
-        mainTb.clear().rows.add(data).draw();
+        setNo(list);
+        mainTb.clear().rows.add(list).draw();
+
+        // 총계테이블
+        sumTb.clear();
+        if (summary) sumTb.rows.add([summary]);
+        sumTb.draw();
 
     } catch (error) {
         console.error("Fetch error:", error);

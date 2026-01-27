@@ -60,24 +60,35 @@ public class DailyService {
         return new DailyResultRes(rows, total);
     }
 
-    public List<Overview> getDrillingResult(Map<String, Object> params) {
+    public DailyResultRes getDrillingResult(Map<String, Object> params) {
         List<Overview> overviews = mapper.getDrillingResult(params);
+
+        // 총계 테이블용
+        Overview total = null;
+        List<Overview> rows = new ArrayList<>();
+
         for (Overview overview : overviews) {
+            // 총계테이블 데이터
+            if (overview.getCls() == 9) {
+                total = overview;
+                continue;
+            }
+
             switch (overview.getCls()) {
-                case 4:
-                    overview.setWorkDate("작업구분계");
-                    overview.setProcess("");
+                case 2:
+                    overview.setOrderNo("호기계");
                     break;
-                case 9:
-                    overview.setWorkDate("총계");
-                    overview.setProcess("");
+                case 3:
+                    overview.setMachineNo("날짜계");
                     break;
             }
             overview.setWorkDate(date.stringDateFormat(overview.getWorkDate()));
             overview.setWorkStartTime(date.stringTimeFormat(overview.getWorkStartTime()));
             overview.setWorkEndTime(date.stringTimeFormat(overview.getWorkEndTime()));
+
+            rows.add(overview);
         }
-        return overviews;
+        return new DailyResultRes(rows, total);
     }
 
     public List<Overview> getDefect(String jobID) {

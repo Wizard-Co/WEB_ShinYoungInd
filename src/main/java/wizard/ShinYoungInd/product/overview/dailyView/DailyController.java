@@ -74,7 +74,7 @@ public class DailyController {
 
     @PostMapping(value = "/drilling/search")
     @ResponseBody
-    public List<Overview> getDrillingResult(@RequestBody Map<String, Object> param) {
+    public DailyResultRes getDrillingResult(@RequestBody Map<String, Object> param) {
         return service.getDrillingResult(param);
     }
 
