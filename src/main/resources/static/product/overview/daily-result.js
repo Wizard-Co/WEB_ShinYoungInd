@@ -125,6 +125,8 @@ function init() {
     const dm = new DateManager();
     sDate.value = dm.formatDate(dm.getToday());
     eDate.value = dm.formatDate(dm.getToday());
+
+    getMachine('');
 }
 
 async function Search() {
@@ -151,8 +153,11 @@ async function Search() {
         chkJobType: getChecked('chkJobType') ? 1 : 0,
         jobTypeID: getCombo('cboJobType').value,
         chkDefect: getChecked('chkDefect') ? 1 : 0,
-    }
 
+        mappedProcessId : cboMachine.options[cboMachine.selectedIndex]?.dataset.mappedProcessId || ''
+
+    }
+    console.log('param', param)
 
     loading.visible();
 

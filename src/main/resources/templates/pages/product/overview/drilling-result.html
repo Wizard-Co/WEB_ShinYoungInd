@@ -126,7 +126,8 @@
                         <select id="cboMachine" class="form-control w150px">
                             <option value="">전체</option>
                             <option th:each="option : ${cboMachine}"
-                                    th:value="${option.machineID}" th:text="${option.machine}">
+                                    th:value="${option.machineID}" th:text="${option.machine}"
+                                    th:attr="data-mapped-process-id=${option.mappedProcessId}">
                         </select>
                     </div>
                 </div>

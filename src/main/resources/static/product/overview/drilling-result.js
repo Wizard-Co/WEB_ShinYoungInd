@@ -121,6 +121,8 @@ function init() {
     const dm = new DateManager();
     sDate.value = dm.formatDate(dm.getToday());
     eDate.value = dm.formatDate(dm.getToday());
+
+    getMachine('');
 }
 
 async function Search() {
@@ -150,8 +152,12 @@ async function Search() {
 
         chkSpec: getChecked('chkSpec') ? 1 : 0,
         spec: document.getElementById('txtSpec').value,
+
+        mappedProcessId : cboMachine.options[cboMachine.selectedIndex]?.dataset.mappedProcessId || ''
     }
     loading.visible();
+
+    console.log('param', param)
 
     try {
 
@@ -185,6 +191,7 @@ async function Search() {
         if (summary) sumTb.rows.add([summary]);
         sumTb.draw();
 
+        console.log('list', list)
     } catch (error) {
         console.error("Fetch error:", error);
     } finally {

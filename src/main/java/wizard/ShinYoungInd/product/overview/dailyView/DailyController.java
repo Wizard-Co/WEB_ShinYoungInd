@@ -44,8 +44,8 @@ public class DailyController {
                                                                );
         model.addAttribute("cboProcess", cboProcess);
 
-        List<Machine> cboMachine = machineService.getMachine("");
-        model.addAttribute("cboMachine", cboMachine);
+//        List<Machine> cboMachine = machineService.getMachine("");
+//        model.addAttribute("cboMachine", cboMachine);
 
     }
 

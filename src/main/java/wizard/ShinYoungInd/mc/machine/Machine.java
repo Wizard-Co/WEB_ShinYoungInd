@@ -22,4 +22,7 @@ public class Machine {
     private String machineID;
     private String machine;
     private String machineNo;
+    private String process;
+    private String processId;
+
 }

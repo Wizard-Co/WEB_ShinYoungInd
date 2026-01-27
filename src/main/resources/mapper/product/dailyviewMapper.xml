@@ -24,6 +24,7 @@
             , #{chkJobType, javaType=int, jdbcType=SMALLINT, mode=IN}
             , #{JobTypeID, javaType=String, jdbcType=VARCHAR, mode=IN}
             , #{chkDefect, javaType=int, jdbcType=SMALLINT, mode=IN}
+            , #{mappedProcessId, javaType=String, jdbcType=VARCHAR, mode=IN}
              )
         }
     </select>
@@ -35,7 +36,8 @@
 
     <select id="getDrillingResult" statementType="CALLABLE" resultType="wizard.ShinYoungInd.product.overview.DTO.Overview"
             parameterType="map"> {
-        call xp_prd_drillingResult_S(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
+        call
+     xp_prd_drillingResult_S(#{chkDate, javaType=int, jdbcType=SMALLINT, mode=IN}
             , #{sDate, javaType=String, jdbcType=CHAR, mode=IN}
             , #{eDate, javaType=String, jdbcType=CHAR, mode=IN}
             , #{chkCustom, javaType=int, jdbcType=SMALLINT, mode=IN}
@@ -55,6 +57,7 @@
             , #{chkDefect, javaType=int, jdbcType=SMALLINT, mode=IN}
             , #{chkSpec, javaType=int, jdbcType=SMALLINT, mode=IN}
             , #{spec, javaType=String, jdbcType=VARCHAR, mode=IN}
+            , #{mappedProcessId, javaType=String, jdbcType=VARCHAR, mode=IN}
              )
         }
     </select>

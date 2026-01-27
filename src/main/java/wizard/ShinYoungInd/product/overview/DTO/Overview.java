@@ -89,4 +89,5 @@ public class Overview {
     private String spec;
     private String startSaveLabelID;
 
+    private String mappedProcessId;
 }
