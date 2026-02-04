@@ -115,7 +115,8 @@ document.querySelectorAll('#nav-tab .nav-link').forEach(btn => {
 document.getElementById('btnExcel').addEventListener("click", function () {
     let type = getTab().dataset.type;
     if (table[type]) {
-        table[type].buttons('.buttons-excel').trigger();
+        const tb = table[type].table || table[type];
+        tb.download("xlsx", type + ".xlsx");
     }
 });
 

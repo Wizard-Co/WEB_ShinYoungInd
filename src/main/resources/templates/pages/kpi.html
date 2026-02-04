@@ -14,6 +14,7 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
+    <script th:src="@{/mc/common.js}"></script>
     <script type="module" src="/KPI/kpi.js"></script>
 <!--    <script th:src="@{//lotstockQ-result.js}"></script>-->
 </th:block>
@@ -105,21 +106,7 @@
         <!--생산-->
             <div class="border" style="width: 50%">
                 <div class="table-style">
-                    <table id="tableP" class="striped cell-border table-light-info" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th class="center">년월</th>
-                            <th class="left" style="display:none;">품번</th>
-                            <th class="left" style="display:none;">품번</th>
-                            <th class="right comma">생산량(EA)</th>
-                            <th class="right comma">작업시간(Hr)</th>
-                            <th class="right comma">시간당<br>생산량(EA/Hr)</th>
-                            <th class="right comma">목표달성률(%)</th>
-                            <th class="right comma">개선률(%)</th>
-
-                        </tr>
-                        </thead>
-                    </table>
+                    <div id="tableP" class="border" style="width:100%"></div>
                 </div>
                 <div>
                     <canvas id="graphP"></canvas>
@@ -128,25 +115,29 @@
         <!--불량-->
             <div class="border" style="width: 50%">
                 <div class="table-style">
-                    <table id="tableD" class="striped cell-border table-light-info" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th class="center">년월</th>
-                            <th class="right comma">검사수량(EA)</th>
-                            <th class="right comma">불량수량(EA)</th>
-                            <th class="right comma">불량률(%)</th>
-                            <th class="right comma">목표달성률(%)</th>
-                            <th class="right comma">개선률(%)</th>
-
-                        </tr>
-                        </thead>
-                    </table>
+                    <div id="tableD" class="border" style="width:100%"></div>
                 </div>
                 <div>
                     <canvas id="graphD"></canvas>
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="excelModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">테이블 선택</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-success" data-table-id="tableP">📊 생산량증가</button>
+                            <button class="btn btn-outline-success" data-table-id="tableP">📊 불량량증가</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     </body>

@@ -14,6 +14,7 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
+    <script th:src="@{/mc/common.js}"></script>
     <script th:src="@{/mc/repair/repair-result.js}"></script>
 </th:block>
 
@@ -92,26 +93,7 @@
         <!--        메인-->
         <section>
             <div class="border">
-                <table id="tbMain" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="center">구분</th>
-                        <th class="left">설비명</th>
-                        <th class="center">수리 일자</th>
-                        <th class="left">수리 비고</th>
-                        <th class="right comma">수리 비용</th>
-
-                        <th class="left" >예비품</th>
-                        <th class="left">예비품 구입처</th>
-                        <th class="right comma">수량</th>
-                        <th class="right comma">예비품 비용</th>
-
-                        <th class="left">사유</th>
-                        <th class="left">예비품 비고</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div id="tbMain" class="border" style="width:100%"></div>
             </div>
         </section>
     </main>

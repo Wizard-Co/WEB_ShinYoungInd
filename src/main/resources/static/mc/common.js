@@ -15,10 +15,13 @@ function updateMachineEnabled() {
 }
 
 
-cboProcess.addEventListener('change', function () {
-    const select = cboProcess.value;
-    getMachine(select);
-})
+
+if (cboProcess) {
+    cboProcess.addEventListener('change', function () {
+        const select = cboProcess.value;
+        getMachine(select);
+    });
+}
 
 function getMachine(processID) {
     fetch(`/machine/machine?processID=${processID}`)

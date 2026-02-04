@@ -13,49 +13,31 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 let selectedRow;
-const mainTb = new DataTable('#tbMain', {
-    searching: false,
-    buttons: [{
-        extend: 'excel',
-        filename: '설비 수리 조회',
-        title: '설비 수리 조회',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num"},
-        {data: "repairType"},
-        {data: "mcName"},
-        {data: "repairDate"},
-        {data: "repairPrice"},
-        {data: "repairRemark"},
+let mainTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "구분", field: "repairType", hozAlign: "center" },
+    { title: "설비명", field: "mcName", hozAlign: "left" },
+    { title: "수리 일자", field: "repairDate", hozAlign: "center" },
+    { title: "수리 비고", field: "repairRemark", hozAlign: "left" },
+    { title: "수리 비용", field: "repairPrice", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
 
-        {data: "mcPart"},
-        {data: "custom"},
-        {data: "partQty"},
-        {data: "partPrice"},
+    { title: "예비품", field: "mcPart", hozAlign: "left" },
+    { title: "예비품 구입처", field: "custom", hozAlign: "left" },
+    { title: "수량", field: "partQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "예비품 비용", field: "partPrice", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
 
-        {data: "reason"},
-        {data: "partRemark"},
-    ],
-    rowCallback: function (row, data, index) {
-        if (data.cls == 1) {
-            row.style.backgroundColor = '#b8d6f6';
-        }  else if (data.cls == 9) {
-            row.classList.add('total');
-        }
-    },
-    scrollX: true
-})
+    { title: "사유", field: "reason", hozAlign: "left" },
+    { title: "예비품 비고", field: "partRemark", hozAlign: "left" },
+];
 
-mainTb.on('select', function (e, dt, type, indexes) {
-    let main = mainTb.row(indexes).data();
-})
+let mainTb = createMainTabulator("#tbMain", mainTbColumns);
+
+mainTb.on("rowClick", function (e, row) {
+    let main = row.getData();
+});
+
 document.getElementById('btnExcel').addEventListener("click", function () {
-    const dtExcel = document.querySelector('.dt-button.buttons-excel')
-    dtExcel.click();
+    mainTb.download("xlsx", "설비 수리 조회.xlsx");
 });
 
 function init() {
@@ -99,12 +81,12 @@ async function Search() {
         const data = await response.json();
 
         if (!data?.length) {
-            mainTb.clear().draw();
+            mainTb.clearData()
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
         setNo(data);
-        mainTb.clear().rows.add(data).draw();
+        mainTb.setData(data);
 
     } catch (error) {
         console.error("Fetch error:", error);

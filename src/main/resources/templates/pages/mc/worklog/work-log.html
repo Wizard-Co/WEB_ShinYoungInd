@@ -14,8 +14,8 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/mc/workLog/work-log.js}"></script>
     <script th:src="@{/mc/common.js}"></script>
+    <script th:src="@{/mc/workLog/work-log.js}"></script>
 </th:block>
 
 <!--content-->
@@ -94,31 +94,7 @@
         <!--        메인-->
         <section>
             <div class="border">
-                <table id="tbMain" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="center">일자</th>
-                        <th class="center">시간</th>
-                        <th class="center">공정</th>
-                        <th class="center">호기</th>
-
-                        <th class="right comma">생산량</th>
-                        <th class="right comma" >총 생산량</th>
-                        <th class="right comma">불량량</th>
-
-                        <th class="right comma">RPM</th>
-                        <th class="right comma">토탈 생산량 리셋신호</th>
-                        <th class="right comma">생산량 리셋신호</th>
-                        <th class="right comma">콘트롤온도 현재값</th>
-                        <th class="right comma">콘트롤온도 설정값</th>
-                        <th class="right comma">상부온도 현재값</th>
-                        <th class="right comma">상부온도 설정값</th>
-                        <th class="right comma">하부온도 현재값</th>
-                        <th class="right comma">하부온도 설정값</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div id="tbMain" class="border" style="width:100%"></div>
             </div>
         </section>
     </main>

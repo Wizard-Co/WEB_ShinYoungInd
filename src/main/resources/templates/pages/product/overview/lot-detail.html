@@ -14,6 +14,7 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
+    <script th:src="@{/mc/common.js}"></script>
     <script th:src="@{/product/overview/lot-detail.js}"></script>
 </th:block>
 
@@ -163,56 +164,16 @@
         <section class="flx gap-3">
 <!--            Label table-->
             <div style="width: 30%" class="border">
-                <table id="tbLabel" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="left">라벨</th>
-                        <th class="left">품번</th>
-                        <th class="left">품명</th>
-                        <th class="center">생산일자</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div id="tbLabel" class="border" style="width:100%"></div>
             </div>
             <div id="div2" style="width: 50%">
                 <!--            작업정보 -->
                 <div class="border" style="height: 50%">
-                    <table id="tbWork" class="striped cell-border table-light-info" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th class="center comma">순번</th>
-                            <th class="center">일자</th>
-                            <th class="center">시간</th>
-                            <th class="center">공정</th>
-                            <th class="center">호기</th>
-                            <th class="right comma">수량</th>
-                            <th class="center">작업자</th>
-                            <th class="left">비고</th>
-                            <th class="center">필요 자격</th>
-                            <th class="left">불량 정보</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div id="tbWork" class="border" style="width:100%"></div>
                 </div>
                 <!--            하위결합-->
                 <div class="border" style="height: 50%">
-                    <table id="tbChild" class="striped cell-border table-light-info" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th class="center comma">순번</th>
-                            <th class="center">라벨ID</th>
-                            <th class="left">품번</th>
-                            <th class="left">품명</th>
-                            <th class="center">구분</th>
-                            <th class="center">일자</th>
-                            <th class="center">시간</th>
-                            <th class="right comma">수량</th>
-                            <th class="left">거래처</th>
-                            <th class="right comma">현 재고</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div id="tbChild" class="border" style="width:100%"></div>
                 </div>
             </div>
 <!--            form-->

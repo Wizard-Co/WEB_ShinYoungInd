@@ -14,53 +14,64 @@ window.addEventListener('DOMContentLoaded', function () {
 let selectedRow;
 let graphP;
 let graphD;
-const tableP = new DataTable('#tableP', {
-    searching: false,
-    paging: false,
-    columns: [
-        {data: "yyyyMM"},
-        {data: "buyerArticleNo", visible: false },
-        {data: "article" , visible: false },
-        {data: "workQty"},
-        {data: "workTime", render: function (data, type, row) {
-                if (data == null) return '';
-                return Number(data).toFixed(1); // ✅ 19.8
-            }},
-        {data: "workQtyPerHour"},
-        {data: "workGoalRate"},
-        {data: "workUpRate"},
 
-    ],
-    rowCallback: function (row, data, index) {
-        if (data.sort == 9) {
-            row.classList.add('total');
+let tablePColumns = [
+    { title: "년월", field: "yyyyMM", hozAlign: "center" },
+    { title: "품번", field: "buyerArticleNo", visible: false },
+    { title: "품번", field: "article", visible: false },
+    { title: "생산량(EA)", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업시간(Hr)", field: "workTime", hozAlign: "right",
+        formatter: function (cell) {
+            const v = cell.getValue();
+            if (v == null || v === "") return "";
+            const n = Number(v);
+            if (Number.isNaN(n)) return v;
+            return n.toFixed(1);
         }
     },
-    scrollY: true
-})
+    { title: "시간당 생산량(EA/Hr)", field: "workQtyPerHour", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "목표달성률(%)", field: "workGoalRate", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: 2 } },
+    { title: "개선률(%)", field: "workUpRate", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: 2 } },
+];
 
-const tableD = new DataTable('#tableD', {
-    searching: false,
-    paging: false,
-    columns: [
-        {data: "yyyyMM"},
-        {data: "defectWorkQty"},
-        {data: "defectQty"},
-        {data: "defectRate",render: function (data, type, row) {
-                if (data == null) return '';
-                return Number(data).toFixed(1);
-        }},
-        {data: "defectGoalRate"},
-        {data: "defectUpRate"},
+let tableP = createMainTabulator("#tableP", tablePColumns);
+tableP.setData = (function (orig) {
+    return function (data) {
+        if (Array.isArray(data)) {
+            data.forEach(r => {
+                if (r && r.sort == 9) r._tabulatorRowClass = "total";
+            });
+        }
+        return orig.call(this, data);
+    };
+})(tableP.setData);
 
-    ],
-    rowCallback: function (row, data, index) {
-        if (data.sort == 9) {
-            row.classList.add('total');
+let tableDColumns = [
+    { title: "년월", field: "yyyyMM", hozAlign: "center" },
+    { title: "검사수량(EA)", field: "defectWorkQty", hozAlign: "right",
+        formatter: "money", formatterParams: { thousand: ",", precision: false }
+    },
+    { title: "불량수량(EA)", field: "defectQty", hozAlign: "right",
+        formatter: "money", formatterParams: { thousand: ",", precision: false }
+    },
+    { title: "불량률(%)", field: "defectRate", hozAlign: "right",
+        formatter: function (cell) {
+            const v = cell.getValue();
+            if (v == null || v === "") return "";
+            const n = Number(v);
+            if (Number.isNaN(n)) return v;
+            return n.toFixed(1);
         }
     },
-    scrollY: true
-})
+    { title: "목표달성률(%)", field: "defectGoalRate", hozAlign: "right",
+        formatter: "money", formatterParams: { thousand: ",", precision: 2 }
+    },
+    { title: "개선률(%)", field: "defectUpRate", hozAlign: "right",
+        formatter: "money", formatterParams: { thousand: ",", precision: 2 }
+    },
+];
+
+let tableD = createMainTabulator("#tableD", tableDColumns);
 
 function init() {
     const sDate = document.getElementById('sDate');
@@ -85,6 +96,28 @@ function init() {
     });
 }
 
+document.getElementById('btnExcel').addEventListener("click", function () {
+    // tableP.download("xlsx", "KPI조회.xlsx");
+    const excelModal = new bootstrap.Modal(document.getElementById('excelModal'));
+    excelModal.show();
+});
+const tables = {
+    tableP: tableP,
+    tableD: tableP,
+};
+
+document.querySelectorAll('#excelModal button[data-table-id]').forEach(button => {
+    button.addEventListener('click', function () {
+        const tableID = this.getAttribute('data-table-id');
+        const tb = tables[tableID];
+
+        tb.download("xlsx", tableID + ".xlsx");
+
+        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('excelModal'));
+        modalInstance.hide();
+    });
+});
+
 async function getProd(param) {
     loading.visible();
 
@@ -103,12 +136,12 @@ async function getProd(param) {
         const data = await response.json();
 
         if (!data?.length) {
-            tableP.clear().draw();
+            tableP.clearData()
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
 
-        tableP.clear().rows.add(data).draw();
+        tableP.setData(data);
         drawP(data);
 
     } catch (error) {
@@ -136,11 +169,11 @@ async function getDefect(param) {
         const data = await response.json();
 
         if (!data?.length) {
-            tableD.clear().draw();
+            tableD.clearData()
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
-        tableD.clear().rows.add(data).draw();
+        tableD.setData(data)
         drawD(data);
 
     } catch (error) {

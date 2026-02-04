@@ -15,45 +15,33 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 let selectedRow;
-const mainTb = new DataTable('#tbMain', {
-    searching: false,
-    buttons: [{
-        extend: 'excel',
-        filename: '설비 수집 조회',
-        title: '설비 수집 조회',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num", className: "center comma"},
-        {data: "workDate", className: "center"},
-        {data: "workTime", className: "center"},
-        {data: "process", className: "center"},
-        {data: "machineNo", className: "center"},
+let mainTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "일자", field: "workDate", hozAlign: "center" },
+    { title: "시간", field: "workTime", hozAlign: "center" },
+    { title: "공정", field: "process", hozAlign: "center" },
+    { title: "호기", field: "machineNo", hozAlign: "center" },
 
-        {data: "workQty", className: "right comma"},
-        {data: "totalWorkQty", className: "right comma"},
-        {data: "defectQty", className: "right comma"},
+    { title: "생산량", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "총 생산량", field: "totalWorkQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "불량량", field: "defectQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
 
-        {data: "rpm", className: "right comma"},
-        {data: "tqtyReset", className: "right comma"},
-        {data: "qtyReset", className: "right comma"},
-        {data: "temper", className: "right comma"},
-        {data: "setTemper", className: "right comma"},
-        {data: "upperTemper", className: "right comma"},
-        {data: "upperSetTemper", className: "right comma"},
-        {data: "lowerTemper", className: "right comma"},
-        {data: "lowerSetTemper", className: "right comma"},
+    { title: "RPM", field: "rpm", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "토탈 생산량 리셋신호", field: "tqtyReset", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "생산량 리셋신호", field: "qtyReset", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "콘트롤온도 현재값", field: "temper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "콘트롤온도 설정값", field: "setTemper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "상부온도 현재값", field: "upperTemper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "상부온도 설정값", field: "upperSetTemper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "하부온도 현재값", field: "lowerTemper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "하부온도 설정값", field: "lowerSetTemper", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+];
 
-    ],
-    scrollX: true
-})
+let mainTb = createMainTabulator("#tbMain", mainTbColumns);
+
 
 document.getElementById('btnExcel').addEventListener("click", function () {
-    const dtExcel = document.querySelector('.dt-button.buttons-excel')
-    dtExcel.click();
+    mainTb.download("xlsx", "설비 수집 조회.xlsx");
 });
 
 function init() {
@@ -97,12 +85,12 @@ async function Search() {
         const data = await response.json();
 
         if (!data?.length) {
-            mainTb.clear().draw();
+            mainTb.clearData();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
         setNo(data);
-        mainTb.clear().rows.add(data).draw();
+        mainTb.setData(data);
 
     } catch (error) {
         console.error("Fetch error:", error);

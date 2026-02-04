@@ -11,82 +11,47 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 let selectedRow;
-const tbLabel = new DataTable('#tbLabel', {
-    searching: false,
-    buttons: [{
-        extend: 'excel',
-        filename: '라벨목록',
-        title: '라벨목록',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num", width: "20px"},
-        {data: "labelID"},
-        {data: "buyerArticleNo"},
-        {data: "article"},
-        {data: "workDate"},
-    ],
-    scrollX: true
-})
-const tbWork = new DataTable('#tbWork', {
-    searching: false,
-    paging: false,
-    buttons: [{
-        extend: 'excel',
-        filename: '작업정보',
-        title: '작업정보',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num", width: "20px"},
-        {data: "workDate"},
-        {data: "workTime"},
-        {data: "process"},
-        {data: "machine"},
-        {data: "workQty"},
-        {data: "person"},
-        {data: "remark"},
-        {data: "hrLicense"},
-        {data: "defectList"}
-    ],
-    scrollX: true
-})
-const tbChild = new DataTable('#tbChild', {
-    searching: false,
-    paging: false,
-    buttons: [{
-        extend: 'excel',
-        filename: '하위결합',
-        title: '하위결합',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num", width: "20px"},
-        {data: "childLabelID", width: "5%"},
-        {data: "buyerArticleNo"},
-        {data: "article"},
-        {data: "type"},
-        {data: "inDate"},
-        {data: "inTime"},
-        {data: "qty"},
-        {data: "custom"},
-        {data: "stockQty"}
-    ],
-    scrollX: true
-})
+let tbLabelColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "라벨", field: "labelID", hozAlign: "left" },
+    { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+    { title: "품명", field: "article", hozAlign: "left" },
+    { title: "생산일자", field: "workDate", hozAlign: "center" },
+];
 
-tbLabel.on('select', function (e, dt, type, indexes) {
-    let label = tbLabel.row(indexes).data();
-    if (!label) return;
+let tbWorkColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "일자", field: "iodate", hozAlign: "center" },
+    { title: "시간", field: "iotime", hozAlign: "center" },
+    { title: "공정", field: "process", hozAlign: "center" },
+    { title: "호기", field: "machineNo", hozAlign: "center" },
+    { title: "수량", field: "qty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업자", field: "worker", hozAlign: "center" },
+    { title: "비고", field: "remark", hozAlign: "left" },
+    { title: "필요 자격", field: "needLicense", hozAlign: "center" },
+    { title: "불량 정보", field: "defectInfo", hozAlign: "left" },
+];
+
+let tbChildColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "라벨ID", field: "labelID", hozAlign: "center" },
+    { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+    { title: "품명", field: "article", hozAlign: "left" },
+    { title: "구분", field: "gbn", hozAlign: "center" },
+    { title: "일자", field: "iodate", hozAlign: "center" },
+    { title: "시간", field: "iotime", hozAlign: "center" },
+    { title: "수량", field: "qty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "거래처", field: "kcustom", hozAlign: "left" },
+    { title: "현 재고", field: "stockQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+];
+
+let labelTb = createMainTabulator("#tbLabel", tbLabelColumns);
+let workTb = createSummaryTabulator("#tbWork", tbWorkColumns);
+let childTb = createSummaryTabulator("#tbChild", tbChildColumns);
+
+
+labelTb.on("rowClick", function (e, row) {
+    let label = row.getData();
 
     getWorkList(label.labelID);
     getChildList(label.labelID);
@@ -139,17 +104,18 @@ async function getlabelList() {
         }
         const data = await response.json();
 
+        labelTb.clearData()
+        workTb.clearData();
+        childTb.clearData();
         if (!data?.length) {
-            tbLabel.clear().draw();
-            tbWork.clear().draw();
-            tbChild.clear().draw();
             initInput('#form');
 
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
         setNo(data);
-        tbLabel.clear().rows.add(data).draw();
+        // tbLabel.clear().rows.add(data).draw();
+        labelTb.setData(data);
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -180,13 +146,15 @@ async function getWorkList(labelID) {
         }
         const data = await response.json();
 
+        workTb.clearData();
         if (!data?.length) {
-            tbWork.clear().draw();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
         setNo(data);
-        tbWork.clear().rows.add(data).draw();
+        // tbWork.clear().rows.add(data).draw();
+        workTb.setData(data);
+
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -217,13 +185,16 @@ async function getChildList(labelID) {
         }
         const data = await response.json();
 
+        childTb.clearData();
         if (!data?.length) {
-            tbChild.clear().draw();
+            // tbChild.clear().draw();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
         setNo(data);
-        tbChild.clear().rows.add(data).draw();
+        // tbChild.clear().rows.add(data).draw();
+        childTb.setData(data);
+
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -275,15 +246,17 @@ document.getElementById('btnExcel').addEventListener("click", function () {
 });
 
 const tables = {
-    tbLabel,
-    tbWork,
-    tbChild
+    tbLabel: labelTb,
+    tbWork: workTb,
+    tbChild: childTb
 };
 
 document.querySelectorAll('#excelModal button[data-table-id]').forEach(button => {
     button.addEventListener('click', function () {
         const tableID = this.getAttribute('data-table-id');
-        tables[tableID].buttons('.buttons-excel').trigger();
+        const tb = tables[tableID];
+
+        tb.download("xlsx", tableID + ".xlsx");
 
         const modalInstance = bootstrap.Modal.getInstance(document.getElementById('excelModal'));
         modalInstance.hide();

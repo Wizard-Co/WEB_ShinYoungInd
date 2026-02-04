@@ -68,8 +68,7 @@ mainTb.on("rowSelectionChanged", function(data, rows){
 });
 
 document.getElementById('btnExcel').addEventListener("click", function () {
-    const dtExcel = document.querySelector('.dt-button.buttons-excel')
-    dtExcel.click();
+    mainTb.download("xlsx", "일생산현황조회.xlsx");
 });
 function init() {
     document.getElementById('btnSearch').addEventListener("click", Search);
