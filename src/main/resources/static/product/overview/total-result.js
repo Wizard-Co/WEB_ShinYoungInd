@@ -9,7 +9,7 @@
 
 import {cols} from './total-result-columns.js';
 
-let table = {};
+
 
 window.addEventListener('DOMContentLoaded', function () {
     init();
@@ -23,15 +23,18 @@ function init() {
     const dm = new DateManager();
     sDate.value = dm.formatDate(dm.getToday());
     eDate.value = dm.formatDate(dm.getToday());
+
+    // 첫 탭 테이블 만들기
+    const type = getTab().dataset.type;
+    table[type] = createMainTabulator('#'+ type + 'Tb', buildColumns(type));
 }
 
 function getTab() {
-    let tab = document.querySelector('.nav-link.active');
-    return tab;
+    return document.querySelector('#nav-tab .nav-link.active');
 }
 
 async function search() {
-    let type = getTab().dataset.type;
+    const type = getTab().dataset.type;
 
     let param = {
         chkDate: getChecked('chkDate') ? 1 : 0,
@@ -59,7 +62,7 @@ async function search() {
     loading.visible();
 
     try {
-        const response = await fetch(`/product/result/total/${type}`, {
+        const response = await fetch('/product/result/total/' + type, {
             method: "POST",
             body: JSON.stringify(param),
             headers: {
@@ -87,62 +90,27 @@ async function search() {
 
 }
 
-
-function setTable(dataSet, type) {
-    let tableID = `#${type}Tb`;
-    let select = cols[type];
-
-    let col = Object.entries(select).map(([key, meta]) => {
-        const classList = meta.className?.split(" ") || [];
-        const hasComma = classList.includes("comma");
-
-        return {
-            data: key,
-            title: meta.title,
-            className: meta.className || "left",
-            width: meta.width || null,
-            orderable: meta.orderable || "false",
-            render: hasComma
-                ? $.fn.dataTable.render.number(",", ".", 0)
-                : null
-        };
-    });
-
-    let datalst = dataSet.map(a => {
-        let filtered = Object.fromEntries(
-            Object.keys(select).map(key => [key, a[key] ?? null])
-        );
-        filtered.cls = a.cls ?? null;
-        return filtered;
-    });
-
-    if (DataTable.isDataTable(tableID)) {
-        table[type].clear().rows.add(datalst).draw();
-    } else {
-        table[type] = new DataTable(tableID, {
-            searching: false,
-            autoWidth: false,
-            columns: col,
-            data: datalst,
-            buttons: [
-                {
-                    extend: 'excel',
-                    title: type,
-                    filename: type,
-                }
-            ],
-            rowCallback: function (row, data, index) {
-                if (data.cls == 2) {
-                    row.style.backgroundColor = "#b8d6f6";
-                } else if (data.cls == 3) {
-                    row.style.backgroundColor = "#419bf6";
-                } else if (data.cls == 9) {
-                    row.classList.add("total");
-                }
-            }
-        });
+let table = {};
+function setTable(data, type) {
+    if (!table[type]) {
+        table[type] = createMainTabulator('#' + type + 'Tb', buildColumns(type));
     }
+    table[type].replaceData(data || []);
 }
+
+// 탭클릭시 테이블 만들기
+document.querySelectorAll('#nav-tab .nav-link').forEach(btn => {
+    btn.addEventListener('shown.bs.tab', function () {
+        const type = this.dataset.type;
+        const selector = `#${type}Tb`;
+
+        if (!table[type]) {
+            table[type] = createMainTabulator(selector, buildColumns(type));
+        }
+    });
+});
+
+
 
 document.getElementById('btnExcel').addEventListener("click", function () {
     let type = getTab().dataset.type;
@@ -150,3 +118,90 @@ document.getElementById('btnExcel').addEventListener("click", function () {
         table[type].buttons('.buttons-excel').trigger();
     }
 });
+
+
+function buildColumns(type) {
+    if (type === "process") {
+        return [
+            { title: "순번", field: "num", hozAlign: "center" },
+            { title: "공정", field: "process", hozAlign: "center" },
+            { title: "호기", field: "machineNo", hozAlign: "center" },
+            { title: "모델", field: "model", hozAlign: "center" },
+            { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+            { title: "품명", field: "article", hozAlign: "left" },
+            { title: "거래처", field: "custom", hozAlign: "left" },
+            { title: "생산량", field: "workQty", hozAlign: "right" },
+            { title: "작업시간", field: "workTime", hozAlign: "right" },
+            { title: "박스당 장입량", field: "qtyPerBox", hozAlign: "right" },
+        ];
+    }
+
+    if (type === "article") {
+        return [
+            { title: "순번", field: "num", hozAlign: "center" },
+            { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+            { title: "품명", field: "article", hozAlign: "left" },
+            { title: "거래처", field: "custom", hozAlign: "left" },
+            { title: "모델", field: "model", hozAlign: "center" },
+            { title: "생산량", field: "workQty", hozAlign: "right" },
+            { title: "박스당 장입량", field: "qtyPerBox", hozAlign: "right" },
+        ];
+    }
+
+    if (type === "worker") {
+        return [
+            { title: "순번", field: "num", hozAlign: "center" },
+            { title: "작업자", field: "worker", hozAlign: "center" },
+            { title: "공정", field: "process", hozAlign: "center" },
+            { title: "호기", field: "machineNo", hozAlign: "center" },
+            { title: "모델", field: "model", hozAlign: "center" },
+            { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+            { title: "품명", field: "article", hozAlign: "left" },
+            { title: "거래처", field: "custom", hozAlign: "left" },
+            { title: "생산량", field: "workQty", hozAlign: "right" },
+            { title: "박스당 장입량", field: "qtyPerBox", hozAlign: "right" },
+        ];
+    }
+
+    if (type === "daily") {
+        return [
+            { title: "순번", field: "num", hozAlign: "center" },
+            { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
+            { title: "품명", field: "article", hozAlign: "left" },
+            { title: "생산량", field: "totalQty", hozAlign: "right" },
+            { title: "1일", field: "day01", hozAlign: "right" },
+            { title: "2일", field: "day02", hozAlign: "right" },
+            { title: "3일", field: "day03", hozAlign: "right" },
+            { title: "4일", field: "day04", hozAlign: "right" },
+            { title: "5일", field: "day05", hozAlign: "right" },
+            { title: "6일", field: "day06", hozAlign: "right" },
+            { title: "7일", field: "day07", hozAlign: "right" },
+            { title: "8일", field: "day08", hozAlign: "right" },
+            { title: "9일", field: "day09", hozAlign: "right" },
+            { title: "10일", field: "day10", hozAlign: "right" },
+            { title: "11일", field: "day11", hozAlign: "right" },
+            { title: "12일", field: "day12", hozAlign: "right" },
+            { title: "13일", field: "day13", hozAlign: "right" },
+            { title: "14일", field: "day14", hozAlign: "right" },
+            { title: "15일", field: "day15", hozAlign: "right" },
+            { title: "16일", field: "day16", hozAlign: "right" },
+            { title: "17일", field: "day17", hozAlign: "right" },
+            { title: "18일", field: "day18", hozAlign: "right" },
+            { title: "19일", field: "day19", hozAlign: "right" },
+            { title: "20일", field: "day20", hozAlign: "right" },
+            { title: "21일", field: "day21", hozAlign: "right" },
+            { title: "22일", field: "day22", hozAlign: "right" },
+            { title: "23일", field: "day23", hozAlign: "right" },
+            { title: "24일", field: "day24", hozAlign: "right" },
+            { title: "25일", field: "day25", hozAlign: "right" },
+            { title: "26일", field: "day26", hozAlign: "right" },
+            { title: "27일", field: "day27", hozAlign: "right" },
+            { title: "28일", field: "day28", hozAlign: "right" },
+            { title: "29일", field: "day29", hozAlign: "right" },
+            { title: "30일", field: "day30", hozAlign: "right" },
+            { title: "31일", field: "day31", hozAlign: "right" },
+        ];
+    }
+
+    return [];
+}

@@ -14,8 +14,8 @@
       layout:decorate="~{layout/layout}" lang="ko">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/product/overview/drilling-result.js}"></script>
     <script th:src="@{/mc/common.js}"></script>
+    <script th:src="@{/product/overview/drilling-result.js}"></script>
 </th:block>
 
 <!--content-->
@@ -179,60 +179,18 @@
         <!--        메인-->
         <section class="flx gap-3">
             <div style="width: 80%" class="border">
-                <table id="tbMain" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="center">생산일자</th>
-                        <th class="center">호기</th>
-                        <th class="center">오더번호</th>
-                        <th class="left">품명</th>
-
-                        <th class="left" >규격</th>
-                        <th class="left">거래처</th>
-                        <th class="right comma">수주량</th>
-                        <th class="center">작업시작시간</th>
-                        <th class="center">작업종료시간</th>
-
-                        <th class="center comma">생산량</th>
-                        <th class="center comma">불량수량</th>
-                        <th class="center">작업자</th>
-                        <th class="center">LotNo</th>
-                        <th class="left">원단로트</th>
-
-                        <th class="left">Size(mm)</th>
-                        <th class="left">바늘지름(mm)</th>
-                        <th class="left">바늘수(EA)</th>
-                        <th class="left">작업구분</th>
-                        <th class="left">비가동사유</th>
-                    </tr>
-                    </thead>
-                </table>
+                <div class="border">
+                    <div id="tbMain" class="border" style="width:100%"></div>
+                </div>
             </div>
             <div style="width: 20%" class="border">
-                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%">
-                    <thead>
-                    <tr>
-                        <th class="center comma">순번</th>
-                        <th class="left">불량명</th>
-                        <th class="right comma">불량수량</th>
-                    </tr>
-                    </thead>
-                </table>
+                <table id="tbSub" class="striped cell-border table-light-info" style="width:100%"></table>
             </div>
         </section>
 
         <section class="border" style="width:30%">
             <!-- 총계 테이블 -->
-            <table id="sumTb" class="striped cell-border table-light-info" style="width:100%">
-                <thead>
-                <tr>
-                    <th class="right comma">건수</th>
-                    <th class="right comma">생산량</th>
-                    <th class="right comma">불량수량</th>
-                </tr>
-                </thead>
-            </table>
+            <table id="tbSum" class="striped cell-border table-light-info" style="width:100%"></table>
         </section>
     </main>
     </body>

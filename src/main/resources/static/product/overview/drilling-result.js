@@ -12,103 +12,53 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 let selectedRow;
-const mainTb = new DataTable('#tbMain', {
-    searching: false,
+let mainTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "생산일자", field: "workDate", hozAlign: "center" },
+    { title: "호기", field: "machineNo", hozAlign: "center" },
+    { title: "오더번호", field: "orderNo", hozAlign: "center" },
+    { title: "품명", field: "article", hozAlign: "left" },
 
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "검색된 항목이 없습니다.",
-        zeroRecords: "검색된 항목이 없습니다.",
-        infoEmpty: "검색된 항목이 없습니다.",
-    },
-    buttons: [{
-        extend: 'excel',
-        filename: '천공 작업 일보',
-        title: '천공 작업 일보',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num"},
-        {data: "workDate"},
-        {data: "machineNo"},
-        {data: "orderNo"},
-        {data: "article"},
+    { title: "규격", field: "spec", hozAlign: "left" },
+    { title: "거래처", field: "custom", hozAlign: "left" },
+    { title: "수주량", field: "orderQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업시작시간", field: "workStartTime", hozAlign: "center" },
+    { title: "작업종료시간", field: "workEndTime", hozAlign: "center" },
 
-        {data: "spec"},
-        {data: "custom"},
-        {data: "orderQty"},
-        {data: "workStartTime"},
-        {data: "workEndTime"},
+    { title: "생산량", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "불량수량", field: "defectQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업자", field: "worker", hozAlign: "center" },
+    { title: "LotNo", field: "labelID", hozAlign: "center" },
+    { title: "원단로트", field: "startSaveLabelID", hozAlign: "left" },
 
-        {data: "workQty"},
-        {data: "defectQty"},
-        {data: "worker"},
-        {data: "labelID"},
-        {data: "startSaveLabelID"},
+    { title: "Size(mm)", field: "perforSize", hozAlign: "left" },
+    { title: "바늘지름(mm)", field: "needleDia", hozAlign: "left" },
+    { title: "바늘수(EA)", field: "needleQty", hozAlign: "left" },
+    { title: "작업구분", field: "jobType", hozAlign: "left" },
+    { title: "비가동사유", field: "noWorkType", hozAlign: "left" },
+];
+let mainTb = createMainTabulator("#tbMain", mainTbColumns);
 
-        {data: "perforSize"},
-        {data: "needleDia"},
-        {data: "needleQty"},
-        {data: "jobType"},
-        {data: "noWorkType"},
-    ],
-    rowCallback: function (row, data, index){
-        if(data.cls == 2){          // 호기+날짜계
-            row.style.backgroundColor = '#b8d6f6';
-        } else if(data.cls == 3){   // 날짜계
-            row.style.backgroundColor = '#6aacfa';
-        }
+let subTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "불량명", field: "defect", hozAlign: "left" },
+    { title: "불량수량", field: "defectQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+];
 
-        // 이 아래는 안 쓰는 기능
-        else if(data.cls == 4){
-            row.style.backgroundColor = '#419bf6';
-        }
-        else if(data.cls == 9){
-            row.classList.add('total');
-        }
-    },
-    scrollX: true
-})
-const subTb = new DataTable('#tbSub', {
-    searching: false,
+let subTb = createSummaryTabulator("#tbSub", subTbColumns);
 
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "불량이 있는 생산현황을 클릭해주세요.",
-        zeroRecords: "불량이 있는 생산현황을 클릭해주세요.",
-        infoEmpty: "불량이 있는 생산현황을 클릭해주세요.",
-    },
-    columns: [
-        {data: "num", className: 'center'},
-        {data: "defect", className: 'left'},
-        {data: "defectQty", className: 'left'},
-    ]
-})
+let sumTbColumns = [
+    { title: "건수", field: "workCnt", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "생산량", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "불량수량", field: "defectQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+];
 
-const sumTb = new DataTable('#sumTb', {
-    searching: false,
-    pagination: false,
+let sumTb = createSummaryTabulator("#tbSum", sumTbColumns);
 
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "검색된 항목이 없습니다.",
-        zeroRecords: "검색된 항목이 없습니다.",
-        infoEmpty: "검색된 항목이 없습니다.",
-    },
-    columns: [
-        { data: "workCnt", className: 'center'},
-        { data: "workQty", className: 'left'},
-        { data: "defectQty", className: 'left'},
-    ]
-});
-
-mainTb.on('select', function (e, dt, type, indexes) {
-    let main = mainTb.row(indexes).data();
+mainTb.on("rowClick", function (e, row) {
+    let main = row.getData();
     getDefect(main.jobID);
-})
+});
 document.getElementById('btnExcel').addEventListener("click", function () {
     const dtExcel = document.querySelector('.dt-button.buttons-excel')
     dtExcel.click();
@@ -182,12 +132,15 @@ async function Search() {
             return;
         }
         setNo(list);
-        mainTb.clear().rows.add(list).draw();
+        // mainTb.clear().rows.add(list).draw();
+        mainTb.setData(list);
 
         // 총계테이블
-        sumTb.clear();
-        if (summary) sumTb.rows.add([summary]);
-        sumTb.draw();
+        // sumTb.clear();
+        // if (summary) sumTb.rows.add([summary]);
+        // sumTb.draw();
+        sumTb.clearData();
+        sumTb.setData([data.summary]);
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -214,7 +167,8 @@ async function getDefect(jobID) {
         const data = await response.json();
 
         setNo(data);
-        subTb.clear().rows.add(data).draw();
+        subTb.clearData();
+        subTb.setData(data);
 
     } catch (error) {
         console.error("Fetch error:", error);

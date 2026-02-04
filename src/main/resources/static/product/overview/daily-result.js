@@ -13,106 +13,60 @@ window.addEventListener('DOMContentLoaded', function () {
     updateMachineEnabled();
 });
 
+// 메인테이블 생성
+let mainTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center" },
+    { title: "생산일자", field: "workDate", hozAlign: "center" },
+    { title: "공정", field: "process", hozAlign: "center" },
+    { title: "오더번호", field: "orderID", hozAlign: "center" },
+    { title: "품번", field: "buyerArticleNo", hozAlign: "center" },
 
-let selectedRow;
-const mainTb = new DataTable('#tbMain', {
-    searching: false,
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "검색된 항목이 없습니다.",
-        zeroRecords: "검색된 항목이 없습니다.",
-        infoEmpty: "검색된 항목이 없습니다.",
-    },
-    buttons: [{
-        extend: 'excel',
-        filename: '일 생산 현황',
-        title: '일 생산 현황',
-        customize: function (xlsx) {
-            let sheet = xlsx.xl.worksheets['sheet1.xml'];
-            $('row:first c', sheet).attr('s', '42');
-        }
-    }],
-    columns: [
-        {data: "num"},
-        {data: "workDate"},
-        {data: "process"},
-        {data: "orderID"},
-        {data: "buyerArticleNo"},
+    { title: "품명", field: "article", hozAlign: "center" },
+    { title: "규격", field: "spec", hozAlign: "left" },
+    { title: "거래처", field: "custom", hozAlign: "center" },
+    { title: "수주량", field: "orderQty", hozAlign: "right" },
+    { title: "작업시작", field: "workStartTime", hozAlign: "right" },
+    { title: "작업종료", field: "workEndTime", hozAlign: "right" },
 
-        {data: "article"},
-        {data: "spec"},
-        {data: "custom"},
-        {data: "orderQty"},
-        {data: "workStartTime"},
-        {data: "workEndTime"},
+    { title: "생산량", field: "workQty", hozAlign: "right" },
+    { title: "작업자", field: "worker", hozAlign: "center" },
+    { title: "작업구분", field: "jobType", hozAlign: "center" },
+    { title: "비가동사유", field: "noWorkType", hozAlign: "center" },
+    { title: "원자재로트번호", field: "startSaveLabelID", hozAlign: "center" },
 
-        {data: "workQty"},
-        {data: "worker"},
-        {data: "jobType"},
-        {data: "noWorkType"},
-        {data: "startSaveLabelID"},
+    { title: "도수", field: "colorCount", hozAlign: "center" },
+    { title: "색상", field: "colorCode", hozAlign: "center" },
+    { title: "동판사이즈", field: "cylinderSize", hozAlign: "right" },
+    { title: "풀림방향", field: "unlavelDir", hozAlign: "center" },
+    { title: "인쇄방식", field: "printThod", hozAlign: "center" },
 
-        {data: "colorCount"},
-        {data: "colorCode"},
-        {data: "cylinderSize"},
-        {data: "unlavelDir"},
-        {data: "printThod"},
+    { title: "지시특이사항", field: "remark", hozAlign: "left" },
+];
+let mainTb = createMainTabulator("#tbMain", mainTbColumns);
 
-        {data: "remark"},
-    ],
-    rowCallback: function (row, data, index){
-        if(data.cls == 2){          // 공정계
-            row.style.backgroundColor = '#b8d6f6';
-        } else if(data.cls == 3){   // 날짜계
-            row.style.backgroundColor = '#6aacfa';
-        }
+// 서브테이블 생성
+let subTbColumns = [
+    { title: "순번", field: "num", hozAlign: "center" },
+    { title: "불량명", field: "defect", hozAlign: "left" },
+    { title: "불량수량", field: "defectQty", hozAlign: "right" },
+];
+let subTb = createSummaryTabulator("#tbSub", subTbColumns);
 
-        // 이 아래는 안 쓰는 기능
-        else if(data.cls == 4){   // 공정계(공정 + 날짜)
-            row.style.backgroundColor = '#419bf6';
-        } 
-        else if(data.cls == 9){
-            row.classList.add('total');
-        }
-    },
-    scrollX: true
-})
-const subTb = new DataTable('#tbSub', {
-    searching: false,
+// 합계테이블 생성
+let sumTbColumns = [
+    { title: "건수", field: "workCnt", hozAlign: "right" },
+    { title: "생산량", field: "workQty", hozAlign: "right" },
+    { title: "불량수량", field: "defectQty", hozAlign: "right" },
+];
+let sumTb = createSummaryTabulator("#sumTb", sumTbColumns);
 
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "불량이 있는 생산현황을 클릭해주세요.",
-        zeroRecords: "불량이 있는 생산현황을 클릭해주세요.",
-        infoEmpty: "불량이 있는 생산현황을 클릭해주세요.",
-    },
-    columns: [
-        {data: "num", className: 'center'},
-        {data: "defect", className: 'left'},
-        {data: "defectQty", className: 'left'},
-    ]
-})
-const sumTb = new DataTable('#sumTb', {
-    searching: false,
-    pagination: false,
 
-    // 테이블이 비었을 때 옵션 추가
-    language: {
-        emptyTable: "검색된 항목이 없습니다.",
-        zeroRecords: "검색된 항목이 없습니다.",
-        infoEmpty: "검색된 항목이 없습니다.",
-    },
-    columns: [
-        { data: "workCnt", className: 'center'},
-        { data: "workQty", className: 'left'},
-        { data: "defectQty", className: 'left'},
-    ]
+mainTb.on("rowSelectionChanged", function(data, rows){
+    if (!rows.length) return;
+    let main = rows[0].getData();
+    getDefect(main.jobID);
 });
 
-mainTb.on('select', function (e, dt, type, indexes) {
-    let main = mainTb.row(indexes).data();
-    getDefect(main.jobID);
-})
 document.getElementById('btnExcel').addEventListener("click", function () {
     const dtExcel = document.querySelector('.dt-button.buttons-excel')
     dtExcel.click();
@@ -179,20 +133,19 @@ async function Search() {
         const summary = data?.summary ?? null;
 
         if (!list.length) {
-            mainTb.clear().draw();
-            subTb.clear().draw();
-            sumTb.clear().draw();
+            mainTb.clearData();
+            subTb.clearData();
+            sumTb.clearData();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
 
         setNo(list);    // 넘버링 왜여기있는지모르겠긴한데..
-        mainTb.clear().rows.add(list).draw();
+        mainTb.setData(list);
 
         // 총계테이블
-        sumTb.clear();
-        if (summary) sumTb.rows.add([summary]);
-        sumTb.draw();
+        sumTb.clearData();
+        sumTb.setData([data.summary]);
 
     } catch (error) {
         console.error("Fetch error:", error);
@@ -219,8 +172,8 @@ async function getDefect(jobID) {
         const data = await response.json();
 
         setNo(data);
-        subTb.clear().rows.add(data).draw();
-
+        subTb.clearData();
+        subTb.setData(data);
     } catch (error) {
         console.error("Fetch error:", error);
     } finally {
