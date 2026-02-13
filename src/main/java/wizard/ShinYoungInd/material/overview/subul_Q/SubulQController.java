@@ -56,7 +56,7 @@ public class SubulQController {
 
     @PostMapping("/search")
     @ResponseBody
-    public List<SubulQView> getSubulQ(@RequestBody Map<String, Object> params){
+    public Map<String,List<SubulQView>> getSubulQ(@RequestBody Map<String, Object> params){
         return service.getSubulQ(params);
     }
 

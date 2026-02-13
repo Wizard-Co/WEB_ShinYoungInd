@@ -3,9 +3,12 @@ package wizard.ShinYoungInd.material.overview.stock_Q;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import wizard.ShinYoungInd.common.util.Date;
+import wizard.ShinYoungInd.material.overview.DTO.LotStockQView;
+import wizard.ShinYoungInd.material.overview.DTO.LotSubulQView;
 import wizard.ShinYoungInd.material.overview.DTO.StockQView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +18,22 @@ public class StockQService {
     private final StockQMapper mapper;
     private final Date date;
 
-    public List<StockQView> getStockQ(Map<String,Object> params){
+//    public List<StockQView> getStockQ(Map<String,Object> params)
+    public Map<String, List<StockQView>> getStockQ(Map<String, Object> params)
+    {
         List<StockQView> stockQViews = mapper.getStockQ(params);
-        List<StockQView> listStockQ = new ArrayList<>();
+
+
+//        List<StockQView> listStockQ = new ArrayList<>();
+
+        List<StockQView> mainList = new ArrayList<>();
+        List<StockQView> totalList = new ArrayList<>();
+
         int num = 1;
 
         for (StockQView stockQView : stockQViews){
             String cls = stockQView.getCls();
+
 
             // cls가 3이거나 초기/입고/출고/재고가 모두 0이면 제외
             boolean allZero = isEmpty(stockQView.getInitStockQty()) &&
@@ -33,44 +45,63 @@ public class StockQService {
             }
 
 
-            StockQView view = new StockQView();
-            view.setNum(num);
-            view.setCls(cls);
-            view.setArticleID(stockQView.getArticleID());
-            view.setArticle(stockQView.getArticle());
-            view.setBuyerArticleNo(stockQView.getBuyerArticleNo());
-            view.setLocID(stockQView.getLocID());
-            view.setLocName(stockQView.getLocName());
 
-            // 숫자 포맷
-            view.setInitStockQty(number(stockQView.getInitStockQty()));
-            view.setStuffQty(number(stockQView.getStuffQty()));
-            view.setOutQty(number(stockQView.getOutQty()));
-            view.setStockQty(number(stockQView.getStockQty()));
-            view.setNeedstockQty(number(stockQView.getNeedstockQty()));
-            view.setOverQty(number(stockQView.getOverQty()));
-            view.setStockRate(number(stockQView.getStockRate()));
 
-            view.setUnitClss(stockQView.getUnitClss());
-            view.setUnitClssName(stockQView.getUnitClssName());
 
             if(cls.equals("4")) {
+
+                stockQView.setInitStockQty(number(stockQView.getInitStockQty()));
+                stockQView.setStuffQty(number(stockQView.getStuffQty()));
+                stockQView.setOutQty(number(stockQView.getOutQty()));
+                stockQView.setStockQty(number(stockQView.getStockQty()));
+
 //                case "4":   // 오더계
-                    view.setBuyerArticleNo("총 계");
-                    view.setArticleID("");
-                    view.setArticle("");
-                    view.setLocName("");
-                    view.setNeedstockQty("");
-                    view.setOverQty("");
-                    view.setStockRate("");
+//                stockQView.setBuyerArticleNo("총 계");
+//                stockQView.setArticleID("");
+//                stockQView.setArticle("");
+//                stockQView.setLocName("");
+//                stockQView.setNeedstockQty("");
+//                stockQView.setOverQty("");
+//                stockQView.setStockRate("");
+
+                totalList.add(stockQView);
+                continue;
 //                    break;
             }
 
-            listStockQ.add(view);
+            stockQView.setNum(num);
+            stockQView.setCls(cls);
+            stockQView.setArticleID(stockQView.getArticleID());
+            stockQView.setArticle(stockQView.getArticle());
+            stockQView.setBuyerArticleNo(stockQView.getBuyerArticleNo());
+            stockQView.setLocID(stockQView.getLocID());
+            stockQView.setLocName(stockQView.getLocName());
+
+            // 숫자 포맷
+            stockQView.setInitStockQty(number(stockQView.getInitStockQty()));
+            stockQView.setStuffQty(number(stockQView.getStuffQty()));
+            stockQView.setOutQty(number(stockQView.getOutQty()));
+            stockQView.setStockQty(number(stockQView.getStockQty()));
+            stockQView.setNeedstockQty(number(stockQView.getNeedstockQty()));
+            stockQView.setOverQty(number(stockQView.getOverQty()));
+            stockQView.setStockRate(number(stockQView.getStockRate()));
+
+            stockQView.setUnitClss(stockQView.getUnitClss());
+            stockQView.setUnitClssName(stockQView.getUnitClssName());
+
+
+
             num++;
+            mainList.add(stockQView);
+
         }
 
-        return listStockQ;
+        Map<String, List<StockQView>> result = new HashMap<>();
+        result.put("main", mainList);
+        result.put("total", totalList);
+
+
+        return result;
 
     }
 

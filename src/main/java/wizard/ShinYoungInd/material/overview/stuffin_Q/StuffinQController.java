@@ -48,8 +48,13 @@ public class StuffinQController {
 
     @PostMapping("/search")
     @ResponseBody
-    public List<Overview> getStuffinQ(@RequestBody Map<String, Object> params){
+    public Map<String, Object> getStuffinQ(@RequestBody Map<String, Object> params){
         return service.getStuffinQ(params);
     }
+//    public List<Overview> getStuffinQ(@RequestBody Map<String, Object> params){
+//        return service.getStuffinQ(params);
+//    }
+
+
 
 }

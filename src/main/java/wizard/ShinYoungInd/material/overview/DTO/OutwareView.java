@@ -58,5 +58,8 @@ public class OutwareView {
     private String colorRed;
     private String colorOrder;
 
+    public double SumOutCount;
+    public double SumOutQty;
+    public double SumAmount;
 
 }

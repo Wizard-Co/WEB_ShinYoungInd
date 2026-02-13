@@ -47,7 +47,7 @@ public class OutwareQController {
 
     @PostMapping("/search")
     @ResponseBody
-    public List<OutwareView> getOutwareQ(@RequestBody Map<String, Object> params){
+    public Map<String, List<OutwareView>> getOutwareQ(@RequestBody Map<String, Object> params){
         return service.getOutwareQ(params);
     }
 

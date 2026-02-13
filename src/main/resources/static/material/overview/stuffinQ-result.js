@@ -26,42 +26,50 @@ let mainTable = new Tabulator("#main-table", {
             }
         }
     },
-    layout: "fitColumns",
+    // layout: "fitColumns",
+    layout: "fitDataTable",
     height: "100%",
+    width: "100%",
     validationMode: "highlight",
     selectableRows: 1,
     pagination: "local",
     paginationSize: 20,
     paginationSizeSelector: [5, 10, 20, 50, 100],
+
     columnDefaults: {
         headerSort: false
     },
     columns: [
-        {title: "순", field: "num", hozAlign: "center", headerSort: true },
-        {title: "거래처", field: "customName", hozAlign: "center", headerSort: true},
-        {title: "입고일자", field: "stuffDate", hozAlign: "center"},
-        {title: "발주번호", field: "req_ID", hozAlign: "center"},
-        {title: "발주명", field: "reqName", hozAlign: "center"},
+        {title: "순", field: "num", hozAlign: "center", headerSort: true, width: "auto" },
+        {title: "거래처", field: "customName", hozAlign: "center", headerSort: true, width: "auto" },
+        {title: "입고일자", field: "stuffDate", hozAlign: "center", width: "10%"},
+        {title: "발주번호", field: "req_ID", hozAlign: "center", width: "auto"},
+        {title: "발주명", field: "reqName", hozAlign: "center", width: "auto"},
 
-        {title: "품번", field: "buyerArticleNo", hozAlign: "center"},
-        {title: "품명", field: "article", hozAlign: "center"},
-        {title: "입고구분", field: "stuffClssName", hozAlign: "center", formatter: "number"},
-        {title: "입고후창고", field: "toLocName", hozAlign: "center"},
-        {title: "입고처명", field: "custom", hozAlign: "center"},
+        {title: "품번", field: "buyerArticleNo", hozAlign: "center", width: "auto"},
+        {title: "품명", field: "article", hozAlign: "center", width: "auto"},
+        {title: "입고구분", field: "stuffClssName", hozAlign: "center", formatter: "number", width: "10%"},
+        {title: "입고후창고", field: "toLocName", hozAlign: "center", width: "auto"},
+        {title: "입고처명", field: "custom", hozAlign: "center", width: "auto"},
 
-        {title: "입고수량", field: "stuffQty", hozAlign: "center", formatter: "number"},
-        {title: "단가", field: "unitPrice", hozAlign: "center", formatter: "number"},
-        {title: "금액", field: "amount", hozAlign: "center", formatter: "number"},
-        {title: "입고단위", field: "unitClssName", hozAlign: "center"},
-        {title: "부가세", field: "vat_Ind_YN", hozAlign: "center"},
+        {title: "입고수량", field: "stuffQty", hozAlign: "right", formatter: "money", formatterParams: {thousand: ",", precision: 0} , width: "auto"},
+        {title: "단가", field: "unitPrice", hozAlign: "right", formatter: "money", formatterParams: {thousand: ",", precision: 0}, width: "auto"},
+        {title: "금액", field: "amount", hozAlign: "right", formatter: "money", formatterParams: {thousand: ",", precision: 0}, width: "auto"},
 
-        {title: "비고", field: "remark", hozAlign: "center"},
-        {title: "LotID", field: "lotid", hozAlign: "center"},
-        {title: "입고번호", field: "stuffInID", hozAlign: "center"},
-        {title: "검사일자", field: "inspectDate", hozAlign: "center"},
+        //
+        // {title: "입고수량", field: "stuffQty", hozAlign: "center", formatter: "number"},
+        // {title: "단가", field: "unitPrice", hozAlign: "center", formatter: "number"},
+        // {title: "금액", field: "amount", hozAlign: "center", formatter: "number"},
+        {title: "입고단위", field: "unitClssName", hozAlign: "center", width: "auto"},
+        {title: "부가세", field: "vat_Ind_YN", hozAlign: "center", width: "auto"},
+
+        {title: "비고", field: "remark", hozAlign: "center", width: "auto"},
+        {title: "LotID", field: "lotid", hozAlign: "center", width: "10%"},
+        {title: "입고번호", field: "stuffInID", hozAlign: "center", width: "10%"},
+        {title: "검사일자", field: "inspectDate", hozAlign: "center", width: "auto"},
         {title: "검사결과", field: "inspectApprovalYN", hozAlign: "center"},
 
-        {title: "검사", field: "inspector", hozAlign: "center"},
+        {title: "검사자", field: "inspector", hozAlign: "center", width: "10%"},
 
     ],
     rowFormatter: function(row){
@@ -74,6 +82,36 @@ let mainTable = new Tabulator("#main-table", {
         }
     },
 });
+
+
+
+let subTable = new Tabulator("#sub-table", {
+    locale: "ko-kr",
+    layout: "fitColumns",
+    height: "100%",
+    columnDefaults: {
+        headerSort: false
+    },
+    columns: [
+        {
+            title: "",       // 컬럼 헤더
+            field: "dummyField",  // 실제 데이터 키 (사용 안 해도 됨, 그냥 placeholder)
+            hozAlign: "center",
+            formatter: function(cell, formatterParams, onRendered){
+                return "합   계";  // 항상 이 글자만 표시
+            }
+        },
+        {title: "입고건수", field: "num", hozAlign: "center", formatter: "number"},
+        {title: "입고수량", field: "sumStuffInCount", hozAlign: "center", formatter: "number"},
+        {title: "금액", field: "unitPrice", hozAlign: "center", formatter: "number"},
+
+        // {title: "재고수량", field: "stockQty", hozAlign: "center", formatter: "number"},
+    ],
+
+
+
+});
+
 
 //#endregion
 window.addEventListener('DOMContentLoaded', function () {
@@ -148,13 +186,35 @@ async function Search() {
         }
         const data = await response.json();
 
-        if (!data?.length) {
+        // if (!data?.length) {
+        //     mainTable.clearData();
+        //     toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
+        //     return;
+        // }
+        // --------------------------
+        // 조회 결과 없음 췍
+        // --------------------------
+        if (!data || (!data.main?.length && !data.total?.length)) {
             mainTable.clearData();
+            subTable.clearData();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
-        setNo(data);
-        mainTable.setData(data);
+        // mainTable 순번 채우기
+        data.main.forEach((row, index) => row.num = index + 1);
+
+        // 테이블 데이터 세팅
+        mainTable.setData(data.main);
+        subTable.setData(data.total);
+
+        // // --------------------------
+        // //  main, total 각각 세팅
+        // // --------------------------
+        // mainTable.setData(data.main || []);
+        // subTable.setData(data.total || []);
+        //
+        // setNo(data);
+        // mainTable.setData(data);
 
     } catch (error) {
         console.error("Fetch error:", error);

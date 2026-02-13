@@ -84,6 +84,35 @@ let mainTable = new Tabulator("#main-table", {
 
 });
 
+let subTable = new Tabulator("#sub-table", {
+    locale: "ko-kr",
+    layout: "fitColumns",
+    height: "100%",
+    columnDefaults: {
+        headerSort: false
+    },
+    columns: [
+        {
+            title: "",       // 컬럼 헤더
+            field: "dummyField",  // 실제 데이터 키 (사용 안 해도 됨, 그냥 placeholder)
+            hozAlign: "center",
+            formatter: function(cell, formatterParams, onRendered){
+                return "합   계";  // 항상 이 글자만 표시
+            }
+        },
+        {title: "이 월", field: "initStockQty", hozAlign: "center", formatter: "number"},
+        {title: "입고수량", field: "stuffQty", hozAlign: "center", formatter: "number"},
+        {title: "출고수량", field: "outQty", hozAlign: "center", formatter: "number"},
+        {title: "재고수량", field: "stockQty", hozAlign: "center", formatter: "number"},
+
+        // {title: "재고수량", field: "stockQty", hozAlign: "center", formatter: "number"},
+    ],
+
+
+
+});
+
+
 //#endregion
 window.addEventListener('DOMContentLoaded', function () {
     init();
@@ -170,17 +199,33 @@ async function Search() {
             const errorText = await response.text();
             throw new Error(`Error ${response.status}, ${errorText}`);
         }
-        const data = await response.json();
+        const data = await response.json();  //
 
         console.log("전송 파라메터:", JSON.stringify(param));
+        console.log("받은 데이터:", data);
 
-        if (!data?.length) {
+        // --------------------------
+        // 조회 결과 없음 췍
+        // --------------------------
+        if (!data || (!data.main?.length && !data.total?.length)) {
             mainTable.clearData();
+            subTable.clearData();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
-        setNo(data);
-        mainTable.setData(data);
+
+
+
+        // --------------------------
+        //  main, total 각각 세팅
+        // --------------------------
+        mainTable.setData(data.main || []);
+        subTable.setData(data.total || []);
+
+        // --------------------------
+        //  순번 부여도 main 기준으로
+        // --------------------------
+        setNo(data.main || []);
 
         console.log("data:", JSON.stringify(data));
         console.table("data:",data);

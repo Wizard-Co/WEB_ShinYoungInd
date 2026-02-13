@@ -3,8 +3,11 @@ package wizard.ShinYoungInd.material.overview.outware_Q;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import wizard.ShinYoungInd.common.util.Date;
+import wizard.ShinYoungInd.material.overview.DTO.LotSubulQView;
 import wizard.ShinYoungInd.material.overview.DTO.OutwareView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,11 +17,31 @@ public class OutwareQService {
     private final OutwareQMapper mapper;
     private final Date date;
 
-    public List<OutwareView> getOutwareQ(Map<String, Object> params){
+    public Map<String, List<OutwareView>> getOutwareQ(Map<String, Object> params){
         List<OutwareView> outwareViews = mapper.getOutwareQ(params);
+
+        List<OutwareView> mainList = new ArrayList<>();
+        List<OutwareView> totalList = new ArrayList<>();
+
+        int num = 0;
         for (OutwareView outwareView : outwareViews){
 
             String depth = outwareView.getDepth();
+
+            if ("6".equals(depth)) {
+
+                outwareView.setArticle("총계");
+
+
+                outwareView.setNum(num);
+                outwareView.setSumOutQty(Double.parseDouble(outwareView.getOutQty()));
+//                outwareView.setOutQty(Double.parseDouble(outwareView.getOutQty()));
+                outwareView.setSumAmount(Double.parseDouble(outwareView.getAmount()));
+
+                totalList.add(outwareView);
+                continue;
+            }
+
 
             switch (depth) {
                 case "0":   // 기본 라인
@@ -70,16 +93,16 @@ public class OutwareQService {
                     outwareView.setOutwareiD("");
                     break;
 
-                case "6":   // 총 합계
-                    outwareView.setOutDate("총 합계");
-                    outwareView.setKCustom("");
-                    outwareView.setArticle("");
-                    outwareView.setBuyerArticleNo("");
-                    outwareView.setFromLocName("");
-                    outwareView.setToLocname("");
-                    outwareView.setOutClssname("");
-                    outwareView.setOutwareiD("");
-                    break;
+//                case "6":   // 총 합계
+//                    outwareView.setOutDate("총 합계");
+//                    outwareView.setKCustom("");
+//                    outwareView.setArticle("");
+//                    outwareView.setBuyerArticleNo("");
+//                    outwareView.setFromLocName("");
+//                    outwareView.setToLocname("");
+//                    outwareView.setOutClssname("");
+//                    outwareView.setOutwareiD("");
+//                    break;
             }
 
             // 숫자 포맷
@@ -89,9 +112,22 @@ public class OutwareQService {
 
             // 날짜 포맷
             outwareView.setOutDate(date.stringDateFormat(outwareView.getOutDate()));
+
+            num++;
+            outwareView.setNum(num);
+
+
+            mainList.add(outwareView);
+
         }
 
-        return outwareViews;
+
+
+        Map<String, List<OutwareView>> result = new HashMap<>();
+        result.put("main", mainList);
+        result.put("total", totalList);
+
+        return result;
     }
 
 

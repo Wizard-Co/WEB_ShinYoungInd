@@ -39,6 +39,7 @@ public class SubulQView {
 
     private String Remark;
     private String StockQty;
+    private String NmstockQty;
 
     private Boolean ArticleTotal_Color;
     private Boolean Total_Color;

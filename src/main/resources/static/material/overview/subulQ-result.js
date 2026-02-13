@@ -26,8 +26,10 @@ let mainTable = new Tabulator("#main-table", {
             }
         }
     },
-    layout: "fitColumns",
+    // layout: "fitColumns",
+    layout: "fitDataTable",
     height: "100%",
+    width: "100%",
     validationMode: "highlight",
     selectableRows: 1,
     pagination: "local",
@@ -38,20 +40,20 @@ let mainTable = new Tabulator("#main-table", {
     },
     columns: [
 
-        {title: "순번", field: "num", hozAlign: "center", headerSort: true },
-        {title: "품번", field: "buyerArticleNo", hozAlign: "center"},
-        {title: "품명", field: "article", hozAlign: "center"},
-        {title: "일자", field: "ioDate", hozAlign: "center"},
-        {title: "창고", field: "locName", hozAlign: "center"},
-        {title: "입고<br>발주번호", field: "req_ID", hozAlign: "center"},
-        {title: "입고<br>수량", field: "stuffQty", hozAlign: "center" , formatter: "number"},
-        {title: "출고<br>오더번호", field: "orderNo", hozAlign: "center"},
-        {title: "출고<br>수량", field: "outQty", hozAlign: "center" , formatter: "number"},
-        {title: "입출고구분", field: "inoutClssname", hozAlign: "center"},
-        {title: "단위", field: "unitClssName", hozAlign: "center"},
-        {title: "입출고처", field: "relLocName", hozAlign: "center"},
-        {title: "재고량", field: "stockQty", hozAlign: "center", formatter: "number"},
-        {title: "비고", field: "remark", hozAlign: "center"},
+        {title: "순번", field: "num", hozAlign: "center", headerSort: true , width: "auto"},
+        {title: "품번", field: "buyerArticleNo", hozAlign: "center" , width: "auto"},
+        {title: "품명", field: "article", hozAlign: "center", width: "auto"},
+        {title: "일자", field: "ioDate", hozAlign: "center", width: "10%"},
+        {title: "창고", field: "locName", hozAlign: "center", width: "10%"},
+        {title: "입고<br>발주번호", field: "req_ID", hozAlign: "center", width: "auto"},
+        {title: "입고<br>수량", field: "stuffQty", hozAlign: "center" , formatter: "number", width: "auto"},
+        {title: "출고<br>오더번호", field: "orderNo", hozAlign: "center", width: "10%"},
+        {title: "출고<br>수량", field: "outQty", hozAlign: "center" , formatter: "number", width: "auto"},
+        {title: "입출고구분", field: "inoutClssname", hozAlign: "center", width: "auto"},
+        {title: "단위", field: "unitClssName", hozAlign: "center", width: "auto"},
+        {title: "입출고처", field: "relLocName", hozAlign: "center", width: "10%"},
+        {title: "재고량", field: "stockQty", hozAlign: "center", formatter: "number", width: "auto"},
+        {title: "비고", field: "remark", hozAlign: "center", width: "30%"},
 
 
 
@@ -75,6 +77,35 @@ let mainTable = new Tabulator("#main-table", {
 
 });
 
+
+let subTable = new Tabulator("#sub-table", {
+    locale: "ko-kr",
+    layout: "fitColumns",
+    height: "100%",
+    columnDefaults: {
+        headerSort: false
+    },
+    columns: [
+        {
+            title: "",       // 컬럼 헤더
+            field: "dummyField",  // 실제 데이터 키 (사용 안 해도 됨, 그냥 placeholder)
+            hozAlign: "center",
+            formatter: function(cell, formatterParams, onRendered){
+                return "합   계";  // 항상 이 글자만 표시
+            }
+        },
+        // {title: "총계", field: "합 계", hozAlign: "center", headerSort: true },
+        // {title: "이월", field: "NmstockQty", hozAlign: "center"},
+        {title: "입고", field: "stuffQty", hozAlign: "center", formatter: "number"},
+        {title: "출고", field: "outQty", hozAlign: "center", formatter: "number"},
+        {title: "재고", field: "stockQty", hozAlign: "center", formatter: "number"},
+
+        // {title: "재고수량", field: "stockQty", hozAlign: "center", formatter: "number"},
+    ],
+
+
+
+});
 //#endregion
 window.addEventListener('DOMContentLoaded', function () {
     init();
@@ -154,17 +185,32 @@ async function Search() {
         const data = await response.json();
 
         console.log("전송 파라메터:", JSON.stringify(param));
+        console.log("받은 데이터:", data)
 
-        if (!data?.length) {
+        if (!data || (!data.main?.length && !data.total?.length)) {
             mainTable.clearData();
+            subTable.clearData();
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
-        setNo(data);
-        mainTable.setData(data);
+
+        // if (!data?.length) {
+        //     mainTable.clearData();
+        //     toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
+        //     return;
+        // }
+        // setNo(data);
+        // mainTable.setData(data);
 
         console.log("data:", JSON.stringify(data));
         console.table("data:",data);
+
+        mainTable.setData(data.main || []);
+        subTable.setData(data.total || []);
+
+
+        setNo(data.main || []);
+
 
     } catch (error) {
         console.error("Fetch error:", error);

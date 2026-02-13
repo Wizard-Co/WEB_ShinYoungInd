@@ -53,7 +53,7 @@ public class StockQController {
 
     @PostMapping("/search")
     @ResponseBody
-    public List<StockQView> getStockQ(@RequestBody Map<String, Object> params){
+    public Map<String, List<StockQView>> getStockQ(@RequestBody Map<String, Object> params){
         return service.getStockQ(params);
     }
 
