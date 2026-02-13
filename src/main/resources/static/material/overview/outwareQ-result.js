@@ -26,7 +26,7 @@ let mainTable = new Tabulator("#main-table", {
             }
         }
     },
-    layout: "fitColumns",
+    layout: "fitDataTable",
     height: "100%",
     validationMode: "highlight",
     selectableRows: 1,
@@ -39,23 +39,23 @@ let mainTable = new Tabulator("#main-table", {
     columns: [
         {title: "순", field: "num", hozAlign: "center", headerSort: true },
         {title: "출고일자", field: "outDate", hozAlign: "center", headerSort: true},
-        {title: "출고처명", field: "kCustom", hozAlign: "center"},
+        {title: "출고처명", field: "kCustom", hozAlign: "center", width: "10%"},
 
-        {title: "품번", field: "buyerArticleNo", hozAlign: "center"},
-        {title: "품명", field: "article", hozAlign: "center"},
+        {title: "품번", field: "buyerArticleNo", hozAlign: "center", width:"auto"},
+        {title: "품명", field: "article", hozAlign: "center", width:"auto"},
 
-        {title: "Order No", field: "orderNo", hozAlign: "center"},
-        {title: "출고구분", field: "outClssname", hozAlign: "center"},
-        {title: "이전창고", field: "fromLocName", hozAlign: "center"},
-        {title: "이후창고", field: "toLocname", hozAlign: "center"},
+        {title: "Order No", field: "orderNo", hozAlign: "center" , width: "10%"},
+        {title: "출고구분", field: "outClssname", hozAlign: "center" , width: "10%"},
+        {title: "이전창고", field: "fromLocName", hozAlign: "center", width: "10%"},
+        {title: "이후창고", field: "toLocname", hozAlign: "center", width: "10%"},
 
-        {title: "출고수량", field: "outQty", hozAlign: "center", formatter: "number"},
-        {title: "단가", field: "unitPrice", hozAlign: "center", formatter: "number"},
-        {title: "금액", field: "amount", hozAlign: "center", formatter: "number"},
+        {title: "출고수량", field: "outQty", hozAlign: "center", formatter: "number", width: "10%"},
+        {title: "단가", field: "unitPrice", hozAlign: "center", formatter: "number", width: "10%"},
+        {title: "금액", field: "amount", hozAlign: "center", formatter: "number", width: "10%"},
         {title: "단위", field: "unitClssName", hozAlign: "center"},
 
-        {title: "비고", field: "remark", hozAlign: "center"},
-        {title: "출고번호", field: "outwareiD", hozAlign: "center"},
+        {title: "비고", field: "remark", hozAlign: "center", width:"auto"},
+        {title: "출고번호", field: "outwareiD", hozAlign: "center" , width: "10%"},
         {title: "깊이", field: "depth", hozAlign: "center", visible: false  },
 
 
