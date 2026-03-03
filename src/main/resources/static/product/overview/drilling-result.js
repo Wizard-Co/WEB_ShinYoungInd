@@ -14,10 +14,28 @@ window.addEventListener('DOMContentLoaded', function () {
 let selectedRow;
 let tbMainColumns = [
     { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
-    { title: "라벨", field: "labelID", hozAlign: "left" },
-    { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
-    { title: "품명", field: "article", hozAlign: "left" },
     { title: "생산일자", field: "workDate", hozAlign: "center" },
+    { title: "호기", field: "machineNo", hozAlign: "center" },
+    { title: "오더번호", field: "orderNo", hozAlign: "center" },
+    { title: "품명", field: "article", hozAlign: "left" },
+
+    { title: "규격", field: "spec", hozAlign: "left" },
+    { title: "거래처", field: "custom", hozAlign: "left" },
+    { title: "수주량", field: "orderQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업시작시간", field: "workStartTime", hozAlign: "center" },
+    { title: "작업종료시간", field: "workEndTime", hozAlign: "center" },
+
+    { title: "생산량", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "불량수량", field: "defectQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업자", field: "worker", hozAlign: "center" },
+    { title: "LotNo", field: "labelID", hozAlign: "center" },
+    { title: "원단로트", field: "startSaveLabelID", hozAlign: "left" },
+
+    { title: "Size(mm)", field: "perforSize", hozAlign: "left" },
+    { title: "바늘지름(mm)", field: "needleDia", hozAlign: "left" },
+    { title: "바늘수(EA)", field: "needleQty", hozAlign: "left" },
+    { title: "작업구분", field: "jobType", hozAlign: "left" },
+    { title: "비가동사유", field: "noWorkType", hozAlign: "left" },
 ];
 
 let tbSubColumns = [
