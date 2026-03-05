@@ -21,27 +21,27 @@ let tbLabelColumns = [
 
 let tbWorkColumns = [
     { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
-    { title: "일자", field: "iodate", hozAlign: "center" },
-    { title: "시간", field: "iotime", hozAlign: "center" },
+    { title: "일자", field: "workDate", hozAlign: "center" },
+    { title: "시간", field: "workTime", hozAlign: "center" },
     { title: "공정", field: "process", hozAlign: "center" },
     { title: "호기", field: "machineNo", hozAlign: "center" },
-    { title: "수량", field: "qty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
-    { title: "작업자", field: "worker", hozAlign: "center" },
+    { title: "수량", field: "workQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
+    { title: "작업자", field: "person", hozAlign: "center" },
     { title: "비고", field: "remark", hozAlign: "left" },
-    { title: "필요 자격", field: "needLicense", hozAlign: "center" },
-    { title: "불량 정보", field: "defectInfo", hozAlign: "left" },
+    { title: "필요 자격", field: "hrLicense", hozAlign: "center" },
+    { title: "불량 정보", field: "defectList", hozAlign: "left" },
 ];
 
 let tbChildColumns = [
     { title: "순번", field: "num", hozAlign: "center", formatter: "money", formatterParams: { thousand: ",", precision: false } },
-    { title: "라벨ID", field: "labelID", hozAlign: "center" },
+    { title: "라벨ID", field: "childLabelID", hozAlign: "center" },
     { title: "품번", field: "buyerArticleNo", hozAlign: "left" },
     { title: "품명", field: "article", hozAlign: "left" },
-    { title: "구분", field: "gbn", hozAlign: "center" },
-    { title: "일자", field: "iodate", hozAlign: "center" },
-    { title: "시간", field: "iotime", hozAlign: "center" },
+    { title: "구분", field: "type", hozAlign: "center" },
+    { title: "일자", field: "inDate", hozAlign: "center" },
+    { title: "시간", field: "inTime", hozAlign: "center" },
     { title: "수량", field: "qty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
-    { title: "거래처", field: "kcustom", hozAlign: "left" },
+    { title: "거래처", field: "custom", hozAlign: "left" },
     { title: "현 재고", field: "stockQty", hozAlign: "right", formatter: "money", formatterParams: { thousand: ",", precision: false } },
 ];
 
@@ -151,6 +151,7 @@ async function getWorkList(labelID) {
             toastr.warning('조회된 데이터가 없습니다', '', {positionClass: 'toast-bottom-center'});
             return;
         }
+        console.log('data', data)
         setNo(data);
         // tbWork.clear().rows.add(data).draw();
         workTb.setData(data);
